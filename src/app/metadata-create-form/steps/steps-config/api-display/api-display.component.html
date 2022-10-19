@@ -1,0 +1,158 @@
+
+<!-- <p>static-content works!</p> -->
+<div class = "form-group config" #viewContainerRef>
+    <h5>Api Display Component :</h5>
+    <br>
+    <div class="d-flex justify-content-between div-margin">
+    <label> Name </label>
+    <input placeholder="Name" class="form-control half" id = "name">
+    </div>
+
+    <div class="d-flex justify-content-between div-margin">
+    <label> Title </label>
+    <input placeholder="Title" class="form-control half" id = "title">
+    </div>
+
+    <div class="d-flex justify-content-between div-margin">
+        <label> Description </label>
+        <input placeholder="Description" class="form-control half" id = "description">
+        </div>
+
+    <div>
+        
+     
+        <div class = "d-flex justify-content-between div-margin">    
+            <div><h6>Rows : </h6></div>
+            <!-- <div><button class = "btn btn-primary">Add</button></div> -->
+            </div>
+ 
+        <div formArrayName = "rows" >
+            
+             <div ngModelGroup = "Input">
+                <div class="d-flex justify-content-between div-margin">
+                    <label>Hint </label>
+                    <input type="text" class="form-control half" placeholder="hint" id = "hint">
+                </div>
+                <div class="d-flex justify-content-between div-margin">
+                    <label>Name </label>
+                    <input type="text" class="form-control half" placeholder="name" id = "name">
+                </div>
+                <div class="d-flex justify-content-between div-margin">
+                    <label>Placeholder </label>
+                    <input type="text" class="form-control half" placeholder="placeholder" id = "placeholder">
+                </div>
+
+                <div class="d-flex justify-content-between div-margin">
+                    <label>Type </label>
+                    <input type="text" class="form-control half" placeholder="type" id = "type">
+                </div>
+                <div>
+                    <div class = "d-flex justify-content-between div-margin">
+                        <div><h6>Validations :</h6> </div>
+                        <div><button class = "btn btn-primary">Add</button></div>
+                    </div>
+                    <div formArrayName = "validations">
+                    <div class="d-flex justify-content-between div-margin">
+                    <label>Type </label>
+                    <input type="text" class="form-control half" placeholder="type" id = "type">
+                    </div>
+
+                    <div class="d-flex justify-content-between div-margin">
+                    <label>Value </label>
+                    <input type="text" class="form-control half" placeholder="value" id = "value">
+                    </div>
+                    </div>
+                </div>
+                
+
+            </div>
+
+            </div>
+        </div>
+        
+        <div class="d-flex justify-content-between div-margin">
+        <label> DdLabel </label>
+        <input placeholder="ddLabel" class="form-control half" type="text" id="ddLabel">
+        </div>
+        
+        
+        
+        <div class="d-flex justify-content-between div-margin">
+        <label>Transfer Field Key  </label>
+        <input type = "text" class="form-control half" placeholder="tFK" id = "tFK">
+        </div>
+
+        
+        <div>
+            <div class="div-margin"><h6>Source Api : </h6></div>
+            <div ngModelGroup ="sourceApi">
+                <div class="d-flex justify-content-between div-margin">
+                <label> Path </label>
+                <input placeholder="Path" class="form-control half " id = "path">
+                </div>
+                
+                <div class="d-flex justify-content-between div-margin">
+                <label> Auth Type </label>
+                <input placeholder="AuthType" class="form-control half" id = "authType">
+                </div>
+                
+                <div class="d-flex justify-content-between div-margin">
+                <label> IdField </label>
+                <input placeholder="IdField" class="form-control half" id = "idField">
+                </div>
+
+                <div class="d-flex justify-content-between div-margin">             
+                <label> LabelField </label>
+                <input placeholder="LabelField" class="form-control half" id = "LabelField">
+                </div>
+
+            </div>
+        </div>
+
+        
+
+        <div>
+        
+
+    
+
+            <div class = "d-flex justify-content-between div-margin">
+                <div> DisplayItems</div>
+                <div><button class = "btn btn-primary">Add</button></div>
+            </div>
+     
+            <div formArrayName = "displayItems">
+                    <div class = "d-flex justify-content-between div-margin">
+                        <label>FieldName </label>
+                        <input type="text" class="form-control half" placeholder="FieldName" id = "fieldName">
+                    </div>
+                    <div class = "d-flex justify-content-between div-margin">
+                        <label>Label </label>
+                        <input type="text" class="form-control half" placeholder="Label" id = "label">
+                    </div>
+                    <div class = "d-flex justify-content-between div-margin">
+                        <label>Secure </label>
+                        <input type="checkbox"  checked>
+                    </div>
+    
+        
+                </div>
+            </div>
+
+            <div class = "d-flex justify-content-between div-margin">
+            <label>Test Configuration </label>
+            <input type="checkbox"  checked>
+            </div>
+
+
+            <div class="div-margin"><h6>Test API : </h6></div>
+            <div class="form-group d-flex justify-content-between div-margin">
+                
+                <label>
+                    Auth Type 
+                </label>
+                <input class="form-control half" type="text">
+            </div>
+        
+        
+        </div>

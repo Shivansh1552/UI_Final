@@ -1,0 +1,51 @@
+<div class='card'>
+  <div class='card-header'>
+    {{pageTitle}}
+  </div>
+  <div class='card-body'>
+    <div class='row'>
+      <div class='col-md-2'>Search for :</div>
+      <div class='col-md-4'>
+        <input type='text'
+               [(ngModel)]='listFilter' />
+      </div>
+    </div>
+    <div class='row'
+         *ngIf='listFilter'>
+      <div class='col-md-6'>
+        <h4>Results : {{listFilter}}</h4>
+      </div>
+    </div>
+    <div class='table-responsive'>
+      <table class='table'
+             *ngIf='metadata.length'>
+        <thead>
+          <tr>
+            <th>Metadata</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor='let metadata of filteredMetadata'>
+            <td>
+              <a [routerLink]="['/metadata', metadata.id]">
+               
+                <a style="list-style-type:none;">
+                {{metadata.metadata.metadataName }} 
+                <div style="float:right ;"> 
+                  <button type="button" class="btn btn-success btn-space" > Edit </button> 
+                  <button (click)="deleteData(metadata.id)" onClick="window.location.reload();" class="btn btn-success btn-space" routerLinkActive='active' routerLink='/metadata'> Delete </button>
+                  <button type="button" class="btn btn-success btn-space"> Post </button>
+                </div>
+              </a>
+            </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div *ngIf='errorMessage'
+     class='alert alert-danger'>
+  Error: {{ errorMessage }}
+</div>

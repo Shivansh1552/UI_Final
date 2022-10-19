@@ -1,0 +1,93 @@
+<!-- <p>static-page-entry works!</p> -->
+<form class=" form-group">
+    <div> valuePopulatedApi : </div>
+    <fieldset ngModelGroup = "valuePopulatedApi">
+        <label>url</label>
+        <input type="text" class="form-control" id = "url">
+        <br>
+        <label>authType :</label>
+        <input type = "text" class="form-control" id = "authType">
+    </fieldset>
+
+    <div class = "d-flex justify-content-between">
+        <div>Rows :</div>
+        <div><button class = "btn btn-primary">Add</button></div>
+    </div>
+
+    <div formArrayName = "rows" >
+        <fieldset ngModelGroup = "Input" > 
+            <legend>Inupt :</legend>
+        <div class="form-group ">
+
+            <div>
+                <label>Name :</label>
+                <input type="text" class="form-control" placeholder="name" id = "name">
+            </div>
+            <div>
+                <label>Title :</label>
+                <input type="text" class="form-control" placeholder="title" id = "title">
+            </div>
+            <div>
+                <label>Description :</label>
+                <input type="text" class="form-control" placeholder="descrition" id = "descrition">
+            </div>
+            <div>
+                <label>DefaultValue :</label>
+                <input type="text" class="form-control" placeholder="defaultValue" id = "defaultValue">
+            </div>
+
+            <fieldset ngModelGroup = "saveValueAsObjectConfiguration">
+                <legend>SaveValueAsObjectConfiguration</legend>
+
+                <label>EditableProperty :</label>
+                <input type = "text" class="form-control" id = "editableProperty">
+
+                <fieldset ngModelGroup = "staticObjectProperties">
+
+                    <legend>StaticObjectProperties :</legend>
+
+                    <label>Name :</label>
+                    <input type="text" class="form-control" placeholder="name" id = "name">
+
+                    <label>UserPrompted :</label>
+                    <input type="text" class="form-control" placeholder="userPrompted" id = "userPrompted">
+            
+                    <label>ParameterType :</label>
+                    <input type="text" class="form-control" placeholder="parameterType" id = "parameterType">
+            
+
+                </fieldset>
+
+            </fieldset>
+            <div>
+                <label>Hint :</label>
+                <input type="text" class="form-control" placeholder="hint" id = "hint">
+            </div>
+            <div>
+                <label>Placeholder :</label>
+                <input type="text" class="form-control" placeholder="placeholder" id = "placeholder">
+            </div>
+
+            <div>
+                <label>Type :</label>
+                <input type="text" class="form-control" placeholder="type" id = "type">
+            </div>
+            <div>
+                <div class = "d-flex justify-content-between">
+                    <div>Validations :</div>
+                    <div><button class = "btn btn-primary">Add</button></div>
+                </div>
+                <div formArrayName = "validations">
+                </div>
+            </div>
+
+            
+
+        </div>
+
+
+
+        </fieldset>
+    </div>
+
+ </form>

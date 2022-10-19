@@ -1,0 +1,59 @@
+<!-- <p>static-content works!</p> -->
+<div class="form-group" #viewContainerRef>
+    <!-- <fieldset ngModelGroup = "config"> -->
+        <div class="d-flex justify-content-between div-margin">
+    <h5>Static Content Component : </h5>
+    <!-- add delete function -->
+    <!-- <button type="button" class="btn btn-danger" style="margin-right:20px ;" >Delete</button> -->
+</div>
+    <div class="d-flex justify-content-between div-margin">
+    <label> Content </label>
+    <input type = "textarea" id="content"  class="form-control half" required ngModel name="content">
+    </div>
+
+    <!-- <div class="form-inline"> -->
+        <div class="form-group">
+    <div formArrayName = "headers" >
+        <!-- <fieldset ngModelGroup="Headers"> -->
+        <div class="d-flex justify-content-between div-margin">
+        <div ><h6>Headers :</h6></div>
+        <div><button class = "btn btn-primary">Add</button></div>
+        </div>
+
+    
+        <div class="d-flex justify-content-between div-margin">
+        <label>Template Name </label>
+        <input type = "text" class="form-control half" id = "tempName"  required  ngModel placeholder="Enter TemplateName" name = "tempName"> 
+        </div>
+        
+        <div class="d-flex justify-content-between div-margin">
+        <label>Header String  </label>
+        <input type = "text" class="form-control half" id = "headers"   required ngModel placeholder="Enter Headers" name ="headers">
+        </div>
+    <!-- </fieldset> -->
+    </div>
+    </div>
+</div>
+<!-- </div> -->
+   
+    <!-- <div>Headers :</div>
+    <div><button class = "btn btn-primary">Add</button></div>
+    
+</div> -->
+
+   <!-- <div formArrayName = "headers">
+
+        <label>TemplateName : </label>
+        <input type = "text" id = "tempName" class="form-control">
+
+        
+        <label>Headers : </label>
+        <input type = "text" id = "headers" class="form-control">
+
+    </div>  -->
+<!-- </div>
+</div> -->
+<!-- </fieldset> -->
+
+
+<!-- <pre>{{ staticForm.value | json }}</pre> -->

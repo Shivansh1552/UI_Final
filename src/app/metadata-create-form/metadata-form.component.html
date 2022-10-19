@@ -1,0 +1,110 @@
+﻿<!-- <form #userPost = "ngForm" (ngSubmit)="onSubmit(userPost.value)">
+    <input type="text" name ="id" ngModel placeholder="id"> <br>
+    <input type="text" name = "name" ngModel placeholder="name"> <br>
+    <input type="text" name="ipackname" ngModel placeholder="ipackname"><br>
+    <input type="number" name="version" ngModel placeholder="version"><br>
+  
+    <button type="submit">Create</button>
+</form> -->
+
+<!-- <pm-add-metadata></pm-add-metadata> -->
+
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
+
+<div class="parentform">
+<div class="childform" style="width:70% ;">
+ 
+<!-- <form class="form-group">  -->
+  
+  <form #myForm = "ngForm"  (ngSubmit)="onSubmit(myForm.value)">
+
+    <div class="form-group">
+      <div class="d-flex justify-content-between">                      
+      <div><label for="id">ID</label></div>                                
+      <div class="half"><input type="text" class="form-control" id="id"  required  ngModel placeholder="Enter ID" name="id"></div>
+       <!-- required [(ngModel)]="metadata.metadataID" name="id"-->
+      </div>
+    </div>
+  <br>
+    <div class="form-group">
+    <div class="d-flex justify-content-between">
+      <div><label for="InputName">Name</label></div>
+      <div class="half"><input type="text" class="form-control" id="metadataName" required  ngModel placeholder="Enter Name" name="metadataName"></div>
+    </div>
+    <br>
+    <div class="form-group d-flex justify-content-between">
+      <div><label for="versionHC">Version</label></div>
+      <div  class="half"><input type="number" class="form-control" id="version" required  ngModel  placeholder="Enter version" name="version"></div>
+    </div>
+    <br>
+        <div class="form-group">
+          <div class="d-flex justify-content-between">
+          <div><label for="InputIName">IpackName</label></div>
+          <div class="half"><input type="text" class="form-control" id="ipackName" required  ngModel placeholder="Enter IpackName" name="ipackName"></div>
+          </div>
+        
+        <div class=" d-flex justify-content-between">
+          <small id="iname_note" class="form-text text-muted">Note- IpackName should be same as Name.</small>
+          <button (click)="checkBoomi()" type="button" class="btn btn-primary" style=" margin-top:10px; padding: 0px 10px">Verify</button>
+        </div>
+        </div>
+      <br>
+      
+      
+      
+        <!-- <div class="d-flex justify-content-between">
+          <div><label for="name">Name</label></div>
+          <div style="width:50% ;"><input type="text" class="form-control" id="name" required ngModel placeholder="Enter Name"  name="name"></div>
+        </div>
+        <br>
+          <div class="d-flex justify-content-between">
+          <div><label for="title">Title</label></div>
+          <div style="width:50% ;"><input type="text" class="form-control" id="title" required ngModel placeholder="Enter Title"  name="title"></div>
+          </div>
+        <br>
+        <div class="form-group d-flex justify-content-between">
+          <div><label for="descrition">Description</label></div>
+          <div  style ="width : 50%;"><input type="text" class="form-control" id="desc" required ngModel  placeholder="Enter Description" name="desc"></div>
+        </div>
+        <br> -->
+
+
+
+
+     <!-- <div class="form-group form-check">
+      <input type="checkbox" class="form-check-input" id="exampleCheck1">
+      <label class="form-check-label" for="exampleCheck1">Checkbox</label>
+    </div>  -->
+
+    
+
+    <fieldset ngModelGroup = "sections">
+      <div class="d-flex justify-content-between" >
+      <h4>Sections </h4>
+      <div><button type="button" class="btn btn-success" id = "addStep">Add</button></div>
+      </div>
+<br>
+
+  <app-steps></app-steps>
+
+</fieldset>
+
+<br>
+    <div class = "ETF_Sec">
+    </div>
+    <div class="d-flex justify-content-center">
+    <button type="submit" class="btn btn-primary" style="margin-right:20px ;">Submit</button> 
+    <button type="reset" class="btn btn-primary" style="margin-right:20px ;">Reset</button>
+    <button type="submit" class="btn btn-primary" style="margin-right:20px;">Save</button>
+    
+   
+
+    <!-- <li><a class="btn btn-success btn-space" routerLinkActive='active' routerLink='/createMetadata'>Create</a></li> -->
+
+  </div> 
+  </div>
+  </form>
+
+  <button (click)="get()" class="btn btn-primary">Get</button>
+  
+</div>
