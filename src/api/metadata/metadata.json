@@ -1,0 +1,21 @@
+[
+  {
+    "metadataID": 1,
+    "metadataName": "Metadata1",
+    "ipackName": "Metadata1",
+    "version": 2.0
+  },
+  {
+    "metadataID": 2,
+    "metadataName": "Metadata2",
+    "ipackName": "Metadata2",
+    "version": 2.0
+  },
+  {
+    "metadataID": 3,
+    "metadataName": "Metadata3",
+    "ipackName": "Metadata3",
+    "version": 2.0
+  }
+
+]

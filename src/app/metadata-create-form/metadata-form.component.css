@@ -1,0 +1,18 @@
+.parentform{
+    background-color: aliceblue;
+}
+
+.childform{
+    width: 70%;
+    margin: auto;
+    margin-top: 40px;
+    padding: 20px;
+}
+
+.scc-headers > .scc-header-inner > .mat-card {
+    padding: 0px;
+}
+
+.half{
+    width: 50%;
+}

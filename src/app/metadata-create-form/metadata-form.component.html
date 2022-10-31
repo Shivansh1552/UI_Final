@@ -1,0 +1,813 @@
+﻿<!-- <form #userPost = "ngForm" (ngSubmit)="onSubmit(userPost.value)">
+    <input type="text" name ="id" ngModel placeholder="id"> <br>
+    <input type="text" name = "name" ngModel placeholder="name"> <br>
+    <input type="text" name="ipackname" ngModel placeholder="ipackname"><br>
+    <input type="number" name="version" ngModel placeholder="version"><br>
+  
+    <button type="submit">Create</button>
+</form> -->
+
+<!-- <pm-add-metadata></pm-add-metadata> -->
+
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
+
+<div class="childform"
+     style="width: 70%">
+  <!-- <form class="form-group">  -->
+
+  <form #myForm="ngForm"
+        (ngSubmit)="onSubmit(myForm.value)">
+    <div class="form-group">
+      <div class="d-flex justify-content-between">
+        <div><label for="id">ID</label></div>
+        
+          <input type="text"
+                 class="form-control half"
+                 id="id"
+                 ngModel
+                 #id="ngModel"
+                 required
+                 placeholder="Enter ID"
+                 name="id" />
+        
+        <!-- required [(ngModel)]="metadata.metadataID" name="id"-->
+      </div>
+    </div>
+    <br />
+    <div class="form-group">
+      <div class="d-flex justify-content-between">
+        <div><label for="InputName">Name</label></div>
+       
+          <input type="text"
+                 class="form-control half"
+                 id="metadataName"
+                 ngModel
+                 #metadataName="ngModel"
+                 required
+                 placeholder="Enter Name"
+                 name="metadataName" />
+        
+      </div>
+      <br />
+      <div class="form-group d-flex justify-content-between">
+        <div><label for="versionHC">Version</label></div>
+       
+          <input type="number"
+                 class="form-control half"
+                 id="version"
+                 ngModel
+                 #version="ngModel"
+                 required
+                 placeholder="Enter version"
+                 name="version" />
+       
+      </div>
+      <br />
+      <div class="form-group">
+        <div class="d-flex justify-content-between">
+          <div><label for="InputIName">IpackName</label></div>
+        
+            <input type="text"
+                   class="form-control half"
+                   id="ipackName"
+                   ngModel
+                   #ipackName="ngModel"
+                   required
+                   placeholder="Enter IpackName"
+                   name="ipackName" />
+          
+        </div>
+
+        <div class="d-flex justify-content-between">
+          <small id="iname_note"
+                 class="form-text text-muted">Note- IpackName should be same as Name.</small>
+          <button (click)="checkBoomi()"
+                  type="button"
+                  class="btn btn-primary"
+                  style="margin-top: 10px; padding: 0px 10px">
+            Verify
+          </button>
+        </div>
+      </div>
+      <br />
+
+      <mat-accordion>
+
+        <mat-expansion-panel hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Overview
+            </mat-panel-title>
+            <mat-panel-description>
+              Please open this panel.
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <div class="sections">
+            <div class="form-group"
+                 #viewContainerRef>
+              <br />
+              <div style="margin: auto">
+                <br />
+                <!-- <div class="form-group"> -->
+                <div class="d-flex justify-content-between">
+                  <div><label for="name">Name</label></div>
+                 
+                    <input type="text"
+                           class="form-control half"
+                           id="name"
+                           required
+                           ngModel
+                           placeholder="Enter Name"
+                           name="name"/>
+                  <!-- </div> -->
+                
+              </div>
+                <br />
+                <div class="d-flex justify-content-between">
+                  <div><label for="title">Title</label></div>
+                  
+                    <input type="text"
+                           class="form-control half"
+                           id="title"
+                           required
+                           ngModel
+                           placeholder="Enter Title"
+                           name="title" />
+                  
+                </div>
+                <br/>
+                <div class="d-flex justify-content-between">
+                  <div><label for="descrition">Description</label></div>
+                 
+                    <input type="text"
+                           class="form-control half"
+                           id="desc"
+                           required
+                           ngModel
+                           placeholder="Enter Description"
+                           name="desc" />
+                 
+                </div>
+                
+                <br />
+
+                <div class="form-group"
+                     viewContainerRef>
+                  <!-- <fieldset ngModelGroup = "config"> -->
+                  <div class="d-flex justify-content-between">
+                    <label>Config :</label>
+                  </div>
+                  <br />
+                  <div class="d-flex justify-content-between">
+                  <label>Content :</label>
+                  <input type="text"
+                         id="content"
+                         class="form-control half"
+                         required
+                         ngModel
+                         name="content" />
+                        </div>
+                  <br />
+                  <!-- <div class="form-inline"> -->
+                  <div class="form-group">
+                    <div formArrayName="headers">
+                      <!-- <fieldset ngModelGroup="Headers"> -->
+                      <div class="d-flex justify-content-between">
+                        <div>Headers :</div>
+                        <div><button type="button" class="btn btn-primary"
+                                  (click)="addInput()">Add</button>
+                                 
+                        </div>
+                       
+
+                      </div>
+                      <div class="scc-headers">
+                        <div class="scc-header-inner"
+                             fxFlex
+                             fxLayoutAlign="center center">
+                          <mat-card fxFlex="195">
+                            <mat-card-title>Headers</mat-card-title>
+
+                            <mat-card-content>
+
+                              <div fxLayout="row"
+                                   fxLayoutGap="25px"
+                                   *ngFor="let header of headers; let i = index">
+
+                                <mat-form-field fxFlex="25">
+                                  <input matInput
+                                         placeholder="Template Name"
+                                         type="text"
+                                         name="name-{{i}}"
+                                         value="{{header.templateName}}">
+                                </mat-form-field>
+
+                                <mat-form-field fxFlex>
+                                  <input matInput
+                                         placeholder="Headers"
+                                         type="text"
+                                         name="value-{{i}}"
+                                         value="{{header.headerString}}">
+                                </mat-form-field>
+
+                                <button mat-icon-button
+                                        (click)='removeInput(i)'>
+                                  <mat-icon>indeterminate_check_box</mat-icon>
+                                </button>
+
+                              </div>
+
+                            </mat-card-content>
+                          </mat-card>
+                        </div>
+                      </div>
+                      <!-- </fieldset> -->
+                    </div>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-center">
+                  <!-- <button
+                    type="button"
+                    class="btn btn-primary"
+                    style="margin-right: 20px"
+                    id="sc"
+                    (click)="AddStaticContent($event)"
+                  >
+                    Add Overview
+                  </button> -->
+
+                  <!-- <button type="button" id="myBtn" class="btn btn-primary" style="margin-right:20px ;">Add Overview</button>
+                      <script>
+                       var element = document.getElementById("myBtn");
+                       element.addEventListener("click", AddStaticContent);
+                      </script> -->
+
+                  <!-- <button
+                    type="button"
+                    class="btn btn-primary"
+                    style="margin-right: 20px"
+                    id="api"
+                    (click)="AddApiDisplay($event)"
+                  >
+                    Add Setup
+                  </button>
+    
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    id="spe"
+                    (click)="AddStaticPageEntry($event)"
+                  >
+                    Add Parameters
+                  </button> -->
+                </div>
+                <!-- <app-static-page-entry>
+          
+                  </app-static-page-entry> -->
+
+                <!-- <app-static-content>
+                  
+                 </app-static-content> -->
+
+                <!-- <app-api-display> 
+          
+                 </app-api-display> -->
+
+                <!-- <div class = "ETF_Sec">
+                    
+                  </div> -->
+                <!-- <div class="d-flex justify-content-center">
+                  <button type="submit" class="btn btn-primary" style="margin-right:20px ;">Save</button> 
+                  <button type="button" class="btn btn-primary" style="margin-right:20px ;">Reset</button>
+                  <button type="button" class="btn btn-primary">Finish</button> -->
+              </div>
+              <!-- <div>
+                  <app-static-content>
+          
+                  </app-static-content>
+                  
+              </div> -->
+            </div>
+          </div>
+        </mat-expansion-panel>
+        <mat-expansion-panel (opened)="panelOpenState = true"
+                             (closed)="panelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Setup
+            </mat-panel-title>
+            <mat-panel-description>
+              Please open this panel to fill setup details.
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <div class="form-group"
+               #viewContainerRef>
+            <br />
+            <div class="d-flex justify-content-between">
+              <div><label>Name</label></div>
+              
+                <input type="text"
+                       class="form-control half"
+                       id="name1"
+                       required
+                       ngModel
+                       placeholder="Enter Name"
+                       name="name1" />
+              
+            </div>
+            <br />
+            <div class="d-flex justify-content-between">
+              <div><label>Title</label></div>
+             
+                <input type="text"
+                       class="form-control half"
+                       id="title1"
+                       required
+                       ngModel
+                       placeholder="Enter Title"
+                       name="title1" />
+            
+            </div>
+            <br />
+            <div class="d-flex justify-content-between">
+              <div><label>Description</label></div>
+             
+                <input type="text"
+                       class="form-control half"
+                       id="description1"
+                       required
+                       ngModel
+                       placeholder="Enter Description"
+                       name="description1" />
+             
+            </div>
+            <br />
+
+            <!-- <label> Name :</label>
+            <input placeholder="Name" class="form-control half" id = "name">
+            <br>
+            <label> Title :</label>
+            <input placeholder="Title" class="form-control half" id = "title">
+            <br> -->
+
+            <div>
+              <div class="d-flex justify-content-between">
+                <div>Rows :</div>
+                <div><button class="btn btn-primary">Add</button></div>
+              </div>
+
+              <div formArrayName="rows">
+                <!-- <div ngModelGroup = "Input"> -->
+                <div>
+                  <legend>Input :</legend>
+                  <div class="d-flex justify-content-between">
+                    <label>hint :</label>
+                    <input type="text"
+                           class="form-control half"
+                           id="hint"
+                           required
+                           ngModel
+                           placeholder="hint"
+                           name="hint" />
+                  </div>
+                  <br>
+                  <div class="d-flex justify-content-between">
+                    <label>name :</label>
+                    <input type="text"
+                           class="form-control half"
+                           id="name2"
+                           required
+                           ngModel
+                           placeholder="name"
+                           name="name2" />
+                  </div>
+                  <br>
+                  <div class="d-flex justify-content-between">
+                    <label>placeholder :</label>
+                    <input type="text"
+                           class="form-control half"
+                           id="placeholder"
+                           required
+                           ngModel
+                           placeholder="placeholder"
+                           name="placeholder" />
+                  </div>
+                  <br>
+                  <div class="d-flex justify-content-between">
+                    <label>type :</label>
+                    <input type="text"
+                           class="form-control half"
+                           id="type"
+                           required
+                           ngModel
+                           placeholder="type"
+                           name="type" />
+                  </div>
+                  <br>
+                  <div>
+                    <div class="d-flex justify-content-between">
+                      <div>validations :</div>
+                      <div><button class="btn btn-primary">Add</button></div>
+                    </div>
+                    <div formArrayName="validations">
+                      <div class="d-flex justify-content-between">
+                        <label>type :</label>
+                        <input type="text"
+                               class="form-control half"
+                               id="type1"
+                               required
+                               ngModel
+                               placeholder="type"
+                               name="type1" />
+  
+                      </div>
+                      <br>
+                      <div class="d-flex justify-content-between">
+                        <label>value :</label>
+                        <input type="text"
+                               class="form-control half"
+                               id="value"
+                               required
+                               ngModel
+                               placeholder="value"
+                               name="value" />
+                      </div>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="d-flex justify-content-between">
+            <label> ddLabel :</label>
+            <input placeholder="ddLabel"
+                   class="form-control half"
+                   type="text"
+                   id="ddLabel"
+                   required
+                   ngModel
+                   name="ddLabel" />
+                  </div>
+            <br />
+            <div class="d-flex justify-content-between">
+            <label>transferFieldKey : </label>
+            <input type="text"
+                   class="form-control half"
+                   id="tFK"
+                   required
+                   ngModel
+                   placeholder="tFK"
+                   name="tFK" />
+            </div>
+            <br />
+            <div>
+              <div>sourceApi :</div>
+              <div class="d-flex justify-content-between">
+                <label> Path :</label>
+                <input placeholder="Path"
+                       class="form-control half"
+                       id="path"
+                       required
+                       ngModel
+                       name="path" />
+                  </div>
+                  <br>
+                  <div class="d-flex justify-content-between">
+                <label> AuthType :</label>
+                <input placeholder="AuthType"
+                       class="form-control half"
+                       id="authType"
+                       required
+                       ngModel
+                       name="authType" />
+                  </div>
+                  <br>
+                  <div class="d-flex justify-content-between">
+                <label> IdField :</label>
+                <input placeholder="IdField"
+                       class="form-control half"
+                       id="idField"
+                       required
+                       ngModel
+                       name="idField" />
+                  </div>
+                  <br>
+                  <div class="d-flex justify-content-between">
+                <label> LabelField : </label>
+                <input placeholder="LabelField"
+                       class="form-control half"
+                       id="LabelField"
+                       required
+                       ngModel
+                       name="LabelField" />
+                    </div>
+              <br>
+            </div>
+
+            <br>
+
+            <div>
+              <div class="d-flex justify-content-between">
+                <div>DisplayItems</div>
+                <div><button class="btn btn-primary">Add</button></div>
+              </div>
+                  <br>
+              <div formArrayName="displayItems">
+                <div class="d-flex justify-content-between">
+                  <label>FieldName :</label>
+                  <input type="text"
+                         class="form-control half"
+                         id="fieldName"
+                         required
+                         ngModel
+                         placeholder="FieldName"
+                         name="fieldName" />
+                </div>
+                <br>
+                <div class="d-flex justify-content-between">
+                  <label>Label :</label>
+                  <input type="text"
+                         class="form-control half"
+                         id="label"
+                         required
+                         ngModel
+                         placeholder="Label"
+                         name="label" />
+                </div>
+                <br>
+                <div>
+                  <label>secure :</label>
+                  <input type="checkbox"
+                         checked />
+                </div>
+              </div>
+            </div>
+
+            <br>
+            <label>Test Configuration :</label>
+            <input type="checkbox"
+                   checked />
+
+            <div>Test API :</div>
+            <div class="form-group">
+              <div class="d-flex justify-content-between">
+              <label> AuthType : </label>
+              <input class="form-control half"
+                     type="text"
+                     id="authType1"
+                     required
+                     ngModel
+                     placeholder="authtype"
+                     name="authType1" />
+                </div>
+            </div>
+
+          </div>
+          <br>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel (opened)="panelOpenState = true"
+        (closed)="panelOpenState = false">
+          <!-- <p>static-page-entry works!</p> -->
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Parameters
+            </mat-panel-title>
+            <mat-panel-description>
+              Please open this panel to fill parameters details.
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <div cclass="form-group"
+          #viewContainerRef >
+
+          <div class="d-flex justify-content-between">
+            <label>Name :</label>
+            <input type="text"
+                   class="form-control half"
+                   id="nameSpe"
+                   required ngModel
+                   placeholder="name"
+                   
+                   name="nameSpe">
+          </div>
+          <br>
+          <div class="d-flex justify-content-between">
+            <label>Title :</label>
+            <input type="text"
+                   class="form-control half"
+                   id="titleSpe"
+                   required ngModel
+                   placeholder="title"
+                   name="titleSpe">
+          </div>
+          <br>
+          <div class="d-flex justify-content-between">
+            <label>Description :</label>
+            <input type="text"
+                   class="form-control half"
+                   required ngModel
+                   id="descriptionSpe"
+                   placeholder="description"
+                   name="descriptionSpe">
+          </div>
+          <br>
+
+            <div> valuePopulatedApi : </div>
+            <br>
+            <fieldset>
+              <div class="d-flex justify-content-between">
+                <label>url</label>
+                <input type="text"
+                       class="form-control half"
+                       id="urlSpe"
+                       required ngModel
+                       name="urlSpe">
+
+              </div>
+             
+              <br> 
+
+              <div class="d-flex justify-content-between">
+                <label>authType :</label>
+              <input type="text"
+                     class="form-control half"
+                     id="authTypeSpe"
+                     required ngModel
+                     
+                     name="authTypeSpe">
+              </div>
+              
+            </fieldset>
+            <br>
+
+            <div class="d-flex justify-content-between">
+              <div>Rows :</div>
+              <div><button class="btn btn-primary">Add</button></div>
+            </div>
+            <br>
+
+            <div formArrayName="rows">
+              <fieldset>
+              
+                <div class="form-group ">
+                  
+                  <legend>Inupt :</legend>
+
+                  <div class="d-flex justify-content-between">
+                    <label>Name :</label>
+                    <input type="text"
+                           class="form-control half"
+                           id="nameInputSpe"
+                           required ngModel
+                           
+                           placeholder="name"
+                          name="nameInputSpe">
+                      </div>
+                      <br>
+
+                  <fieldset>
+                    <div>SaveValueAsObjectConfiguration :</div>
+                    <br>
+                    <div class="d-flex justify-content-between">
+                    <label>EditableProperty :</label>
+                    <input type="text"
+                           class="form-control half"
+                           id="editableProperty"
+                           required ngModel
+                          name="editableProperty">
+                      </div>
+                      <br>
+                    <fieldset >
+
+                      <div>StaticObjectProperties :</div>
+                        <br>
+                      <div class="d-flex justify-content-between">
+                      <label>Name :</label>
+                      <input type="text"
+                             class="form-control half"
+                             id="nameSop"
+                            required ngModel
+                             placeholder="name"
+                             name="nameSop">
+
+                        </div>
+                        <br>
+                        <div class="d-flex justify-content-between">
+                      <label>UserPrompted :</label>
+                      <input type="text"
+                             class="form-control half"
+                             id="userPrompted"
+                             ngModel
+                             placeholder="userPrompted"
+                            name="userPrompted">
+
+                      </div>
+
+                      <div class="d-flex justify-content-between">  
+                      <label>ParameterType :</label>
+                      <input type="text"
+                             class="form-control half"
+                             id="parameterType"
+                             required ngModel
+                             placeholder="parameterType"
+                             name="parameterType">
+                      </div>
+
+
+                    </fieldset>
+
+                  </fieldset>
+                  <br>
+                  <div class="d-flex justify-content-between"> 
+                    <label>DefaultValue :</label>
+                    <input type="text"
+                           class="form-control half"
+                           id="defaultValue"
+                           required ngModel
+                           placeholder="defaultValue"
+                           name="defaultValue">
+                  </div>
+                  <br>
+                  <div class="d-flex justify-content-between">
+                    <label>Hint :</label>
+                    <input type="text"
+                           class="form-control half"
+                           id="hintSpe"
+                           required ngModel
+                           placeholder="hint"
+                           name="hintSpe">
+                  </div>
+                  <br>
+                  
+                  <div class="d-flex justify-content-between">
+                    <label>Type :</label>
+                    <input type="text"
+
+                           class="form-control half"
+                           required ngModel
+                           id="typeSpe"
+                           placeholder="type"
+                           name="typeSpe">
+                  </div>
+                  <br>
+                  <div class="d-flex justify-content-between">
+                    <label>Label :</label>
+                    <input type="text"
+                           class="form-control half"
+                           required ngModel
+                           id="labelSpe"
+                           placeholder="label"
+                           name="labelSpe">
+                  </div>
+                  <br>
+
+                  <!-- <div class="d-flex justify-content-between" >
+                    <div class="d-flex justify-content-between">
+                      <div>Validations :</div>
+                      <div><button class="btn btn-primary">Add</button></div>
+                    </div>
+                    <div formArrayName="validations">
+                    </div>
+                  </div> -->
+
+
+
+                </div>
+
+
+
+              </fieldset>
+            </div>
+
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+
+      <br />
+      <div class="ETF_Sec"></div>
+      <div class="d-flex justify-content-center">
+        <button type="submit"
+                class="btn btn-primary"
+                style="margin-right: 20px">
+          Submit
+        </button>
+        <button type="reset"
+                class="btn btn-primary"
+                style="margin-right: 20px">
+          Reset
+        </button>
+        <button type="submit"
+                class="btn btn-primary"
+                style="margin-right: 20px">
+          Save
+        </button>
+
+        <!-- <li><a class="btn btn-success btn-space" routerLinkActive='active' routerLink='/createMetadata'>Create</a></li> -->
+      </div>
+    </div>
+  </form>
+
+  <button (click)="get()"
+          class="btn btn-primary">Get</button>
+</div>
