@@ -4,12 +4,7 @@
 import { style } from '@angular/animations';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import {
-  HeadersConfig,
-  IMetadata,
-  metadataBody,
-  StaticConfig,
-} from '../metadata';
+import { HeadersConfig, IMetadata, StaticConfig } from '../metadata';
 import { MetadataService } from '../metadata.service';
 import { stringify, v4 as uuid } from 'uuid';
 import { HeaderConfig } from '../Models/static-content/header-config.model';
@@ -25,7 +20,91 @@ export class MetadataFormComponent {
   public pageTitle = 'form';
   panelOpenState = false;
 
-  metadata: IMetadata = new IMetadata();
+  metadata = {
+    id: '',
+    //id: parseInt('uuid()',10),
+    metadataName: '',
+    ipackName: '',
+    version: '2',
+    sections: [
+      {
+        steps: [
+          {
+            name: 'Overview',
+            componentName: 'StaticContentComponent',
+            title: '',
+            description: '',
+            config: {
+              content: '',
+              headers: [
+                {
+                  templateName: '',
+                  headerString: '',
+                },
+              ],
+            },
+          },
+          {
+            componentName: 'APIDisplayComponent',
+            config: {
+              rows: [
+                {
+                  input: {
+                    hint: 'Integration Name',
+                    name: 'integrationName',
+                    placeholder: 'Integration Name',
+                    type: 'text',
+                    validations: [
+                      'required',
+                      {
+                        type: 'minLength',
+                        value: '4',
+                      },
+                      {
+                        type: 'maxLength',
+                        value: '50',
+                      },
+                      {
+                        type: 'pattern',
+                        value: '^[A-Za-z0-9 ]+$',
+                      },
+                    ],
+                  },
+                },
+              ],
+              ddLabel: 'SFTP Connection',
+              transferFieldKey: 'dimensions_sftpConnectionId',
+              sourceApi: {
+                path: '/sftp-connections',
+                authType: 'Dimensions',
+                idField: 'sftpConnectionId',
+                labelField: 'sftpConnectionName',
+              },
+              displayItems: [
+                {
+                  fieldName: 'sftpHost',
+                  label: 'Host URL associated with selected SFTP',
+                  secure: false,
+                },
+                {
+                  fieldName: 'sftpPort',
+                  label: 'Port associated with selected SFTP',
+                  secure: true,
+                },
+              ],
+              testConfiguration: true,
+              testApi: {
+                authType: 'Dimensions',
+              },
+            },
+            description: '',
+            name: 'Setup',
+            title: 'Setup',
+          },
+        ],
+      },
+    ],
+  };
 
   public headers: HeadersConfig[] = [];
 
@@ -41,8 +120,8 @@ export class MetadataFormComponent {
     this.headers.splice(index, 1);
   }
 
-  addInput() {
-    this.headers.push({
+  addInput(headers: any) {
+    headers.push({
       templateName: '',
       headerString: '',
     });
@@ -61,108 +140,18 @@ export class MetadataFormComponent {
       headerString: myForm.headerString,
     });
 
-    const obj: IMetadata = {
-      id: myForm.id,
-      //id: parseInt('uuid()',10),
-      metadata: {
-        id: myForm.id,
-        //id: parseInt('uuid()',10),
-        metadataName: myForm.metadataName,
-        ipackName: myForm.ipackName,
-        version: myForm.version,
+    // const obj: IMetadata = {
+    //   id: myForm.id,
+    //   //id: parseInt('uuid()',10),
 
-        section: {
-          name: myForm.name,
-          title: myForm.title,
-          description: myForm.desc,
+    // };
 
-          staticConfig: {
-            content: myForm.content,
-            header: this.headers,
-          },
-
-          apiDisplayConfig: {
-            name1: myForm.name1,
-            title1: myForm.title1,
-            description1: myForm.descrition1,
-
-            rows: {
-              hint: myForm.hint,
-
-              name: myForm.name2,
-
-              placeholder: myForm.placeholder,
-
-              type: myForm.type,
-
-              validations: {
-                type: myForm.type1,
-                value: myForm.value,
-              },
-            },
-
-            ddLabel: myForm.ddLabel,
-
-            transferFieldKey: myForm.tFK,
-
-            sourceApi: {
-              path: myForm.path,
-              authtype: myForm.authType,
-              idField: myForm.idField,
-
-              labelField: myForm.LabelField,
-            },
-
-            displayItems: {
-              fieldName: myForm.fieldName,
-              label: myForm.label,
-              secure: myForm.secure,
-            },
-
-            testConfigure: myForm.TestConfigure,
-
-            testApi: {
-              authtype: myForm.authType1,
-            },
-          },
-          staticPageEntryConfig: {
-            nameSpe: myForm.nameSpe,
-            titleSpe: myForm.titleSpe,
-            descriptionSpe: myForm.descriptionSpe,
-            config: {
-              valuePopulatedApi: {
-                url: myForm.urlSpe,
-                authType: myForm.authTypeSpe,
-              },
-              rowsSpe: {
-                inputSpe: {
-                  nameInputSpe: myForm.nameInputSpe,
-                  saveValueAsObjectConfiguration: {
-                    editableProperty: myForm.editableProperty,
-                    staticObjectProperties: {
-                      nameSop: myForm.nameSop,
-                      userPrompted: myForm.userPrompted,
-                      parameterType: myForm.parameterType,
-                    },
-                  },
-                  defaultValue: myForm.defaultValue,
-                  hint: myForm.hintSpe,
-                  type: myForm.typeSpe,
-                },
-                label: myForm.labelSpe,
-              },
-            },
-          },
-        },
-      },
-    };
-
-    const metadata = JSON.stringify(obj);
-    const metadataModel : MetadataModel = {
-      id : myForm.id,
-      metadata: metadata
-    } 
-    this.save(metadataModel);
+    //const metadata = JSON.stringify(obj);
+    // const metadataModel : MetadataModel = {
+    //   id : myForm.id,
+    //   metadata: metadata
+    // }
+    // this.save(metadataModel);
   }
 
   // save(id:any,obj: any) {

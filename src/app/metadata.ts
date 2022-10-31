@@ -1,14 +1,16 @@
+import { Steps } from './Models/steps.model';
+
 export class IMetadata {
   id!: number;
-  metadata!: metadataBody;
+  metadata!: Metadata;
 }
 
-export interface metadataBody {
+export interface Metadata {
   id: number;
   metadataName: string;
   ipackName: string;
   version: number;
-  section: Section;
+  sections: Section[];
 }
 
 // export interface SectionsModel{
@@ -16,17 +18,20 @@ export interface metadataBody {
 // }
 
 export interface Section {
+  steps: Step[];
+}
+
+export interface Step {
   name: string;
   title: string;
   description: string;
-  staticConfig: StaticConfig;
-  apiDisplayConfig: ApiDisplayConfig;
-  staticPageEntryConfig : StaticPageEntryConfig;
+  componentName: string;
+  config: StaticConfig | ApiDisplayConfig | StaticPageEntryConfig;
 }
 
 export interface StaticConfig {
   content: string;
-  header: HeadersConfig[];
+  headers: HeadersConfig[];
 }
 
 export interface HeadersConfig {
@@ -35,22 +40,12 @@ export interface HeadersConfig {
 }
 
 export interface ApiDisplayConfig {
-  name1: string;
-  title1: string;
-  description1: string;
-
-  rows: Rows;
-
+  rows: any[];
   ddLabel: string;
-
   transferFieldKey: string;
-
   sourceApi: SourceApi;
-
   displayItems: DisplayItem;
-
   testConfigure: boolean;
-
   testApi: TestAPI;
 }
 
@@ -83,8 +78,7 @@ export interface TestAPI {
   authtype: string;
 }
 
-export interface StaticPageEntryConfig
-{
+export interface StaticPageEntryConfig {
   nameSpe: string;
   titleSpe: string;
   descriptionSpe: string;
@@ -92,42 +86,35 @@ export interface StaticPageEntryConfig
   config: ConfigSpe;
 }
 
-export interface ConfigSpe
-{
-  valuePopulatedApi : ValuePopulatedApi;
+export interface ConfigSpe {
+  valuePopulatedApi: ValuePopulatedApi;
   rowsSpe: RowsSpe;
 }
-export interface ValuePopulatedApi 
-{
-   url : string;
-   authType :string;
+export interface ValuePopulatedApi {
+  url: string;
+  authType: string;
 }
-export interface RowsSpe
-{
-  inputSpe : InputSpe;
-   label : string;
+export interface RowsSpe {
+  inputSpe: InputSpe;
+  label: string;
 }
-export interface InputSpe
-{
-    nameInputSpe :string;
-    saveValueAsObjectConfiguration : SaveValueAsObjectConfiguration;
-    defaultValue :boolean;
-    hint :string;
-    type : string;
+export interface InputSpe {
+  nameInputSpe: string;
+  saveValueAsObjectConfiguration: SaveValueAsObjectConfiguration;
+  defaultValue: boolean;
+  hint: string;
+  type: string;
 }
 
-export interface SaveValueAsObjectConfiguration
-{
-    editableProperty : string;
-    staticObjectProperties : StaticObjectProperties;
+export interface SaveValueAsObjectConfiguration {
+  editableProperty: string;
+  staticObjectProperties: StaticObjectProperties;
 }
-export interface StaticObjectProperties
-{
-  nameSop : string;
-  userPrompted:boolean;
-  parameterType :boolean;
+export interface StaticObjectProperties {
+  nameSop: string;
+  userPrompted: boolean;
+  parameterType: boolean;
 }
-
 
 // export interface ApiDisplayConfig
 // {
