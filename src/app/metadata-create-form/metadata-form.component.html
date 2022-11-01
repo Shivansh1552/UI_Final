@@ -1,24 +1,9 @@
-﻿<!-- <form #userPost = "ngForm" (ngSubmit)="onSubmit(userPost.value)">
-    <input type="text" name ="id" ngModel placeholder="id"> <br>
-    <input type="text" name = "name" ngModel placeholder="name"> <br>
-    <input type="text" name="ipackname" ngModel placeholder="ipackname"><br>
-    <input type="number" name="version" ngModel placeholder="version"><br>
-  
-    <button type="submit">Create</button>
-</form> -->
-
-<!-- <pm-add-metadata></pm-add-metadata> -->
-
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
-{{ metadata | json }}
+﻿<!-- {{ metadata | json }} -->
 <div class="childform" style="width: 70%">
-  <!-- <form class="form-group">  -->
-
   <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm.value)">
     <div class="form-group">
       <div class="d-flex justify-content-between">
         <div><label for="id">ID</label></div>
-
         <input
           type="text"
           class="form-control half"
@@ -29,15 +14,12 @@
           placeholder="Enter ID"
           name="id"
         />
-
-        <!-- required [(ngModel)]="metadata.metadataID" name="id"-->
       </div>
     </div>
     <br />
     <div class="form-group">
       <div class="d-flex justify-content-between">
         <div><label for="InputName">Name</label></div>
-
         <input
           type="text"
           class="form-control half"
@@ -52,7 +34,6 @@
       <br />
       <div class="form-group d-flex justify-content-between">
         <div><label for="versionHC">Version</label></div>
-
         <input
           type="number"
           class="form-control half"
@@ -68,7 +49,6 @@
       <div class="form-group">
         <div class="d-flex justify-content-between">
           <div><label for="InputIName">IpackName</label></div>
-
           <input
             type="text"
             class="form-control half"
@@ -80,7 +60,6 @@
             name="ipackName"
           />
         </div>
-
         <div class="d-flex justify-content-between">
           <small id="iname_note" class="form-text text-muted"
             >Note- IpackName should be same as Name.</small
@@ -114,7 +93,6 @@
                     <!-- <div class="form-group"> -->
                     <div class="d-flex justify-content-between">
                       <div><label for="name">Name</label></div>
-
                       <input
                         type="text"
                         class="form-control half"
@@ -126,12 +104,10 @@
                         name="name-{{ step.componentName }}"
                         #name="ngModel"
                       />
-                      <!-- </div> -->
                     </div>
                     <br />
                     <div class="d-flex justify-content-between">
                       <div><label for="title">Title</label></div>
-
                       <input
                         type="text"
                         class="form-control half"
@@ -145,7 +121,6 @@
                     <br />
                     <div class="d-flex justify-content-between">
                       <div><label for="descrition">Description</label></div>
-
                       <input
                         type="text"
                         class="form-control half"
@@ -166,8 +141,15 @@
                           "
                         ></ng-container>
                       </ng-container>
-                      <!-- <ng-container *ngSwitchCase="APIDisplayComponent"> </ng-container>
-                      <ng-container *ngSwitchCase="StaticPageEntryComponent"> </ng-container> -->
+                      <ng-container *ngSwitchCase="'APIDisplayComponent'">
+                        <ng-container
+                          *ngTemplateOutlet="
+                            apiDisplayComponent;
+                            context: { step: step }
+                          "
+                        ></ng-container>
+                      </ng-container>
+                      <!-- <ng-container *ngSwitchCase="StaticPageEntryComponent"> </ng-container> -->
                       <!-- <div *ngSwitchDefault>No component Available</div> -->
                     </ng-container>
                   </div>
@@ -198,8 +180,6 @@
         >
           Save
         </button>
-
-        <!-- <li><a class="btn btn-success btn-space" routerLinkActive='active' routerLink='/createMetadata'>Create</a></li> -->
       </div>
     </div>
   </form>
@@ -227,7 +207,7 @@
     <button
       type="button"
       class="btn btn-primary"
-      (click)="addInput(step?.config?.headers)"
+      (click)="addHeaders(step?.config?.headers)"
     >
       Add
     </button>
@@ -263,3 +243,244 @@
   </div>
   <br
 /></ng-template>
+<ng-template #apiDisplayComponent let-step="step">
+  <div class="d-flex justify-content-between">
+    <div>Rows :</div>
+    <div><button class="btn btn-primary" (click)="addRows(step?.config?.rows)">Add</button></div>
+  </div>
+
+  <div formArrayName="rows">
+    <div *ngFor="let row of step.config.rows">
+      <legend>Input :</legend>
+      <div class="d-flex justify-content-between">
+        <label>hint :</label>
+        <input
+          type="text"
+          class="form-control half"
+          id="hint"
+          required
+          [(ngModel)]="row.input.hint"
+          placeholder="hint"
+          name="hint"
+        />
+      </div>
+      <br />
+      <div class="d-flex justify-content-between">
+        <label>name :</label>
+        <input
+          type="text"
+          class="form-control half"
+          id="name"
+          required
+          [(ngModel)]="row.input.name"
+          placeholder="name"
+          name="name"
+        />
+      </div>
+      <br />
+      <div class="d-flex justify-content-between">
+        <label>placeholder :</label>
+        <input
+          type="text"
+          class="form-control half"
+          id="placeholder"
+          required
+          [(ngModel)]="row.input.placeholder"
+          placeholder="placeholder"
+          name="placeholder"
+        />
+      </div>
+      <br />
+      <div class="d-flex justify-content-between">
+        <label>type :</label>
+        <input
+          type="text"
+          class="form-control half"
+          id="type"
+          required
+          [(ngModel)]="row.input.type"
+          placeholder="type"
+          name="type"
+        />
+      </div>
+      <br />
+      <div>
+        <div class="d-flex justify-content-between">
+          <div>validations :</div>
+          <div><button class="btn btn-primary" (click)="addValidations(row.input.validations)">Add</button></div>
+        </div>
+        <div formArrayName="validations">
+          <div *ngFor="let validation of row.input.validations">
+          <div class="d-flex justify-content-between">
+            <label>type :</label>
+            <input
+              type="text"
+              class="form-control half"
+              id="type"
+              required
+              [(ngModel)]="validation.type"
+              placeholder="type"
+              name="type"
+            />
+          </div>
+          <br />
+          <div class="d-flex justify-content-between">
+            <label>value :</label>
+            <input
+              type="text"
+              class="form-control half"
+              id="value"
+              required
+              [(ngModel)]="validation.value"
+              placeholder="value"
+              name="value"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+  <br />
+  <div class="d-flex justify-content-between">
+    <label> ddLabel :</label>
+    <input
+      placeholder="ddLabel"
+      class="form-control half"
+      type="text"
+      id="ddLabel"
+      required
+      [(ngModel)]="step.config.ddLabel"
+      name="ddLabel"
+    />
+  </div>
+  <br />
+  <div class="d-flex justify-content-between">
+    <label>transferFieldKey : </label>
+    <input
+      type="text"
+      class="form-control half"
+      id="tFK"
+      required
+      [(ngModel)]="step.config.tFK"
+      placeholder="tFK"
+      name="tFK"
+    />
+  </div>
+  <br />
+  <div>
+    <div>sourceApi :</div>
+    <div class="d-flex justify-content-between">
+      <label> Path :</label>
+      <input
+        placeholder="Path"
+        class="form-control half"
+        id="path"
+        required
+        [(ngModel)]="step.config.sourceApi.path"
+        name="path"
+      />
+    </div>
+    <br />
+    <div class="d-flex justify-content-between">
+      <label> AuthType :</label>
+      <input
+        placeholder="AuthType"
+        class="form-control half"
+        id="authType"
+        required
+        [(ngModel)]="step.config.sourceApi.authType"
+        name="authType"
+      />
+    </div>
+    <br />
+    <div class="d-flex justify-content-between">
+      <label> IdField :</label>
+      <input
+        placeholder="IdField"
+        class="form-control half"
+        id="idField"
+        required
+        [(ngModel)]="step.config.sourceApi.idField"
+        name="idField"
+      />
+    </div>
+    <br />
+    <div class="d-flex justify-content-between">
+      <label> LabelField : </label>
+      <input
+        placeholder="LabelField"
+        class="form-control half"
+        id="LabelField"
+        required
+        [(ngModel)]="step.config.sourceApi.LabelField"
+        name="LabelField"
+      />
+    </div>
+    <br />
+  </div>
+
+  <br />
+
+  <div>
+    <div class="d-flex justify-content-between">
+      <div>DisplayItems</div>
+      <div><button class="btn btn-primary" (click)="addDisplayItem(step.config.displayItems)">Add</button></div>
+    </div>
+    <br />
+    <div formArrayName="displayItems">
+      <div *ngFor="let displayItem of step.config.displayItems">
+      <div class="d-flex justify-content-between">
+        <label>FieldName :</label>
+        <input
+          type="text"
+          class="form-control half"
+          id="fieldName"
+          required
+          [(ngModel)]="displayItem.fieldName"
+          placeholder="FieldName"
+          name="fieldName"
+        />
+      </div>
+      <br />
+      <div class="d-flex justify-content-between">
+        <label>Label :</label>
+        <input
+          type="text"
+          class="form-control half"
+          id="label"
+          required
+          [(ngModel)]="displayItem.label"
+          placeholder="Label"
+          name="label"
+        />
+      </div>
+      <br />
+      <div>
+        <label>secure :</label>
+        <input type="checkbox" checked />
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <br />
+  <label>Test Configuration :</label>
+  <input type="checkbox" checked />
+
+  <div>Test API :</div>
+  <div class="form-group">
+    <div class="d-flex justify-content-between">
+      <label> AuthType : </label>
+      <input
+        class="form-control half"
+        type="text"
+        id="authType"
+        required
+        [(ngModel)]="step.config.authType"
+        placeholder="authtype"
+        name="authType"
+      />
+    </div>
+  </div>
+</ng-template>

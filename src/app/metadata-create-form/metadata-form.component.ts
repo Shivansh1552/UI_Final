@@ -6,7 +6,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { HeadersConfig, IMetadata, StaticConfig } from '../metadata';
 import { MetadataService } from '../metadata.service';
-import  * as uuid from 'uuid';
+import * as uuid from 'uuid';
 import { HeaderConfig } from '../Models/static-content/header-config.model';
 import { MetadataModel } from '../Models/metadata.model';
 
@@ -50,51 +50,37 @@ export class MetadataFormComponent {
               rows: [
                 {
                   input: {
-                    hint: 'Integration Name',
-                    name: 'integrationName',
-                    placeholder: 'Integration Name',
-                    type: 'text',
+                    hint: '',
+                    name: '',
+                    placeholder: '',
+                    type: '',
                     validations: [
-                      'required',
                       {
-                        type: 'minLength',
-                        value: '4',
-                      },
-                      {
-                        type: 'maxLength',
-                        value: '50',
-                      },
-                      {
-                        type: 'pattern',
-                        value: '^[A-Za-z0-9 ]+$',
+                        type: '',
+                        value: '',
                       },
                     ],
                   },
                 },
               ],
-              ddLabel: 'SFTP Connection',
-              transferFieldKey: 'dimensions_sftpConnectionId',
+              ddLabel: '',
+              transferFieldKey: '',
               sourceApi: {
-                path: '/sftp-connections',
-                authType: 'Dimensions',
-                idField: 'sftpConnectionId',
-                labelField: 'sftpConnectionName',
+                path: '',
+                authType: '',
+                idField: '',
+                labelField: '',
               },
               displayItems: [
                 {
-                  fieldName: 'sftpHost',
-                  label: 'Host URL associated with selected SFTP',
+                  fieldName: '',
+                  label: '',
                   secure: false,
-                },
-                {
-                  fieldName: 'sftpPort',
-                  label: 'Port associated with selected SFTP',
-                  secure: true,
                 },
               ],
               testConfiguration: true,
               testApi: {
-                authType: 'Dimensions',
+                authType: '',
               },
             },
             description: '',
@@ -121,16 +107,41 @@ export class MetadataFormComponent {
   }
   getUUID() {
     // return  uuid();
-    const id= uuid.v4();
+    const id = uuid.v4();
     console.log(id);
     return id;
   }
 
-  addInput(headers: any) {
+  addHeaders(headers: any) {
     headers.push({
       templateName: '',
       headerString: '',
     });
+  }
+  addRows(rows: any) {
+    rows.push({
+      input: {
+        hint: '',
+        name: '',
+        placeholder: '',
+        type: '',
+        validations: '',
+      },
+    });
+  }
+  addValidations(validations: any) {
+    validations.push({
+        type: '',
+        value: '',
+      });
+  }
+  addDisplayItem(displayItems: any)
+  {
+    displayItems.push({
+        fieldName: '',
+        label: '',
+        secure: '',
+      });
   }
 
   save(obj: any) {
@@ -208,4 +219,3 @@ export class MetadataFormComponent {
   //   return false; //don't submit
   // }
 }
-

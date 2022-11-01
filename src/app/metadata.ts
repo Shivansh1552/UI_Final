@@ -1,3 +1,4 @@
+import { Input } from '@angular/core';
 import { Steps } from './Models/steps.model';
 
 export class IMetadata {
@@ -40,21 +41,25 @@ export interface HeadersConfig {
 }
 
 export interface ApiDisplayConfig {
-  rows: any[];
+  rows: Rows[];
   ddLabel: string;
   transferFieldKey: string;
   sourceApi: SourceApi;
-  displayItems: DisplayItem;
+  displayItems: DisplayItem[];
   testConfigure: boolean;
   testApi: TestAPI;
 }
 
 export interface Rows {
+   input: InputRows;
+}
+export interface InputRows
+{
   hint: string;
   name: string;
   placeholder: string;
   type: string;
-  validations: Validations;
+  validations: Validations[];
 }
 
 export interface Validations {
