@@ -96,7 +96,7 @@
         </div>
       </div>
       <br />
-      <ng-container *ngFor="let section of metadata.sections;let i=index">
+      <ng-container *ngFor="let section of metadata.sections; let i = index">
         <div *ngFor="let step of section.steps" class="step-container">
           <mat-accordion>
             <mat-expansion-panel hideToggle>
@@ -123,7 +123,8 @@
                         disabled
                         [(ngModel)]="step.name"
                         placeholder="Enter Name"
-                        name="{{'name' + i}}"
+                        name="name-{{ step.componentName }}"
+                        #name="ngModel"
                       />
                       <!-- </div> -->
                     </div>
@@ -138,7 +139,7 @@
                         required
                         [(ngModel)]="step.title"
                         placeholder="Enter Title"
-                        name="title"
+                        name="title-{{ step.componentName }}"
                       />
                     </div>
                     <br />
@@ -152,62 +153,22 @@
                         required
                         [(ngModel)]="step.description"
                         placeholder="Enter Description"
-                        name="desc"
+                        name="desc-{{ step.componentName }}"
                       />
                     </div>
                     <br />
-                  
-                    
-                    <ng-container
-                      *ngIf="step.componentName === 'StaticContentComponent'"
-                    >
-                    <div class="d-flex justify-content-between">
-                      <div><label for="content">content</label></div>
-
-                      <input
-                        type="text"
-                        class="form-control half"
-                        id="content"
-                        required
-                        [(ngModel)]="step.config.content"
-                        placeholder="Enter content"
-                        name="content"
-                      />
-                    </div>
-                    <hr />
-                      <h3 for="headers">Headers</h3>
-                      <div><button type="button" class="btn btn-primary"
-                        (click)="addInput(step?.config?.headers)">Add</button></div>
-
-                      <div *ngFor="let header of step.config.headers">
-                        <div class="d-flex justify-content-between">
-                          <label for="templateName">Template Name</label>
-                          <input
-                            type="text"
-                            class="form-control half"
-                            id="templateName"
-                            required
-                            [(ngModel)]="header.templateName"
-                            placeholder="Enter Template Name"
-                            name="templateName"
-                          />
-                        </div>
-                        <br />
-                      
-                        <div class="d-flex justify-content-between">
-                          <label for="headerString">Header String </label>
-                          <input
-                            type="text"
-                            class="form-control half"
-                            id="headerString"
-                            required
-                            [(ngModel)]="header.headerString"
-                            placeholder="Enter Header String"
-                            name="headerString"
-                          />
-                        </div>
-                      </div>
-                      <br>
+                    <ng-container [ngSwitch]="step.componentName">
+                      <ng-container *ngSwitchCase="'StaticContentComponent'">
+                        <ng-container
+                          *ngTemplateOutlet="
+                            staticContentComponent;
+                            context: { step: step }
+                          "
+                        ></ng-container>
+                      </ng-container>
+                      <!-- <ng-container *ngSwitchCase="APIDisplayComponent"> </ng-container>
+                      <ng-container *ngSwitchCase="StaticPageEntryComponent"> </ng-container> -->
+                      <!-- <div *ngSwitchDefault>No component Available</div> -->
                     </ng-container>
                   </div>
                 </div>
@@ -245,3 +206,60 @@
 
   <button (click)="get()" class="btn btn-primary">Get</button>
 </div>
+
+<ng-template #staticContentComponent let-step="step">
+  <div class="d-flex justify-content-between">
+    <div><label for="content">content</label></div>
+
+    <input
+      type="text"
+      class="form-control half"
+      id="content"
+      required
+      [(ngModel)]="step?.config.content"
+      placeholder="Enter content"
+      name="content"
+    />
+  </div>
+  <hr />
+  <h3 for="headers">Headers</h3>
+  <div>
+    <button
+      type="button"
+      class="btn btn-primary"
+      (click)="addInput(step?.config?.headers)"
+    >
+      Add
+    </button>
+  </div>
+
+  <div *ngFor="let header of step.config.headers">
+    <div class="d-flex justify-content-between">
+      <label for="templateName">Template Name</label>
+      <input
+        type="text"
+        class="form-control half"
+        id="templateName"
+        required
+        [(ngModel)]="header.templateName"
+        placeholder="Enter Template Name"
+        name="templateName"
+      />
+    </div>
+    <br />
+
+    <div class="d-flex justify-content-between">
+      <label for="headerString">Header String </label>
+      <input
+        type="text"
+        class="form-control half"
+        id="headerString"
+        required
+        [(ngModel)]="header.headerString"
+        placeholder="Enter Header String"
+        name="headerString"
+      />
+    </div>
+  </div>
+  <br
+/></ng-template>

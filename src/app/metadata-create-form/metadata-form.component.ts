@@ -6,7 +6,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { HeadersConfig, IMetadata, StaticConfig } from '../metadata';
 import { MetadataService } from '../metadata.service';
-import { stringify, v4 as uuid } from 'uuid';
+import  * as uuid from 'uuid';
 import { HeaderConfig } from '../Models/static-content/header-config.model';
 import { MetadataModel } from '../Models/metadata.model';
 
@@ -98,8 +98,8 @@ export class MetadataFormComponent {
               },
             },
             description: '',
-            name: 'Setup',
-            title: 'Setup',
+            name: 'setup',
+            title: '',
           },
         ],
       },
@@ -118,6 +118,12 @@ export class MetadataFormComponent {
 
   removeInput(index: any) {
     this.headers.splice(index, 1);
+  }
+  getUUID() {
+    // return  uuid();
+    const id= uuid.v4();
+    console.log(id);
+    return id;
   }
 
   addInput(headers: any) {
@@ -180,7 +186,7 @@ export class MetadataFormComponent {
   //   this.submitted = true;
 
   //   this.save(myForm.id,obj1);
-  //   //console.log(obj);
+  //   console.log(obj);
 
   // }
 
@@ -202,3 +208,4 @@ export class MetadataFormComponent {
   //   return false; //don't submit
   // }
 }
+
