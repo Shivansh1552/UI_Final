@@ -9,6 +9,7 @@ import { MetadataService } from '../metadata.service';
 import * as uuid from 'uuid';
 import { HeaderConfig } from '../Models/static-content/header-config.model';
 import { MetadataModel } from '../Models/metadata.model';
+import { MetadataWithCrt } from './metadata-configs/metadata-config-with-crt';
 
 @Component({
   selector: 'app-metadata-form',
@@ -19,88 +20,18 @@ export class MetadataFormComponent {
   @ViewChild('viewContainerRef') myForm!: any;
   public pageTitle = 'form';
   panelOpenState = false;
-
-  metadata = {
-    id: '',
-    //id: parseInt('uuid()',10),
-    metadataName: '',
-    ipackName: '',
-    version: '2',
-    sections: [
-      {
-        steps: [
-          {
-            name: 'Overview',
-            componentName: 'StaticContentComponent',
-            title: '',
-            description: '',
-            config: {
-              content: '',
-              headers: [
-                {
-                  templateName: '',
-                  headerString: '',
-                },
-              ],
-            },
-          },
-          {
-            componentName: 'APIDisplayComponent',
-            config: {
-              rows: [
-                {
-                  input: {
-                    hint: '',
-                    name: '',
-                    placeholder: '',
-                    type: '',
-                    validations: [
-                      {
-                        type: '',
-                        value: '',
-                      },
-                    ],
-                  },
-                },
-              ],
-              ddLabel: '',
-              transferFieldKey: '',
-              sourceApi: {
-                path: '',
-                authType: '',
-                idField: '',
-                labelField: '',
-              },
-              displayItems: [
-                {
-                  fieldName: '',
-                  label: '',
-                  secure: false,
-                },
-              ],
-              testConfiguration: true,
-              testApi: {
-                authType: '',
-              },
-            },
-            description: '',
-            name: 'setup',
-            title: '',
-          },
-        ],
-      },
-    ],
-  };
+  isIpackNameValidated= false;
+  metadata = MetadataWithCrt;
 
   public headers: HeadersConfig[] = [];
-
-  // public staticConfig: StaticConfig;
 
   submitted = false;
 
   constructor(private metaService: MetadataService, private router: Router) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.metadata.id= uuid.v4();
+  }
 
   removeInput(index: any) {
     this.headers.splice(index, 1);
@@ -131,17 +62,28 @@ export class MetadataFormComponent {
   }
   addValidations(validations: any) {
     validations.push({
-        type: '',
-        value: '',
-      });
+      type: '',
+      value: '',
+    });
   }
-  addDisplayItem(displayItems: any)
-  {
+  addDisplayItem(displayItems: any) {
     displayItems.push({
-        fieldName: '',
-        label: '',
-        secure: '',
-      });
+      fieldName: '',
+      label: '',
+      secure: '',
+    });
+  }
+  addRowsSpe(rows: any) {
+    rows.push({
+      input: {
+        name: '',
+        saveValueAsObjectConfiguration: '',
+        defaultValue: '',
+        hint: '',
+        type: '',
+      },
+      label: '',
+    });
   }
 
   save(obj: any) {
@@ -151,25 +93,26 @@ export class MetadataFormComponent {
 
     console.log(obj);
   }
-  onSubmit(myForm: any) {
-    this.headers.push({
-      templateName: myForm.templateName,
-      headerString: myForm.headerString,
-    });
-
-    // const obj: IMetadata = {
-    //   id: myForm.id,
-    //   //id: parseInt('uuid()',10),
-
-    // };
-
-    //const metadata = JSON.stringify(obj);
-    // const metadataModel : MetadataModel = {
-    //   id : myForm.id,
-    //   metadata: metadata
-    // }
-    // this.save(metadataModel);
+  onSubmit() {
+    const metadataObj: MetadataModel = {
+      id: this.metadata.id,
+      metadata: JSON.stringify(this.metadata),
+    };
+    this.save(metadataObj);
   }
+
+  // const obj: IMetadata = {
+  //   id: myForm.id,
+  //   //id: parseInt('uuid()',10),
+
+  // };
+
+  //const metadata = JSON.stringify(obj);
+  // const metadataModel : MetadataModel = {
+  //   id : myForm.id,
+  //   metadata: metadata
+  // }
+  // this.save(metadataModel);
 
   // save(id:any,obj: any) {
 
@@ -184,30 +127,15 @@ export class MetadataFormComponent {
 
   // }
 
-  // onSubmit(myForm: any) {
-  //   const obj: metadataBody = {
-  //       id: myForm.id,
-  //       metadataName: myForm.metadataName,
-  //       ipackName: myForm.ipackName,
-  //       version: myForm.version
-  //     }
-
-  //   const obj1=JSON.stringify(obj);
-
-  //   this.submitted = true;
-
-  //   this.save(myForm.id,obj1);
-  //   console.log(obj);
-
-  // }
-
   get() {
     this.metaService.getData().subscribe((data) => {
       console.log(data);
     });
   }
   checkBoomi() {
-    return true;
+    if(this.metadata.ipackName){
+      this.isIpackNameValidated = true;
+    }
   }
 
   // let metadataMap = new Map<number,string>();

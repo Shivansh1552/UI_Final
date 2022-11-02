@@ -51,10 +51,9 @@ export interface ApiDisplayConfig {
 }
 
 export interface Rows {
-   input: InputRows;
+  input: InputRows;
 }
-export interface InputRows
-{
+export interface InputRows {
   hint: string;
   name: string;
   placeholder: string;
@@ -84,27 +83,19 @@ export interface TestAPI {
 }
 
 export interface StaticPageEntryConfig {
-  nameSpe: string;
-  titleSpe: string;
-  descriptionSpe: string;
-
-  config: ConfigSpe;
-}
-
-export interface ConfigSpe {
   valuePopulatedApi: ValuePopulatedApi;
-  rowsSpe: RowsSpe;
+  rows: RowsSpe[];
 }
 export interface ValuePopulatedApi {
   url: string;
   authType: string;
 }
 export interface RowsSpe {
-  inputSpe: InputSpe;
+  input: InputSpe;
   label: string;
 }
 export interface InputSpe {
-  nameInputSpe: string;
+  name: string;
   saveValueAsObjectConfiguration: SaveValueAsObjectConfiguration;
   defaultValue: boolean;
   hint: string;
@@ -116,7 +107,7 @@ export interface SaveValueAsObjectConfiguration {
   staticObjectProperties: StaticObjectProperties;
 }
 export interface StaticObjectProperties {
-  nameSop: string;
+  name: string;
   userPrompted: boolean;
   parameterType: boolean;
 }
