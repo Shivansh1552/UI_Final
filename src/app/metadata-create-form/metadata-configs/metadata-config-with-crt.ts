@@ -3,6 +3,12 @@ export const MetadataWithCrt = {
   metadataName: '',
   ipackName: '',
   version: '2',
+  extraTransferFields: [
+    {
+      key: '',
+      value: '',
+    },
+  ],
   sections: [
     {
       steps: [
@@ -93,6 +99,30 @@ export const MetadataWithCrt = {
                 label: '',
               },
             ],
+          },
+        },
+        {
+          name: 'Cross Reference',
+          title: 'Cross Reference',
+          description: '',
+          componentName: 'CRTOverviewComponent',
+          config: {
+            description: '',
+            transferFieldKey: 'boomi_file_crt_ids',
+            files: [
+              {
+                crtName: '',
+                headerRow: '',
+              }
+            ],
+            filesApi: {
+              path: '/....',
+              authType: 'Dimensions',
+            },
+            downloadApi: {
+              path: '/...',
+              authType: 'Dimensions',
+            },
           },
         },
       ],

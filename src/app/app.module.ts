@@ -17,7 +17,8 @@ import { StepsComponent } from './metadata-create-form/steps/steps.component';
 import { StepsConfigComponent } from './metadata-create-form/steps/steps-config/steps-config.component';
 import { StaticContentComponent } from './metadata-create-form/steps/steps-config/static-content/static-content.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { ReactiveFormsModule } from '@angular/forms';
+import { BoomiLogInPopUpComponent } from './boomi-log-in-pop-up/boomi-log-in-pop-up.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,10 +28,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     GetDataByIdComponent,
     StepsComponent,
     StepsConfigComponent,
-    StaticContentComponent
+    StaticContentComponent,
+    BoomiLogInPopUpComponent
   ],
   imports: [
     MaterialExampleModule,
+    ReactiveFormsModule,
     BrowserModule,
     FormsModule,
     HttpClientModule,

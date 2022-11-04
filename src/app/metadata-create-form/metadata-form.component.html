@@ -62,115 +62,126 @@
             name="ipackName"
           />
         </div>
-        <div style="padding-top: 1rem;" class="d-flex justify-content-between">
+        <div style="padding-top: 1rem" class="d-flex justify-content-between">
           <small id="iname_note" class="form-text text-muted"
             >Note- IpackName should be same as Name.</small
           >
           <button
-            (click)="checkBoomi()"
+            (click)="openDialog()"
             type="button"
             [disabled]="!metadata.ipackName"
             class="btn btn-primary"
           >
             Verify
           </button>
+          <!-- <button mat-raised-button (click)="openDialog()">Pick one</button> -->
         </div>
       </div>
       <br />
       <ng-container *ngIf="isIpackNameValidated">
-      <ng-container *ngFor="let section of metadata.sections; let i = index">
-        <div *ngFor="let step of section.steps" class="step-container">
-          <mat-accordion>
-            <mat-expansion-panel hideToggle>
-              <mat-expansion-panel-header>
-                <mat-panel-title>{{ step.name }} </mat-panel-title>
-                <mat-panel-description>
-                  Please open this panel.
-                </mat-panel-description>
-              </mat-expansion-panel-header>
-              <div class="sections">
-                <div class="form-group" #viewContainerRef>
-                  <br />
-                  <div style="margin: auto">
+        <ng-container *ngFor="let section of metadata.sections; let i = index">
+          <div *ngFor="let step of section.steps" class="step-container">
+            <mat-accordion>
+              <mat-expansion-panel hideToggle>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>{{ step.name }} </mat-panel-title>
+                  <mat-panel-description>
+                    Please open this panel.
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+                <div class="sections">
+                  <div class="form-group" #viewContainerRef>
                     <br />
-                    <!-- <div class="form-group"> -->
-                    <div class="d-flex justify-content-between">
-                      <div><label for="name">Name</label></div>
-                      <input
-                        type="text"
-                        class="form-control half"
-                        id="name"
-                        required
-                        disabled
-                        [(ngModel)]="step.name"
-                        placeholder="Enter Name"
-                        name="name-{{ step.componentName }}"
-                        #name="ngModel"
-                      />
-                    </div>
-                    <br />
-                    <div class="d-flex justify-content-between">
-                      <div><label for="title">Title</label></div>
-                      <input
-                        type="text"
-                        class="form-control half"
-                        id="title"
-                        required
-                        [(ngModel)]="step.title"
-                        placeholder="Enter Title"
-                        name="title-{{ step.componentName }}"
-                      />
-                    </div>
-                    <br />
-                    <div class="d-flex justify-content-between">
-                      <div><label for="descrition">Description</label></div>
-                      <input
-                        type="text"
-                        class="form-control half"
-                        id="desc"
-                        required
-                        [(ngModel)]="step.description"
-                        placeholder="Enter Description"
-                        name="desc-{{ step.componentName }}"
-                      />
-                    </div>
-                    <br />
-                    <ng-container [ngSwitch]="step.componentName">
-                      <ng-container *ngSwitchCase="'StaticContentComponent'">
+                    <div style="margin: auto">
+                      <br />
+                      <!-- <div class="form-group"> -->
+                      <div class="d-flex justify-content-between">
+                        <div><label for="name">Name</label></div>
+                        <input
+                          type="text"
+                          class="form-control half"
+                          id="name"
+                          required
+                          disabled
+                          [(ngModel)]="step.name"
+                          placeholder="Enter Name"
+                          name="name-{{ step.componentName }}"
+                          #name="ngModel"
+                        />
+                      </div>
+                      <br />
+                      <div class="d-flex justify-content-between">
+                        <div><label for="title">Title</label></div>
+                        <input
+                          type="text"
+                          class="form-control half"
+                          id="title"
+                          required
+                          [(ngModel)]="step.title"
+                          placeholder="Enter Title"
+                          name="title-{{ step.componentName }}"
+                        />
+                      </div>
+                      <br />
+                      <div class="d-flex justify-content-between">
+                        <div><label for="descrition">Description</label></div>
+                        <input
+                          type="text"
+                          class="form-control half"
+                          id="desc"
+                          required
+                          [(ngModel)]="step.description"
+                          placeholder="Enter Description"
+                          name="desc-{{ step.componentName }}"
+                        />
+                      </div>
+                      <br />
+                      <ng-container [ngSwitch]="step.componentName">
+                        <ng-container *ngSwitchCase="'StaticContentComponent'">
+                          <ng-container
+                            *ngTemplateOutlet="
+                              staticContentComponent;
+                              context: { step: step }
+                            "
+                          ></ng-container>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'APIDisplayComponent'">
+                          <ng-container
+                            *ngTemplateOutlet="
+                              apiDisplayComponent;
+                              context: { step: step }
+                            "
+                          ></ng-container>
+                        </ng-container>
                         <ng-container
-                          *ngTemplateOutlet="
-                            staticContentComponent;
-                            context: { step: step }
-                          "
-                        ></ng-container>
+                          *ngSwitchCase="'StaticPageEntryComponent'"
+                        >
+                          <ng-container
+                            *ngTemplateOutlet="
+                              staticPageEntryComponent;
+                              context: { step: step }
+                            "
+                          ></ng-container>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'CRTOverviewComponent'">
+                          <ng-container
+                            *ngTemplateOutlet="
+                              crtOverviewComponent;
+                              context: { step: step }
+                            "
+                          ></ng-container>
+                        </ng-container>
+                        <div *ngSwitchDefault>No component Available</div>
                       </ng-container>
-                      <ng-container *ngSwitchCase="'APIDisplayComponent'">
-                        <ng-container
-                          *ngTemplateOutlet="
-                            apiDisplayComponent;
-                            context: { step: step }
-                          "
-                        ></ng-container>
-                      </ng-container>
-                      <ng-container *ngSwitchCase="'StaticPageEntryComponent'">
-                        <ng-container
-                          *ngTemplateOutlet="
-                            staticPageEntryComponent;
-                            context: { step: step }
-                          "
-                        ></ng-container>
-                      </ng-container>
-                      <!-- <div *ngSwitchDefault>No component Available</div> -->
-                    </ng-container>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <br />
-            </mat-expansion-panel>
-          </mat-accordion>
-        </div>
+                <br />
+              </mat-expansion-panel>
+            </mat-accordion>
+          </div>
+        </ng-container>
       </ng-container>
-    </ng-container>
       <br />
       <div class="ETF_Sec"></div>
       <div class="d-flex justify-content-center">
@@ -264,7 +275,7 @@
     </div>
   </div>
 
-  <div formArrayName="rows">
+  <div>
     <div *ngFor="let row of step.config.rows">
       <legend>Input :</legend>
       <div class="d-flex justify-content-between">
@@ -331,7 +342,7 @@
             </button>
           </div>
         </div>
-        <div formArrayName="validations">
+        <div>
           <div *ngFor="let validation of row.input.validations">
             <div class="d-flex justify-content-between">
               <label>type :</label>
@@ -457,7 +468,7 @@
       </div>
     </div>
     <br />
-    <div formArrayName="displayItems">
+    <div>
       <div *ngFor="let displayItem of step.config.displayItems">
         <div class="d-flex justify-content-between">
           <label>FieldName :</label>
@@ -487,11 +498,14 @@
         <br />
         <div>
           <label>secure :</label>
-          <input type="checkbox" checked 
-          id="secure"
-           required
+          <input
+            type="checkbox"
+            checked
+            id="secure"
+            required
             [(ngModel)]="displayItem.secure"
-            name="secure"/>
+            name="secure"
+          />
         </div>
       </div>
     </div>
@@ -499,7 +513,14 @@
 
   <br />
   <label>Test Configuration :</label>
-  <input type="checkbox" checked />
+  <input
+    type="checkbox"
+    checked
+    id="testConfigure"
+    required
+    [(ngModel)]="step.config.testConfigure"
+    name="testConfigure"
+  />
 
   <div>Test API :</div>
   <div class="form-group">
@@ -551,142 +572,275 @@
 
   <div class="d-flex justify-content-between">
     <div>Rows :</div>
-    <div><button class="btn btn-primary" (click)="addRowsSpe(step.config.rows)">Add</button></div>
+    <div>
+      <button class="btn btn-primary" (click)="addRowsSpe(step.config.rows)">
+        Add
+      </button>
+    </div>
   </div>
   <br />
 
-  <div formArrayName="rows">
+  <div>
     <div class="form-group">
       <div *ngFor="let rowspe of step.config.rows">
-      <legend>Inupt :</legend>
+        <legend>Inupt :</legend>
 
-      <div class="d-flex justify-content-between">
-        <label>Name :</label>
-        <input
-          type="text"
-          class="form-control half"
-          id="name"
-          required
-          [(ngModel)]="rowspe.input.name"
-          placeholder="name"
-          name="name"
-        />
-      </div>
-      <br />
-
-      <fieldset>
-        <div>SaveValueAsObjectConfiguration :</div>
-        <br />
         <div class="d-flex justify-content-between">
-          <label>EditableProperty :</label>
+          <label>Name :</label>
           <input
             type="text"
             class="form-control half"
-            id="editableProperty"
+            id="name"
             required
-            [(ngModel)]="rowspe.input.saveValueAsObjectConfiguration.editableProperty"
-            name="editableProperty"
+            [(ngModel)]="rowspe.input.name"
+            placeholder="name"
+            name="name"
           />
         </div>
         <br />
+
         <fieldset>
-          <div>StaticObjectProperties :</div>
+          <div>SaveValueAsObjectConfiguration :</div>
           <br />
           <div class="d-flex justify-content-between">
-            <label>Name :</label>
+            <label>EditableProperty :</label>
             <input
               type="text"
               class="form-control half"
-              id="name"
+              id="editableProperty"
               required
-              [(ngModel)]="rowspe.input.saveValueAsObjectConfiguration.staticObjectProperties.name"
-              placeholder="name"
-              name="name"
+              [(ngModel)]="
+                rowspe.input.saveValueAsObjectConfiguration.editableProperty
+              "
+              name="editableProperty"
             />
           </div>
           <br />
-          <div class="d-flex justify-content-between">
-            <label>UserPrompted :</label>
-            <input
-              type="text"
-              class="form-control half"
-              id="userPrompted"
-              [(ngModel)]="rowspe.input.saveValueAsObjectConfiguration.staticObjectProperties.userPrompted"
-              placeholder="userPrompted"
-              name="userPrompted"
-            />
-          </div>
+          <fieldset>
+            <div>StaticObjectProperties :</div>
+            <br />
+            <div class="d-flex justify-content-between">
+              <label>Name :</label>
+              <input
+                type="text"
+                class="form-control half"
+                id="name"
+                required
+                [(ngModel)]="
+                  rowspe.input.saveValueAsObjectConfiguration
+                    .staticObjectProperties.name
+                "
+                placeholder="name"
+                name="name"
+              />
+            </div>
+            <br />
+            <div class="d-flex justify-content-between">
+              <label>UserPrompted :</label>
+              <input
+                type="text"
+                class="form-control half"
+                id="userPrompted"
+                [(ngModel)]="
+                  rowspe.input.saveValueAsObjectConfiguration
+                    .staticObjectProperties.userPrompted
+                "
+                placeholder="userPrompted"
+                name="userPrompted"
+              />
+            </div>
 
-          <div class="d-flex justify-content-between">
-            <label>ParameterType :</label>
-            <input
-              type="text"
-              class="form-control half"
-              id="parameterType"
-              required
-              [(ngModel)]="rowspe.input.saveValueAsObjectConfiguration.staticObjectProperties.parameterType"
-              placeholder="parameterType"
-              name="parameterType"
-            />
-          </div>
+            <div class="d-flex justify-content-between">
+              <label>ParameterType :</label>
+              <input
+                type="text"
+                class="form-control half"
+                id="parameterType"
+                required
+                [(ngModel)]="
+                  rowspe.input.saveValueAsObjectConfiguration
+                    .staticObjectProperties.parameterType
+                "
+                placeholder="parameterType"
+                name="parameterType"
+              />
+            </div>
+          </fieldset>
         </fieldset>
-      </fieldset>
-      <br />
-      <div class="d-flex justify-content-between">
-        <label>DefaultValue :</label>
-        <input
-          type="text"
-          class="form-control half"
-          id="defaultValue"
-          required
-          [(ngModel)]="rowspe.input.defaultValue"
-          placeholder="defaultValue"
-          name="defaultValue"
-        />
-      </div>
-      <br />
-      <div class="d-flex justify-content-between">
-        <label>Hint :</label>
-        <input
-          type="text"
-          class="form-control half"
-          id="hint"
-          required
-          [(ngModel)]="rowspe.input.hint"
-          placeholder="hint"
-          name="hint"
-        />
-      </div>
-      <br />
+        <br />
+        <div class="d-flex justify-content-between">
+          <label>DefaultValue :</label>
+          <input
+            type="text"
+            class="form-control half"
+            id="defaultValue"
+            required
+            [(ngModel)]="rowspe.input.defaultValue"
+            placeholder="defaultValue"
+            name="defaultValue"
+          />
+        </div>
+        <br />
+        <div class="d-flex justify-content-between">
+          <label>Hint :</label>
+          <input
+            type="text"
+            class="form-control half"
+            id="hint"
+            required
+            [(ngModel)]="rowspe.input.hint"
+            placeholder="hint"
+            name="hint"
+          />
+        </div>
+        <br />
 
-      <div class="d-flex justify-content-between">
-        <label>Type :</label>
-        <input
-          type="text"
-          class="form-control half"
-          required
-         
-          id="type"
-          [(ngModel)]="rowspe.input.type"
-          placeholder="type"
-          name="type"
-        />
+        <div class="d-flex justify-content-between">
+          <label>Type :</label>
+          <input
+            type="text"
+            class="form-control half"
+            required
+            id="type"
+            [(ngModel)]="rowspe.input.type"
+            placeholder="type"
+            name="type"
+          />
+        </div>
+        <br />
+        <div class="d-flex justify-content-between">
+          <label>Label :</label>
+          <input
+            type="text"
+            class="form-control half"
+            required
+            id="label"
+            [(ngModel)]="rowspe.label"
+            placeholder="label"
+            name="label"
+          />
+        </div>
       </div>
-      <br />
-      <div class="d-flex justify-content-between">
-        <label>Label :</label>
-        <input
-          type="text"
-          class="form-control half"
-          required
-          id="label"
-          [(ngModel)]="rowspe.label"
-          placeholder="label"
-          name="label"
-        />
-      </div>
-    </div>
     </div>
     <br />
+  </div>
+</ng-template>
+<ng-template #crtOverviewComponent let-step="step">
+  <br />
+
+  <div class="d-flex justify-content-between">
+    <label>description</label>
+    <input
+      type="text"
+      class="form-control half"
+      id="description"
+      required
+      [(ngModel)]="step.config.description"
+      name="description"
+    />
+  </div>
+
+  <br />
+
+  <div class="d-flex justify-content-between">
+    <label>transferFieldKey :</label>
+    <input
+      type="text"
+      class="form-control half"
+      id="transferFieldKey"
+      required
+      [(ngModel)]="step.config.transferFieldKey"
+      name="transferFieldKey"
+    />
+  </div>
+  <br />
+  <div class="d-flex justify-content-between">
+    <div>files :</div>
+    <div>
+      <button class="btn btn-primary" (click)="addFiles(step.config.files)">
+        Add
+      </button>
+    </div>
+  </div>
+  <br />
+
+  <div *ngFor="let file of step.config.files">
+    <div class="d-flex justify-content-between">
+      <label>crtName :</label>
+      <input
+        type="text"
+        class="form-control half"
+        id="crtname"
+        required
+        [(ngModel)]="file.crtName"
+        placeholder="name"
+        name="crtname"
+      />
+    </div>
+    <br />
+    <div class="d-flex justify-content-between">
+      <label>headerRow :</label>
+      <input
+        type="text"
+        class="form-control half"
+        id="headerRow"
+        required
+        [(ngModel)]="file.headerRow"
+        placeholder="headerRow"
+        name="headerRow"
+      />
+    </div>
+  </div>
+  <br />
+  <div>fileApi :</div>
+  <br />
+  <div class="d-flex justify-content-between">
+    <label>path :</label>
+    <input
+      type="text"
+      class="form-control half"
+      id="path"
+      required
+      [(ngModel)]="step.config.filesApi.path"
+      name="path"
+    />
+  </div>
+  <br />
+  <div class="d-flex justify-content-between">
+    <label>authType :</label>
+    <input
+      type="text"
+      class="form-control half"
+      id="authType"
+      required
+      [(ngModel)]="step.config.filesApi.authType"
+      name="authType"
+    />
+  </div>
+  <br />
+  <div>DownloadApi :</div>
+  <br />
+  <div class="d-flex justify-content-between">
+    <label>path :</label>
+    <input
+      type="text"
+      class="form-control half"
+      id="path"
+      required
+      [(ngModel)]="step.config.downloadApi.path"
+      name="path"
+    />
+  </div>
+  <br />
+  <div class="d-flex justify-content-between">
+    <label>authType :</label>
+    <input
+      type="text"
+      class="form-control half"
+      id="authType"
+      required
+      [(ngModel)]="step.config.downloadApi.authType"
+      name="authType"
+    />
   </div>
 </ng-template>

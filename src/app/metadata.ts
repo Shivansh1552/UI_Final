@@ -11,12 +11,14 @@ export interface Metadata {
   metadataName: string;
   ipackName: string;
   version: number;
+  extraTransferFields: ExtraTransferFields[];
   sections: Section[];
 }
 
-// export interface SectionsModel{
-//     steps : StepsConfig[];
-// }
+export interface ExtraTransferFields {
+  key: string;
+  value: string;
+}
 
 export interface Section {
   steps: Step[];
@@ -27,7 +29,11 @@ export interface Step {
   title: string;
   description: string;
   componentName: string;
-  config: StaticConfig | ApiDisplayConfig | StaticPageEntryConfig;
+  config:
+    | StaticConfig
+    | ApiDisplayConfig
+    | StaticPageEntryConfig
+    | CRTOverviewComponent;
 }
 
 export interface StaticConfig {
@@ -46,7 +52,7 @@ export interface ApiDisplayConfig {
   transferFieldKey: string;
   sourceApi: SourceApi;
   displayItems: DisplayItem[];
-  testConfigure: boolean;
+  testConfiguration: boolean;
   testApi: TestAPI;
 }
 
@@ -111,6 +117,30 @@ export interface StaticObjectProperties {
   userPrompted: boolean;
   parameterType: boolean;
 }
+export interface CRTOverviewComponent {
+  description: string;
+  transferFieldKey: string;
+  files: Files[];
+  filesApi: FilesApi;
+  downloadApi: DownloadApi;
+}
+
+export interface Files {
+  crtName: string;
+  headerRow: string;
+}
+export interface FilesApi {
+  path: string;
+  authType: string;
+}
+export interface DownloadApi {
+  path: string;
+  authType: string;
+}
+// export interface DialogData {
+//   name: string;
+//   password: string;
+// }
 
 // export interface ApiDisplayConfig
 // {

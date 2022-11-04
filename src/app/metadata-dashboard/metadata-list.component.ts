@@ -49,6 +49,10 @@ export class MetadataListComponent implements OnInit, OnDestroy {
       error: err => this.errorMessage = err
     });
   }
+
+  jsonParse(data: any) {
+    return JSON.parse(data);
+  }
   
   ngOnDestroy(): void {
     this.sub.unsubscribe();

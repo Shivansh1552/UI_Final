@@ -25,15 +25,15 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor='let metadata of filteredMetadata'>
+          <tr *ngFor='let mData of filteredMetadata'>
             <td>
-              <a [routerLink]="['/metadata', metadata.id]">
+              <a [routerLink]="['/metadata' ,'demo']">
                
                 <a style="list-style-type:none;">
-                {{metadata.metadata.metadataName }} 
+                {{jsonParse(mData.metadata).metadataName }} 
                 <div style="float:right ;"> 
                   <button type="button" class="btn btn-success btn-space" > Edit </button> 
-                  <button (click)="deleteData(metadata.id)" onClick="window.location.reload();" class="btn btn-success btn-space" routerLinkActive='active' routerLink='/metadata'> Delete </button>
+                  <button (click)="deleteData(jsonParse(mData.metadata).id)" onClick="window.location.reload();" class="btn btn-success btn-space" routerLinkActive='active' routerLink='/metadata'> Delete </button>
                   <button type="button" class="btn btn-success btn-space"> Post </button>
                 </div>
               </a>
