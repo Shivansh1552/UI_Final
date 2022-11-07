@@ -113,7 +113,7 @@ export const MetadataWithCrt = {
               {
                 crtName: '',
                 headerRow: '',
-              }
+              },
             ],
             filesApi: {
               path: '/....',
@@ -122,6 +122,19 @@ export const MetadataWithCrt = {
             downloadApi: {
               path: '/...',
               authType: 'Dimensions',
+            },
+          },
+        },
+        {
+          componentName: 'DimensionsSchedulingComponent',
+          name: 'File Creation & Scheduling',
+          title: 'File Creation & Scheduling',
+          config: {
+            description: '',
+            runOptions: {
+              sectionLabel: '',
+              scheduleLabel: '',
+              manualLabel: '',
             },
           },
         },

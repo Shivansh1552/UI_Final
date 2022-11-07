@@ -33,7 +33,8 @@ export interface Step {
     | StaticConfig
     | ApiDisplayConfig
     | StaticPageEntryConfig
-    | CRTOverviewComponent;
+    | CRTOverviewComponent
+    | DimensionsSchedulingComponent;
 }
 
 export interface StaticConfig {
@@ -136,6 +137,15 @@ export interface FilesApi {
 export interface DownloadApi {
   path: string;
   authType: string;
+}
+export interface DimensionsSchedulingComponent {
+  description: string;
+  runOptions: RunOptions;
+}
+export interface RunOptions {
+  sectionLabel: string;
+  scheduleLabel: string;
+  manualLabel: string;
 }
 // export interface DialogData {
 //   name: string;

@@ -171,6 +171,14 @@
                             "
                           ></ng-container>
                         </ng-container>
+                        <ng-container *ngSwitchCase="'DimensionsSchedulingComponent'">
+                          <ng-container
+                            *ngTemplateOutlet="
+                            dimensionsSchedulingComponent;
+                              context: { step: step }
+                            "
+                          ></ng-container>
+                        </ng-container>
                         <div *ngSwitchDefault>No component Available</div>
                       </ng-container>
                     </div>
@@ -843,4 +851,68 @@
       name="authType"
     />
   </div>
+</ng-template>
+<ng-template #dimensionsSchedulingComponent let-step="step">
+  <br />
+
+  <div class="d-flex justify-content-between">
+    <label>description</label>
+    <input
+      type="text"
+      class="form-control half"
+      id="description"
+      required
+      [(ngModel)]="step.config.description"
+      name="description"
+    />
+  </div>
+
+  <br />
+
+ 
+  <div class="d-flex justify-content-between">
+    <div>runOptions :</div>
+    
+  </div>
+  <br />
+    <div class="d-flex justify-content-between">
+      <label>sectionLabel :</label>
+      <input
+        type="text"
+        class="form-control half"
+        id="sectionLabel"
+        required
+        [(ngModel)]="step.config.runOptions.sectionLabel"
+        placeholder="name"
+        name="sectionLabel"
+      />
+    </div>
+    <br />
+    <div class="d-flex justify-content-between">
+      <label>scheduleLabel :</label>
+      <input
+        type="text"
+        class="form-control half"
+        id="scheduleLabel"
+        required
+        [(ngModel)]="step.config.runOptions.scheduleLabel"
+        placeholder="name"
+        name="scheduleLabel"
+      />
+    </div>
+    <br  />
+    <div class="d-flex justify-content-between">
+      <label>manualLabel :</label>
+      <input
+        type="text"
+        class="form-control half"
+        id="manualLabel"
+        required
+        [(ngModel)]="step.config.runOptions.manualLabel"
+        placeholder="name"
+        name="manualLabel"
+      />
+    </div>
+   
+
 </ng-template>
