@@ -39,11 +39,12 @@ import { BoomiLogInPopUpComponent } from './boomi-log-in-pop-up/boomi-log-in-pop
     HttpClientModule,
     RouterModule.forRoot([
       { path: 'createMetadata', component: MetadataFormComponent},
+      
       { path: '', redirectTo: 'metadata', pathMatch: 'full' },
       { path: '**', redirectTo: 'metadata', pathMatch: 'full' },
      // { path: 'add', component: AddMetadataComponent },
       { path: 'getData', component: GetDataComponent },
-      { path: 'getData/:id', component: GetDataByIdComponent }
+      // { path: 'getData/:id', component: GetDataByIdComponent }
     ]),
     MetadataModule,
     BrowserAnimationsModule

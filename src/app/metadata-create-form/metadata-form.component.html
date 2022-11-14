@@ -74,7 +74,6 @@
           >
             Verify
           </button>
-          <!-- <button mat-raised-button (click)="openDialog()">Pick one</button> -->
         </div>
       </div>
       <br />
@@ -93,9 +92,9 @@
                   <div class="form-group" #viewContainerRef>
                     <br />
                     <div style="margin: auto">
-                      <br />
+                      <!-- <br /> -->
                       <!-- <div class="form-group"> -->
-                      <div class="d-flex justify-content-between">
+                      <!-- <div class="d-flex justify-content-between">
                         <div><label for="name">Name</label></div>
                         <input
                           type="text"
@@ -108,8 +107,8 @@
                           name="name-{{ step.componentName }}"
                           #name="ngModel"
                         />
-                      </div>
-                      <br />
+                      </div> -->
+                      <!-- <br />
                       <div class="d-flex justify-content-between">
                         <div><label for="title">Title</label></div>
                         <input
@@ -122,10 +121,10 @@
                           name="title-{{ step.componentName }}"
                         />
                       </div>
-                      <br />
-                      <div class="d-flex justify-content-between">
+                      <br /> -->
+                      <!-- <div class="d-flex justify-content-between">
                         <div><label for="descrition">Description</label></div>
-                        <input
+                        <textarea
                           type="text"
                           class="form-control half"
                           id="desc"
@@ -133,8 +132,9 @@
                           [(ngModel)]="step.description"
                           placeholder="Enter Description"
                           name="desc-{{ step.componentName }}"
-                        />
-                      </div>
+                        >
+                      </textarea>
+                      </div> -->
                       <br />
                       <ng-container [ngSwitch]="step.componentName">
                         <ng-container *ngSwitchCase="'StaticContentComponent'">
@@ -145,14 +145,14 @@
                             "
                           ></ng-container>
                         </ng-container>
-                        <ng-container *ngSwitchCase="'APIDisplayComponent'">
+                        <!-- <ng-container *ngSwitchCase="'APIDisplayComponent'">
                           <ng-container
                             *ngTemplateOutlet="
                               apiDisplayComponent;
                               context: { step: step }
                             "
                           ></ng-container>
-                        </ng-container>
+                        </ng-container> -->
                         <ng-container
                           *ngSwitchCase="'StaticPageEntryComponent'"
                         >
@@ -171,10 +171,12 @@
                             "
                           ></ng-container>
                         </ng-container>
-                        <ng-container *ngSwitchCase="'DimensionsSchedulingComponent'">
+                        <ng-container
+                          *ngSwitchCase="'DimensionsSchedulingComponent'"
+                        >
                           <ng-container
                             *ngTemplateOutlet="
-                            dimensionsSchedulingComponent;
+                              dimensionsSchedulingComponent;
                               context: { step: step }
                             "
                           ></ng-container>
@@ -220,8 +222,7 @@
 <ng-template #staticContentComponent let-step="step">
   <div class="d-flex justify-content-between">
     <div><label for="content">content</label></div>
-
-    <input
+    <textarea
       type="text"
       class="form-control half"
       id="content"
@@ -229,51 +230,64 @@
       [(ngModel)]="step?.config.content"
       placeholder="Enter content"
       name="content"
-    />
+    ></textarea>
   </div>
   <hr />
-  <h3 for="headers">Headers</h3>
-  <div>
-    <button
-      type="button"
-      class="btn btn-primary"
-      (click)="addHeaders(step?.config?.headers)"
-    >
-      Add
-    </button>
-  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="d-flex justify-content-between">
+        <h2 class="card-title">Headers :</h2>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="addHeaders(step?.config?.headers)"
+        >
+          Add
+        </button>
+      </div>
+      <br />
+      <div *ngFor="let header of step.config.headers; let j = index">
+        <div class="d-flex justify-content-between">
+          <label for="templateName">Template Name</label>
+          <input
+            type="text"
+            class="form-control half"
+            id="templateName"
+            required
+            [(ngModel)]="header.templateName"
+            placeholder="Enter Template Name"
+            name="templateName"
+          />
+        </div>
+        <br />
 
-  <div *ngFor="let header of step.config.headers">
-    <div class="d-flex justify-content-between">
-      <label for="templateName">Template Name</label>
-      <input
-        type="text"
-        class="form-control half"
-        id="templateName"
-        required
-        [(ngModel)]="header.templateName"
-        placeholder="Enter Template Name"
-        name="templateName"
-      />
-    </div>
-    <br />
-
-    <div class="d-flex justify-content-between">
-      <label for="headerString">Header String </label>
-      <input
-        type="text"
-        class="form-control half"
-        id="headerString"
-        required
-        [(ngModel)]="header.headerString"
-        placeholder="Enter Header String"
-        name="headerString"
-      />
+        <div class="d-flex justify-content-between">
+          <label for="headerString">Header String </label>
+          <input
+            type="text"
+            class="form-control half"
+            id="headerString"
+            required
+            [(ngModel)]="header.headerString"
+            placeholder="Enter Header String"
+            name="headerString"
+          />
+        </div>
+        <div class="d-flex justify-content-between">
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="removeInput(j, step.config.headers)"
+          >
+            Remove
+          </button>
+        </div>
+        <br />
+      </div>
     </div>
   </div>
-  <br
-/></ng-template>
-<ng-template #apiDisplayComponent let-step="step">
+</ng-template>
+<!-- <ng-template #apiDisplayComponent let-step="step">
   <div class="d-flex justify-content-between">
     <div>Rows :</div>
     <div>
@@ -545,9 +559,9 @@
       />
     </div>
   </div>
-</ng-template>
+</ng-template> -->
 <ng-template #staticPageEntryComponent let-step="step">
-  <div>valuePopulatedApi :</div>
+  <!-- <div>valuePopulatedApi :</div>
   <br />
   <fieldset>
     <div class="d-flex justify-content-between">
@@ -576,7 +590,7 @@
       />
     </div>
   </fieldset>
-  <br />
+  <br /> -->
 
   <div class="d-flex justify-content-between">
     <div>Rows :</div>
@@ -591,142 +605,179 @@
   <div>
     <div class="form-group">
       <div *ngFor="let rowspe of step.config.rows">
-        <legend>Inupt :</legend>
-
-        <div class="d-flex justify-content-between">
-          <label>Name :</label>
-          <input
-            type="text"
-            class="form-control half"
-            id="name"
-            required
-            [(ngModel)]="rowspe.input.name"
-            placeholder="name"
-            name="name"
-          />
-        </div>
-        <br />
-
-        <fieldset>
-          <div>SaveValueAsObjectConfiguration :</div>
-          <br />
-          <div class="d-flex justify-content-between">
-            <label>EditableProperty :</label>
+        <h3>Inupt :</h3>
+        <div class="card">
+          <div class="card-body">
+            <!-- <div class="d-flex justify-content-between">
+            <label>Name :</label>
             <input
               type="text"
               class="form-control half"
-              id="editableProperty"
+              id="name"
               required
-              [(ngModel)]="
-                rowspe.input.saveValueAsObjectConfiguration.editableProperty
-              "
-              name="editableProperty"
+              [(ngModel)]="rowspe.input.name"
+              placeholder="name"
+              name="name"
             />
           </div>
-          <br />
-          <fieldset>
-            <div>StaticObjectProperties :</div>
+          <br /> -->
+            <fieldset>
+              <!-- <div>SaveValueAsObjectConfiguration :</div>
             <br />
             <div class="d-flex justify-content-between">
-              <label>Name :</label>
+              <label>EditableProperty :</label>
               <input
                 type="text"
                 class="form-control half"
-                id="name"
+                id="editableProperty"
                 required
                 [(ngModel)]="
-                  rowspe.input.saveValueAsObjectConfiguration
-                    .staticObjectProperties.name
+                  rowspe.input.saveValueAsObjectConfiguration.editableProperty
                 "
-                placeholder="name"
-                name="name"
+                name="editableProperty"
+              />
+            </div>
+            <br /> -->
+              <fieldset>
+                <div>StaticObjectProperties :</div>
+                <br />
+                <div class="d-flex justify-content-between">
+                  <label>Parameter Name :</label>
+                  <input
+                    type="text"
+                    class="form-control half"
+                    id="name"
+                    required
+                    [(ngModel)]="
+                      rowspe.input.saveValueAsObjectConfiguration
+                        .staticObjectProperties.name
+                    "
+                    placeholder="name"
+                    name="name"
+                  />
+                </div>
+                <br />
+                <!-- <div class="d-flex justify-content-between">
+                  <label>UserPrompted :</label>
+                  <input
+                    type="checkbox"
+                    class="form-control half"
+                    id="userPrompted"
+                    [(ngModel)]="
+                      rowspe.input.saveValueAsObjectConfiguration
+                        .staticObjectProperties.userPrompted
+                    "
+                    placeholder="userPrompted"
+                    name="userPrompted"
+                  />
+                </div> -->
+
+                <div class="d-flex" style="padding-bottom: 16px">
+                  <label>UserPrompted </label>
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="name"
+                    [(ngModel)]="
+                      rowspe.input.saveValueAsObjectConfiguration
+                        .staticObjectProperties.userPrompted
+                    "
+                    name="userPrompted"
+                  />
+                </div>
+
+                <div class="d-flex justify-content-between">
+                  <label>Dimension ParameterType :</label>
+                  <select
+                    class="form-select half"
+                    id="parameterType"
+                    required
+                    [(ngModel)]="
+                      rowspe.input.saveValueAsObjectConfiguration
+                        .staticObjectProperties.parameterType
+                    "
+                    name="parameterType"
+                  >
+                    <option
+                      *ngFor="let parameter of metadataParameterType.keys()"
+                    >
+                      {{ parameter }}
+                    </option>
+                  </select>
+                </div>
+              </fieldset>
+            </fieldset>
+
+            <br />
+            <div class="d-flex justify-content-between">
+              <label>DefaultValue :</label>
+              <input
+                type="text"
+                class="form-control half"
+                id="defaultValue"
+                required
+                [(ngModel)]="rowspe.input.defaultValue"
+                placeholder="defaultValue"
+                name="defaultValue"
               />
             </div>
             <br />
             <div class="d-flex justify-content-between">
-              <label>UserPrompted :</label>
+              <label>Hint :</label>
               <input
                 type="text"
                 class="form-control half"
-                id="userPrompted"
-                [(ngModel)]="
-                  rowspe.input.saveValueAsObjectConfiguration
-                    .staticObjectProperties.userPrompted
-                "
-                placeholder="userPrompted"
-                name="userPrompted"
-              />
-            </div>
-
-            <div class="d-flex justify-content-between">
-              <label>ParameterType :</label>
-              <input
-                type="text"
-                class="form-control half"
-                id="parameterType"
+                id="hint"
                 required
-                [(ngModel)]="
-                  rowspe.input.saveValueAsObjectConfiguration
-                    .staticObjectProperties.parameterType
-                "
-                placeholder="parameterType"
-                name="parameterType"
+                [(ngModel)]="rowspe.input.hint"
+                placeholder="hint"
+                name="hint"
               />
             </div>
-          </fieldset>
-        </fieldset>
-        <br />
-        <div class="d-flex justify-content-between">
-          <label>DefaultValue :</label>
-          <input
-            type="text"
-            class="form-control half"
-            id="defaultValue"
-            required
-            [(ngModel)]="rowspe.input.defaultValue"
-            placeholder="defaultValue"
-            name="defaultValue"
-          />
-        </div>
-        <br />
-        <div class="d-flex justify-content-between">
-          <label>Hint :</label>
-          <input
-            type="text"
-            class="form-control half"
-            id="hint"
-            required
-            [(ngModel)]="rowspe.input.hint"
-            placeholder="hint"
-            name="hint"
-          />
-        </div>
-        <br />
-
-        <div class="d-flex justify-content-between">
-          <label>Type :</label>
-          <input
-            type="text"
-            class="form-control half"
-            required
-            id="type"
-            [(ngModel)]="rowspe.input.type"
-            placeholder="type"
-            name="type"
-          />
-        </div>
-        <br />
-        <div class="d-flex justify-content-between">
-          <label>Label :</label>
-          <input
-            type="text"
-            class="form-control half"
-            required
-            id="label"
-            [(ngModel)]="rowspe.label"
-            placeholder="label"
-            name="label"
-          />
+            <br />
+            <div class="d-flex justify-content-between">
+              <label>TIP ParameterType :</label>
+              <select
+                class="form-select half"
+                id="TipParameterType"
+                required
+                [(ngModel)]="rowspe.input.type"
+                name="TipParameterType"
+              >
+                <option
+                  *ngFor="let parameterTip of metadataParameterTypeTip.keys()"
+                >
+                  {{ parameterTip }}
+                </option>
+              </select>
+            </div>
+            <br />
+            <!-- <div class="d-flex justify-content-between">
+              <label>Type :</label>
+              <input
+                type="text"
+                class="form-control half"
+                required
+                id="type"
+                [(ngModel)]="rowspe.input.type"
+                placeholder="type"
+                name="type"
+              />
+            </div> -->
+            <br />
+            <div class="d-flex justify-content-between">
+              <label>Label :</label>
+              <input
+                type="text"
+                class="form-control half"
+                required
+                id="label"
+                [(ngModel)]="rowspe.label"
+                placeholder="label"
+                name="label"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -735,7 +786,7 @@
 </ng-template>
 <ng-template #crtOverviewComponent let-step="step">
   <br />
-
+<!-- 
   <div class="d-flex justify-content-between">
     <label>description</label>
     <input
@@ -761,7 +812,7 @@
       name="transferFieldKey"
     />
   </div>
-  <br />
+  <br /> -->
   <div class="d-flex justify-content-between">
     <div>files :</div>
     <div>
@@ -798,9 +849,10 @@
         name="headerRow"
       />
     </div>
+    <br  />
   </div>
-  <br />
-  <div>fileApi :</div>
+  <br  />
+  <!-- <div>fileApi :</div>
   <br />
   <div class="d-flex justify-content-between">
     <label>path :</label>
@@ -850,7 +902,7 @@
       [(ngModel)]="step.config.downloadApi.authType"
       name="authType"
     />
-  </div>
+  </div> -->
 </ng-template>
 <ng-template #dimensionsSchedulingComponent let-step="step">
   <br />
@@ -869,50 +921,46 @@
 
   <br />
 
- 
-  <div class="d-flex justify-content-between">
+  <!-- <div class="d-flex justify-content-between">
     <div>runOptions :</div>
-    
   </div>
   <br />
-    <div class="d-flex justify-content-between">
-      <label>sectionLabel :</label>
-      <input
-        type="text"
-        class="form-control half"
-        id="sectionLabel"
-        required
-        [(ngModel)]="step.config.runOptions.sectionLabel"
-        placeholder="name"
-        name="sectionLabel"
-      />
-    </div>
-    <br />
-    <div class="d-flex justify-content-between">
-      <label>scheduleLabel :</label>
-      <input
-        type="text"
-        class="form-control half"
-        id="scheduleLabel"
-        required
-        [(ngModel)]="step.config.runOptions.scheduleLabel"
-        placeholder="name"
-        name="scheduleLabel"
-      />
-    </div>
-    <br  />
-    <div class="d-flex justify-content-between">
-      <label>manualLabel :</label>
-      <input
-        type="text"
-        class="form-control half"
-        id="manualLabel"
-        required
-        [(ngModel)]="step.config.runOptions.manualLabel"
-        placeholder="name"
-        name="manualLabel"
-      />
-    </div>
-   
-
+  <div class="d-flex justify-content-between">
+    <label>sectionLabel :</label>
+    <input
+      type="text"
+      class="form-control half"
+      id="sectionLabel"
+      required
+      [(ngModel)]="step.config.runOptions.sectionLabel"
+      placeholder="name"
+      name="sectionLabel"
+    />
+  </div>
+  <br /> -->
+  <div class="d-flex justify-content-between">
+    <label>scheduleLabel :</label>
+    <input
+      type="text"
+      class="form-control half"
+      id="scheduleLabel"
+      required
+      [(ngModel)]="step.config.runOptions.scheduleLabel"
+      placeholder="name"
+      name="scheduleLabel"
+    />
+  </div>
+  <br />
+  <div class="d-flex justify-content-between">
+    <label>manualLabel :</label>
+    <input
+      type="text"
+      class="form-control half"
+      id="manualLabel"
+      required
+      [(ngModel)]="step.config.runOptions.manualLabel"
+      placeholder="name"
+      name="manualLabel"
+    />
+  </div>
 </ng-template>

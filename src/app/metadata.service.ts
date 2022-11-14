@@ -14,14 +14,14 @@ export class MetadataService {
 
   constructor(private http: HttpClient ) { }
 
-  getAllMetadata(): Observable<IMetadata[]> {
-    return this.http.get<IMetadata[]>(this.metadataUrl)
+  getAllMetadata(): Observable<any[]> {
+    return this.http.get<any[]>(this.metadataUrl)
       .pipe(
         tap(data => console.log('All: ', JSON.stringify(data))),
       );
   }
 
-  getMetadatabyId(id: number): Observable<IMetadata | undefined> {
+  getMetadatabyId(id: string): Observable<IMetadata | undefined> {
     return this.getAllMetadata()
       .pipe(
         map((metadata: IMetadata[]) => metadata.find(p => p.id === id))
@@ -53,6 +53,6 @@ export class MetadataService {
   public deleteData(id: number): Observable<any> {
     return this.http.delete(`${this.metadataUrl}/${id}`, { responseType: 'text' });
   }
-
+ 
 
 }

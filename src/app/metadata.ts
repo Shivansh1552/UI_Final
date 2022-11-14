@@ -2,15 +2,15 @@ import { Input } from '@angular/core';
 import { Steps } from './Models/steps.model';
 
 export class IMetadata {
-  id!: number;
+  id!: string;
   metadata!: Metadata;
 }
 
 export interface Metadata {
-  id: number;
+  id: string;
   metadataName: string;
   ipackName: string;
-  version: number;
+  version: string;
   extraTransferFields: ExtraTransferFields[];
   sections: Section[];
 }
