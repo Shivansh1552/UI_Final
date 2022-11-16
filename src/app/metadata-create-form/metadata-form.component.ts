@@ -4,8 +4,8 @@
 /* eslint-disable @angular-eslint/component-selector */
 import { style } from '@angular/animations';
 import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
-import { HeadersConfig, IMetadata, StaticConfig } from '../metadata';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ApiDisplayConfig, HeadersConfig, IMetadata, StaticConfig } from '../metadata';
 import { MetadataService } from '../metadata.service';
 import * as uuid from 'uuid';
 import { HeaderConfig } from '../Models/static-content/header-config.model';
@@ -21,10 +21,11 @@ import { NavigateEditMetadataService } from '../navigate-edit-metadata.service';
 import { event } from 'jquery';
 import { metadataParameterType } from '../metadata.constant';
 import { metadataParameterTypeTip } from '../metadata.constant';
+import { templateName } from '../metadata.constant';
 
 export interface DialogData {
-  name: string;
-  password: string;
+  processName: string;
+  processType: string;
 }
 
 @Component({
@@ -33,11 +34,13 @@ export interface DialogData {
   styleUrls: ['./metadata-form.component.css'],
 })
 export class MetadataFormComponent {
-  name!: string;
-  password!: string;
+  processName!: string;
+  processType!: string;
   currentUrl!: string;
+
   readonly metadataParameterType= metadataParameterType;
   readonly metadataParameterTypeTip= metadataParameterTypeTip;
+  readonly templateName= templateName;
 
   @ViewChild('viewContainerRef') myForm!: any;
   public pageTitle = 'form';
@@ -53,34 +56,35 @@ export class MetadataFormComponent {
     private metaService: MetadataService,
     private router: Router,
     public dialog: MatDialog,
-    private navigateEditMetadataService: NavigateEditMetadataService
+    private navigateEditMetadataService: NavigateEditMetadataService,
+    private route: ActivatedRoute,
+
   ) {
     this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
+      if (event instanceof NavigationEnd ) {
         this.currentUrl = event.url;
-        //  if(this.currentUrl.includes('editMetadata'))
-        //  {
-
-        //  }
-        this.loadMetaData();
+        this.route.params.subscribe((param) => {
+          this.loadMetaData(param['id'])
+        })
       }
     });
   }
 
-  loadMetaData() {
+  loadMetaData(id:string) {
     if (this.currentUrl.includes('editMetadata')) {
-      this.navigateEditMetadataService.getMetadata().subscribe((metadata) => {
-        this.metadata = metadata;
+      this.metaService.getDataById(id).subscribe((data) => {
+        this.metadata = JSON.parse(data.metadata);
       });
     } else {
       this.metadata = MetadataWithCrt;
+      this.metadata.id = uuid.v4();      
     }
   }
 
   openDialog(): void {
     const dialogRef = this.dialog.open(BoomiLogInPopUpComponent, {
       width: '250px',
-      data: { name: this.name, password: this.password },
+      data: { processName: this.processName, processType: this.processType },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -90,15 +94,18 @@ export class MetadataFormComponent {
   }
 
   ngOnInit() {
-    if (!this.metadata?.id) {
-      this.metadata.id = uuid.v4();
-    }
+   
   }
 
   removeInput(index: any, headers: any) {
     headers.splice(index, 1);
   }
 
+  removeRows(index: any, rows: any)
+  {
+    rows.splice(index, 1);
+  }
+  
   getUUID() {
     // return  uuid();
     const id = uuid.v4();
@@ -120,6 +127,8 @@ export class MetadataFormComponent {
         placeholder: '',
         type: '',
         validations: '',
+       
+                        
       },
     });
   }
@@ -140,10 +149,16 @@ export class MetadataFormComponent {
     rows.push({
       input: {
         name: '',
-        saveValueAsObjectConfiguration: '',
         defaultValue: '',
         hint: '',
         type: '',
+        saveValueAsObjectConfiguration:{
+          staticObjectProperties:{
+            name:'',
+            userPrompted: true,
+            parameterType: true,
+          }
+        }
       },
       label: '',
     });
@@ -158,9 +173,13 @@ export class MetadataFormComponent {
   save(obj: any) {
     this.metaService
       .addMetadata(obj)
-      .subscribe((result) => console.log(result));
-
-    //console.log(obj);
+      .subscribe((result) => {
+        console.log(result)
+        this.router.navigate(['/metadata']);
+      }
+      
+      );
+      
   }
   onSubmit() {
     const metadataObj: MetadataModel = {
@@ -179,5 +198,21 @@ export class MetadataFormComponent {
     if (this.metadata.ipackName) {
       this.isIpackNameValidated = true;
     }
+    this.metaService.getEnvionmentExtensionValues(this.metadata.ipackName).subscribe(data=>{
+        console.log(data);
+        this.setUpPageMetadataValues(data);
+    })
+    
   }
+  setUpPageMetadataValues(data: any)
+  {
+    const tempSetupMetadata={} as ApiDisplayConfig;
+    // tempSetupMetadata.sourceApi=data.name; //only for understanding.
+  }
+
+  // reset()
+  // {
+  //    this.metadata.sections=[];
+  // }
+
 }

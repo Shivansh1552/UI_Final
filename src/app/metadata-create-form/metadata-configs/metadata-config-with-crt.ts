@@ -127,18 +127,18 @@ export const MetadataWithCrt = {
         },
         {
           componentName: 'DimensionsSchedulingComponent',
-          name: 'File Creation & Scheduling',
-          title: 'File Creation & Scheduling',
+          name: 'Scheduling',
+          title: 'Scheduling',
           config: {
             description: '',
             runOptions: {
               sectionLabel: '',
               scheduleLabel: '',
               manualLabel: '',
-            },
-          },
-        },
-      ],
-    },
-  ],
+            }
+          }
+        }
+      ]
+    }
+  ]
 };

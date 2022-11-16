@@ -2,12 +2,12 @@
 <div mat-dialog-content>
   <p>Enter Boomi details</p>
   <mat-form-field appearance="fill">
-    <mat-label>Account Id</mat-label>
-    <input matInput [(ngModel)]="data.name" [ngModelOptions]="{standalone: true}">
+    <mat-label>process name</mat-label>
+    <input  matInput [(ngModel)]="data.processName" required [ngModelOptions]="{standalone: true}">
   </mat-form-field>
   <mat-form-field appearance="fill">
-    <mat-label>Environment Id</mat-label>
-    <input matInput [(ngModel)]="data.password" [ngModelOptions]="{standalone: true}">
+    <mat-label>process type</mat-label>
+    <input matInput [(ngModel)]="data.processType" required [ngModelOptions]="{standalone: true}">
   </mat-form-field>
 </div>
 <div mat-dialog-actions>

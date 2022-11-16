@@ -1,5 +1,5 @@
 ﻿<!-- {{ metadata | json }} -->
-<div class="childform" style="width: 70%">
+<div *ngIf="metadata?.id" class="childform" style="width: 70%">
   <form #myForm="ngForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <div class="d-flex justify-content-between">
@@ -24,6 +24,7 @@
         <input
           type="text"
           class="form-control half"
+          [ngClass]="{'is-valid': metadataName.valid && metadataName.touched,'is-invalid':!metadataName.valid  && metadataName.touched}"
           id="metadataName"
           [(ngModel)]="metadata.metadataName"
           #metadataName="ngModel"
@@ -54,6 +55,8 @@
           <input
             type="text"
             class="form-control half"
+            [ngClass]="{'is-valid': ipackName.valid && ipackName.touched,'is-invalid':!ipackName.valid  && ipackName.touched}"
+            
             id="ipackName"
             [(ngModel)]="metadata.ipackName"
             #ipackName="ngModel"
@@ -80,7 +83,8 @@
       <ng-container *ngIf="isIpackNameValidated">
         <ng-container *ngFor="let section of metadata.sections; let i = index">
           <div *ngFor="let step of section.steps" class="step-container">
-            <mat-accordion>
+       
+            <mat-accordion *ngIf="step.componentName !== 'APIDisplayComponent'">
               <mat-expansion-panel hideToggle>
                 <mat-expansion-panel-header>
                   <mat-panel-title>{{ step.name }} </mat-panel-title>
@@ -106,7 +110,7 @@
                           placeholder="Enter Name"
                           name="name-{{ step.componentName }}"
                           #name="ngModel"
-                        />
+                        />a
                       </div> -->
                       <!-- <br />
                       <div class="d-flex justify-content-between">
@@ -193,30 +197,32 @@
         </ng-container>
       </ng-container>
       <br />
-      <div class="ETF_Sec"></div>
+      <!-- <div class="ETF_Sec"></div> -->
       <div class="d-flex justify-content-center">
         <button
+          [disabled]="!myForm.form.valid"
           type="submit"
-          class="btn btn-primary"
+          class="btn btn-success"
           style="margin-right: 20px"
         >
           Submit
         </button>
-        <button type="reset" class="btn btn-primary" style="margin-right: 20px">
+        <!-- <button  class="btn btn-primary" (click)="reset()" style="margin-right: 20px">
           Reset
-        </button>
-        <button
+        </button> -->
+        <!-- <button
+          disabled
           type="submit"
           class="btn btn-primary"
           style="margin-right: 20px"
         >
           Save
-        </button>
+        </button> -->
       </div>
     </div>
   </form>
 
-  <button (click)="get()" class="btn btn-primary">Get</button>
+  <!-- <button (click)="get()" class="btn btn-primary">Get</button> -->
 </div>
 
 <ng-template #staticContentComponent let-step="step">
@@ -226,6 +232,7 @@
       type="text"
       class="form-control half"
       id="content"
+      rows="5" cols="40"
       required
       [(ngModel)]="step?.config.content"
       placeholder="Enter content"
@@ -239,7 +246,7 @@
         <h2 class="card-title">Headers :</h2>
         <button
           type="button"
-          class="btn btn-primary"
+          class="btn btn-light"
           (click)="addHeaders(step?.config?.headers)"
         >
           Add
@@ -273,10 +280,13 @@
             name="headerString"
           />
         </div>
-        <div class="d-flex justify-content-between">
+        <br />
+        <!-- <div class="d-flex justify-content-between"> -->
+          <div style="display:flex; justify-content:flex-end; width:100%; padding:0;">
           <button
             type="button"
-            class="btn btn-primary"
+            class="btn btn-light"
+            
             (click)="removeInput(j, step.config.headers)"
           >
             Remove
@@ -595,17 +605,18 @@
   <div class="d-flex justify-content-between">
     <div>Rows :</div>
     <div>
-      <button class="btn btn-primary" (click)="addRowsSpe(step.config.rows)">
+      <button class="btn btn-light" (click)="addRowsSpe(step.config.rows)">
         Add
       </button>
     </div>
   </div>
   <br />
-
+  
   <div>
     <div class="form-group">
-      <div *ngFor="let rowspe of step.config.rows">
-        <h3>Inupt :</h3>
+      <div *ngFor="let rowspe of step.config.rows ; let j = index">
+        
+        <h3>Input :</h3>
         <div class="card">
           <div class="card-body">
             <!-- <div class="d-flex justify-content-between">
@@ -639,21 +650,39 @@
             </div>
             <br /> -->
               <fieldset>
-                <div>StaticObjectProperties :</div>
+                <!-- <div>StaticObjectProperties :</div> -->
+                <div class="d-flex justify-content-between">
+                  <label>Template name :</label>
+                  <select
+                    class="form-select half"
+                    id="templateName"
+                    required
+                    [(ngModel)]="
+                      rowspe.input.name "
+
+                    name="templateName"
+                  >
+                    <option [value]="'dimensions_parameters_'+tempName"
+                      *ngFor="let tempName of templateName.keys()"
+                    >
+                      {{ tempName }}
+                    </option>
+                  </select>
+                </div>
                 <br />
                 <div class="d-flex justify-content-between">
                   <label>Parameter Name :</label>
                   <input
                     type="text"
                     class="form-control half"
-                    id="name"
+                    id="pname"
                     required
                     [(ngModel)]="
                       rowspe.input.saveValueAsObjectConfiguration
                         .staticObjectProperties.name
                     "
                     placeholder="name"
-                    name="name"
+                    name="pname"
                   />
                 </div>
                 <br />
@@ -779,6 +808,16 @@
             </div>
           </div>
         </div>
+        <br>
+        <div style="display:flex; justify-content:flex-end; width:100%; padding:0;">
+          <button
+            type="button"
+            class="btn btn-light"
+            (click)="removeRows(j, step.config.rows)"
+          >
+            Remove
+          </button>
+        </div>
       </div>
     </div>
     <br />
@@ -786,7 +825,7 @@
 </ng-template>
 <ng-template #crtOverviewComponent let-step="step">
   <br />
-<!-- 
+  <!-- 
   <div class="d-flex justify-content-between">
     <label>description</label>
     <input
@@ -816,7 +855,7 @@
   <div class="d-flex justify-content-between">
     <div>files :</div>
     <div>
-      <button class="btn btn-primary" (click)="addFiles(step.config.files)">
+      <button class="btn btn-light" (click)="addFiles(step.config.files)">
         Add
       </button>
     </div>
@@ -825,10 +864,11 @@
 
   <div *ngFor="let file of step.config.files">
     <div class="d-flex justify-content-between">
-      <label>crtName :</label>
+      <label>CRT Name :</label>
       <input
         type="text"
         class="form-control half"
+        disabled
         id="crtname"
         required
         [(ngModel)]="file.crtName"
@@ -838,20 +878,20 @@
     </div>
     <br />
     <div class="d-flex justify-content-between">
-      <label>headerRow :</label>
+      <label>Header :</label>
       <input
         type="text"
         class="form-control half"
         id="headerRow"
         required
         [(ngModel)]="file.headerRow"
-        placeholder="headerRow"
+        placeholder="Header"
         name="headerRow"
       />
     </div>
-    <br  />
+    <br />
   </div>
-  <br  />
+  <br />
   <!-- <div>fileApi :</div>
   <br />
   <div class="d-flex justify-content-between">
@@ -938,7 +978,7 @@
     />
   </div>
   <br /> -->
-  <div class="d-flex justify-content-between">
+  <!-- <div class="d-flex justify-content-between">
     <label>scheduleLabel :</label>
     <input
       type="text"
@@ -949,9 +989,29 @@
       placeholder="name"
       name="scheduleLabel"
     />
+  </div> -->
+  <div class="d-flex" style="padding-bottom: 16px">
+    <label>scheduleLabel </label>
+    <input
+      class="form-check-input"
+      type="checkbox"
+      id="scheduleLabel"
+      [(ngModel)]="step.config.runOptions.scheduleLabel"
+      name="scheduleLabel"
+    />
   </div>
   <br />
-  <div class="d-flex justify-content-between">
+  <div class="d-flex" style="padding-bottom: 16px">
+    <label>manualLabel </label>
+    <input
+      class="form-check-input"
+      type="checkbox"
+      id="manualLabel"
+      [(ngModel)]="step.config.runOptions.manualLabel"
+      name="manualLabel"
+    />
+  </div>
+  <!-- <div class="d-flex justify-content-between">
     <label>manualLabel :</label>
     <input
       type="text"
@@ -962,5 +1022,5 @@
       placeholder="name"
       name="manualLabel"
     />
-  </div>
+  </div> -->
 </ng-template>

@@ -6,3 +6,6 @@
 .btn-space{
   margin-left:20px;
 }
+.btn.active{
+  background-color: rgb(184, 206, 186);
+}

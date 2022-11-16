@@ -30,6 +30,7 @@
             </td>
             <td>
               <div style="float: right">
+               
                 <button (click)="editMetadata(mData.metadata)" type="button" class="btn btn-success btn-space">
                   Edit
                 </button>
@@ -44,6 +45,9 @@
                 </button>
                 <button type="button" class="btn btn-success btn-space">
                   Post
+                </button>
+                <button (click)="downloadJson(mData.metadata)" type="button" class="btn btn-success btn-space">
+                  Download metadata
                 </button>
               </div>
             </td>
