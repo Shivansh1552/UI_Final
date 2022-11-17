@@ -19,17 +19,19 @@ import { StaticContentComponent } from './metadata-create-form/steps/steps-confi
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BoomiLogInPopUpComponent } from './boomi-log-in-pop-up/boomi-log-in-pop-up.component';
+import { IlpComponent } from './ilp/ilp.component';
 @NgModule({
   declarations: [
-    AppComponent,
-    MetadataFormComponent,
     AddMetadataComponent,
-    GetDataComponent,
+    AppComponent,
+    BoomiLogInPopUpComponent,
     GetDataByIdComponent,
-    StepsComponent,
-    StepsConfigComponent,
+    GetDataComponent,
+    IlpComponent,
+    MetadataFormComponent,
     StaticContentComponent,
-    BoomiLogInPopUpComponent
+    StepsComponent,
+    StepsConfigComponent
   ],
   imports: [
     MaterialExampleModule,

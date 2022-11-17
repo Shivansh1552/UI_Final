@@ -78,8 +78,10 @@
             Verify
           </button>
         </div>
+       
       </div>
       <br />
+      <pm-ilp></pm-ilp>
       <ng-container *ngIf="isIpackNameValidated">
         <ng-container *ngFor="let section of metadata.sections; let i = index">
           <div *ngFor="let step of section.steps" class="step-container">
