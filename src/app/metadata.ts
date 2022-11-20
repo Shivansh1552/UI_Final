@@ -9,7 +9,7 @@ export class IMetadata {
 export interface Metadata {
   id: string;
   metadataName: string;
-  ipackName: string;
+  iPackName: string;
   version: string;
   extraTransferFields: ExtraTransferFields[];
   sections: Section[];

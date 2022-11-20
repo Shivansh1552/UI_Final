@@ -22,10 +22,16 @@ import { event } from 'jquery';
 import { metadataParameterType } from '../metadata.constant';
 import { metadataParameterTypeTip } from '../metadata.constant';
 import { templateName } from '../metadata.constant';
+import { IlpComponent } from '../ilp/ilp.component';
 
 export interface DialogData {
   processName: string;
   processType: string;
+}
+
+export interface DialogDataIlp {
+  name: string;
+  description: string;
 }
 
 @Component({
@@ -37,6 +43,9 @@ export class MetadataFormComponent {
   processName!: string;
   processType!: string;
   currentUrl!: string;
+  
+  name!: string;
+  description!: string;
 
   readonly metadataParameterType= metadataParameterType;
   readonly metadataParameterTypeTip= metadataParameterTypeTip;
@@ -45,7 +54,7 @@ export class MetadataFormComponent {
   @ViewChild('viewContainerRef') myForm!: any;
   public pageTitle = 'form';
   panelOpenState = false;
-  isIpackNameValidated = false;
+  isIPackNameValidated = false;
   metadata: any;
 
   public headers: HeadersConfig[] = [];
@@ -90,6 +99,19 @@ export class MetadataFormComponent {
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed');
       this.checkBoomi();
+    });
+  }
+
+  openDialogIlp(): void {
+    const dialogRef = this.dialog.open(IlpComponent, {
+      height:'1000px',
+      width: '2000px',
+      data: { name: this.name, description: this.description },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed');
+     // this.checkBoomi();
     });
   }
 
@@ -195,10 +217,10 @@ export class MetadataFormComponent {
     });
   }
   checkBoomi() {
-    if (this.metadata.ipackName) {
-      this.isIpackNameValidated = true;
+    if (this.metadata.iPackName) {
+      this.isIPackNameValidated = true;
     }
-    this.metaService.getEnvionmentExtensionValues(this.metadata.ipackName).subscribe(data=>{
+    this.metaService.getEnvionmentExtensionValues(this.metadata.iPackName).subscribe(data=>{
         console.log(data);
         this.setUpPageMetadataValues(data);
     })

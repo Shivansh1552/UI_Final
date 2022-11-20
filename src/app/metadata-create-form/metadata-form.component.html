@@ -24,7 +24,10 @@
         <input
           type="text"
           class="form-control half"
-          [ngClass]="{'is-valid': metadataName.valid && metadataName.touched,'is-invalid':!metadataName.valid  && metadataName.touched}"
+          [ngClass]="{
+            'is-valid': metadataName.valid && metadataName.touched,
+            'is-invalid': !metadataName.valid && metadataName.touched
+          }"
           id="metadataName"
           [(ngModel)]="metadata.metadataName"
           #metadataName="ngModel"
@@ -51,41 +54,60 @@
       <br />
       <div class="form-group">
         <div class="d-flex justify-content-between">
-          <div><label for="InputIName">IpackName</label></div>
+          <div><label for="InputIName">IPackName</label></div>
           <input
             type="text"
             class="form-control half"
-            [ngClass]="{'is-valid': ipackName.valid && ipackName.touched,'is-invalid':!ipackName.valid  && ipackName.touched}"
-            
-            id="ipackName"
-            [(ngModel)]="metadata.ipackName"
-            #ipackName="ngModel"
+            [ngClass]="{
+              'is-valid': iPackName.valid && iPackName.touched,
+              'is-invalid': !iPackName.valid && iPackName.touched
+            }"
+            id="iPackName"
+            [(ngModel)]="metadata.iPackName"
+            #iPackName="ngModel"
             required
-            placeholder="Enter IpackName"
-            name="ipackName"
+            placeholder="Enter IPackName"
+            name="iPackName"
           />
         </div>
         <div style="padding-top: 1rem" class="d-flex justify-content-between">
           <small id="iname_note" class="form-text text-muted"
-            >Note- IpackName should be same as Name.</small
+            >Note- IPackName should be same as Name.</small
           >
           <button
             (click)="openDialog()"
             type="button"
-            [disabled]="!metadata.ipackName"
+            [disabled]="!metadata.iPackName"
             class="btn btn-primary"
           >
             Verify
           </button>
         </div>
-       
       </div>
       <br />
-      <pm-ilp></pm-ilp>
-      <ng-container *ngIf="isIpackNameValidated">
+      <!-- <pm-ilp> </pm-ilp> -->
+
+      <div
+        style="
+          display: flex;
+          justify-content: flex-end;
+          width: 100%;
+          padding: 0;
+        "
+      >
+        <button
+          (click)="openDialogIlp()"
+          type="button"
+          class="btn btn-info btn-sm"
+        >
+          create Intregation List Parameter
+        </button>
+        <br />
+      </div>
+      <br    />
+      <ng-container *ngIf="isIPackNameValidated">
         <ng-container *ngFor="let section of metadata.sections; let i = index">
           <div *ngFor="let step of section.steps" class="step-container">
-       
             <mat-accordion *ngIf="step.componentName !== 'APIDisplayComponent'">
               <mat-expansion-panel hideToggle>
                 <mat-expansion-panel-header>
@@ -234,7 +256,8 @@
       type="text"
       class="form-control half"
       id="content"
-      rows="5" cols="40"
+      rows="5"
+      cols="40"
       required
       [(ngModel)]="step?.config.content"
       placeholder="Enter content"
@@ -284,11 +307,17 @@
         </div>
         <br />
         <!-- <div class="d-flex justify-content-between"> -->
-          <div style="display:flex; justify-content:flex-end; width:100%; padding:0;">
+        <div
+          style="
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+            padding: 0;
+          "
+        >
           <button
             type="button"
             class="btn btn-light"
-            
             (click)="removeInput(j, step.config.headers)"
           >
             Remove
@@ -613,11 +642,10 @@
     </div>
   </div>
   <br />
-  
+
   <div>
     <div class="form-group">
-      <div *ngFor="let rowspe of step.config.rows ; let j = index">
-        
+      <div *ngFor="let rowspe of step.config.rows; let j = index">
         <h3>Input :</h3>
         <div class="card">
           <div class="card-body">
@@ -659,12 +687,11 @@
                     class="form-select half"
                     id="templateName"
                     required
-                    [(ngModel)]="
-                      rowspe.input.name "
-
+                    [(ngModel)]="rowspe.input.name"
                     name="templateName"
                   >
-                    <option [value]="'dimensions_parameters_'+tempName"
+                    <option
+                      [value]="'dimensions_parameters_' + tempName"
                       *ngFor="let tempName of templateName.keys()"
                     >
                       {{ tempName }}
@@ -700,11 +727,12 @@
                     "
                     placeholder="userPrompted"
                     name="userPrompted"
+                    
                   />
                 </div> -->
 
                 <div class="d-flex" style="padding-bottom: 16px">
-                  <label>UserPrompted </label>
+                  <label>UserPrompted  :</label>
                   <input
                     class="form-check-input"
                     type="checkbox"
@@ -714,6 +742,7 @@
                         .staticObjectProperties.userPrompted
                     "
                     name="userPrompted"
+                    style="margin-left: 230px;"
                   />
                 </div>
 
@@ -810,8 +839,15 @@
             </div>
           </div>
         </div>
-        <br>
-        <div style="display:flex; justify-content:flex-end; width:100%; padding:0;">
+        <br />
+        <div
+          style="
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+            padding: 0;
+          "
+        >
           <button
             type="button"
             class="btn btn-light"
@@ -993,24 +1029,26 @@
     />
   </div> -->
   <div class="d-flex" style="padding-bottom: 16px">
-    <label>scheduleLabel </label>
+    <label>scheduleLabel :</label>
     <input
       class="form-check-input"
       type="checkbox"
       id="scheduleLabel"
       [(ngModel)]="step.config.runOptions.scheduleLabel"
       name="scheduleLabel"
+      style="margin-left: 250px;"
     />
   </div>
   <br />
   <div class="d-flex" style="padding-bottom: 16px">
-    <label>manualLabel </label>
+    <label>manualLabel :</label>
     <input
       class="form-check-input"
       type="checkbox"
       id="manualLabel"
       [(ngModel)]="step.config.runOptions.manualLabel"
       name="manualLabel"
+      style="margin-left: 260px;"
     />
   </div>
   <!-- <div class="d-flex justify-content-between">

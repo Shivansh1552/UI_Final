@@ -1,1 +1,105 @@
-<button (click)="openModel()">Add Intrgation List Parameter</button>
+<!-- {{data | json}} -->
+<div mat-dialog-content>
+  <h2>Intregation List Parameter</h2>
+
+  <div
+    style="display: flex; justify-content: flex-end; width: 100%; padding: 0"
+  >
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="openDialogCreateIlp()"
+    >
+      create
+    </button>
+  </div>
+  <br />
+
+  <!-- <mat-form-field appearance="fill">
+    <mat-label> name </mat-label>
+    <input
+      matInput
+      [(ngModel)]="data.name"
+      required
+      [ngModelOptions]="{ standalone: true }"
+    />
+  </mat-form-field> -->
+
+  <div class="d-flex">
+    <h3>Name :</h3>
+    <input
+      type="text"
+      class="form-control half"
+      [ngClass]="{
+        'is-valid': name.valid && name.touched,
+        'is-invalid': !name.valid && name.touched
+      }"
+      id="name"
+      required
+      [(ngModel)]="data.name"
+      name="name"
+      #name="ngModel"
+      style="width: 50%; margin-left: 70px"
+    />
+  </div>
+  <br />
+  <!-- <mat-form-field appearance="fill">
+    <mat-label> description </mat-label>
+    <input
+      matInput
+      [(ngModel)]="data.description"
+      required
+      [ngModelOptions]="{ standalone: true }"
+    />
+  </mat-form-field> -->
+
+  <div class="d-flex">
+    <h3>Description :</h3>
+    <textarea
+      type="text"
+      class="form-control half"
+      [ngClass]="{
+        'is-valid': description.valid && description.touched,
+        'is-invalid': !description.valid && description.touched
+      }"
+      id="description"
+      [(ngModel)]="data.description"
+      name="description"
+      #description="ngModel"
+      style="width: 50%; margin-left: 40px"
+    ></textarea>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="popUpClose()" cdkFocusInitial>Save</button>
+</div>
+<br       />
+
+<!-- <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+   
+      
+  <ng-container matColumnDef="position">
+    <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+  </ng-container>
+
+
+  <ng-container matColumnDef="weight">
+    <mat-header-cell *matHeaderCellDef> Weight </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.weight}} </mat-cell>
+  </ng-container>
+
+
+  <ng-container matColumnDef="symbol">
+    <mat-header-cell *matHeaderCellDef> Symbol </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.symbol}} </mat-cell>
+  </ng-container>
+  
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table> -->

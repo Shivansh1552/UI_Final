@@ -1,7 +1,7 @@
 export const MetadataWithCrt = {
   id: '',
   metadataName: '',
-  ipackName: '',
+  iPackName: '',
   version: '2',
   extraTransferFields: [
     {
@@ -15,7 +15,7 @@ export const MetadataWithCrt = {
         {
           name: 'Overview',
           componentName: 'StaticContentComponent',
-          title: '',
+          title: 'Overview',
           description: '',
           config: {
             content: '',
@@ -67,14 +67,14 @@ export const MetadataWithCrt = {
             },
           },
           description: '',
-          name: 'setup',
+          name: 'Setup',
           title: '',
         },
         {
           componentName: 'StaticPageEntryComponent',
           name: 'Parameters',
           description: '',
-          title: '',
+          title: 'Parameters',
           config: {
             valuePopulatedApi: {
               url: '',
