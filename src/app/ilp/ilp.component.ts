@@ -1,9 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { CreateIlpComponent } from '../create-ilp/create-ilp.component';
-import {
-  DialogData,
-  DialogDataIlp,
-} from '../metadata-create-form/metadata-form.component';
 
 import {
   MatDialog,
@@ -15,15 +11,10 @@ export interface DialogDataCreateIlp {
   name: string;
   description: string;
   value: string;
-  defaultValue: string;
-//  position: number;
+  defaultValue: boolean;
+  show?:string;
 }
-// export interface PeriodicElement {
-//   name: string;
-//   position: number;
-//   weight: string;
-//   symbol: string;
-// }
+
 
 @Component({
   selector: 'pm-ilp',
@@ -34,13 +25,11 @@ export class IlpComponent implements OnInit {
   name!: string;
   description!: string;
   value!: string;
-  defaultValue!: string;
+  defaultValue!: boolean;
+  newDynamic: any = {}; 
 
-  
-  //  ELEMENT_DATA: PeriodicElement[] = [
-  //   {position: 1, name: 'Hydrogen', weight: 'Alok', symbol: 'H'},
-  //   {position: 2, name: 'Hydrogen', weight: 'Alok', symbol: 'H'},
-  // ];
+  ilpRows: any[]=[]; 
+ 
 
   constructor(
     public dialog: MatDialog,
@@ -51,21 +40,42 @@ export class IlpComponent implements OnInit {
   // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnInit(): void {}
   popUpClose() {
-    this.dialogRef.close();
+    this.dialogRef.close({
+      name:this.data.name,
+      description:this.data.description,
+      listOptions:this.ilpRows
+    });
   }
- 
+  onNoClick(): void {
+    this.dialogRef.close();
+  } 
+  addIlpRows()
+  {
+    this.ilpRows.push({
+      name:'',
+      description:'',
+      value:'',
+      defaultValue: false,
+      show:'edit'
+    })
+  }
+  saveIlp(rowData: any){
+     rowData.show='save';
+  }
+  editIlp(rowData:any){
+    rowData.show='edit'
+  }
 
   openDialogCreateIlp(): void {
     const dialogRef = this.dialog.open(CreateIlpComponent, {
       height: '500px',
       width: '500px',
-      data: { name: this.name, description: this.description ,value: this.value , defaultValue:this.defaultValue},
+      data: { name: this.name, description: this.description ,listOptions:this.ilpRows},
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
       console.log('The dialog was closed');
     });
   }
-  // displayedColumns: string [] = ['position', 'name', 'weight', 'symbol'];
-  // dataSource = this.ELEMENT_DATA;
+
 }

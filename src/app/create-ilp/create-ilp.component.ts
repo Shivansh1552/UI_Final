@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogDataCreateIlp } from '../ilp/ilp.component';
-import { DialogData, DialogDataIlp } from '../metadata-create-form/metadata-form.component';
 
 
 @Component({

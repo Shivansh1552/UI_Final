@@ -1,0 +1,27 @@
+<mat-accordion>
+  <mat-expansion-panel hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title> Integration List Parameter </mat-panel-title>
+      <mat-panel-description> Please Open This Panel </mat-panel-description>
+    </mat-expansion-panel-header>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Description</th>
+          <th scope="col">Parameter value</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ilpRow of ilpData ">
+          <td>{{ilpRow.name}}</td>
+          <td>{{ilpRow.description}}</td>
+          <td>{{ilpRow.listOptions | json}}</td>
+
+          <td><mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="edit"></mat-icon></td>
+        </tr>
+      </tbody>
+    </table>
+  </mat-expansion-panel>
+</mat-accordion>

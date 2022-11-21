@@ -38,16 +38,17 @@ export namespace metadataParameterTypeTip {
 }
 
 export enum templateName{
-  "Update Existing Punches",
-  "Source Time Format",
+  "Assign override Types",
+  "Build Job Transfer From Primary Job",
+  "Delete File After Processing",
+  "File Structure",
+  "Import Historic Punches",
   "Source Date Format",
   "Source File Name",
+  "Source Time Format",
   "SourceDirectory",
-  "Build Job Transfer From Primary Job",
   "Translate Punch Override Type",
-  "Import Historic Punches",
-  "Delete File After Processing"
-
+  "Update Existing Punches"
 }
 
 export namespace templateName {

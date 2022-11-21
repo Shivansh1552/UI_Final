@@ -5,7 +5,7 @@
 import { style } from '@angular/animations';
 import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { ApiDisplayConfig, HeadersConfig, IMetadata, StaticConfig } from '../metadata';
+import { ApiDisplayConfig, DialogDataIlp, HeadersConfig, IMetadata, listOptions, StaticConfig } from '../metadata';
 import { MetadataService } from '../metadata.service';
 import * as uuid from 'uuid';
 import { HeaderConfig } from '../Models/static-content/header-config.model';
@@ -24,15 +24,7 @@ import { metadataParameterTypeTip } from '../metadata.constant';
 import { templateName } from '../metadata.constant';
 import { IlpComponent } from '../ilp/ilp.component';
 
-export interface DialogData {
-  processName: string;
-  processType: string;
-}
 
-export interface DialogDataIlp {
-  name: string;
-  description: string;
-}
 
 @Component({
   selector: 'app-metadata-form',
@@ -46,6 +38,8 @@ export class MetadataFormComponent {
   
   name!: string;
   description!: string;
+  ilpData: DialogDataIlp[]=[];
+  
 
   readonly metadataParameterType= metadataParameterType;
   readonly metadataParameterTypeTip= metadataParameterTypeTip;
@@ -106,12 +100,11 @@ export class MetadataFormComponent {
     const dialogRef = this.dialog.open(IlpComponent, {
       height:'1000px',
       width: '2000px',
-      data: { name: this.name, description: this.description },
+      data: { name: this.name, description: this.description , listOptions:[] },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
-     // this.checkBoomi();
+      this.ilpData.push(result);
     });
   }
 
@@ -126,6 +119,10 @@ export class MetadataFormComponent {
   removeRows(index: any, rows: any)
   {
     rows.splice(index, 1);
+  }
+
+  removeCrt(index: any, files: any){
+    files.splice(index, 1);
   }
   
   getUUID() {
@@ -148,9 +145,7 @@ export class MetadataFormComponent {
         name: '',
         placeholder: '',
         type: '',
-        validations: '',
-       
-                        
+        validations: '',                    
       },
     });
   }

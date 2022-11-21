@@ -33,10 +33,10 @@ export const MetadataWithCrt = {
             rows: [
               {
                 input: {
-                  hint: '',
-                  name: '',
-                  placeholder: '',
-                  type: '',
+                  hint: 'Integration Name',
+                  name: 'integrationName',
+                  placeholder: 'Integration Name',
+                  type: 'text',
                   validations: [
                     {
                       type: '',
@@ -46,13 +46,13 @@ export const MetadataWithCrt = {
                 },
               },
             ],
-            ddLabel: '',
-            transferFieldKey: '',
+            ddLabel: 'SFTP Connection',
+            transferFieldKey: 'dimensions_sftpConnectionId',
             sourceApi: {
-              path: '',
-              authType: '',
-              idField: '',
-              labelField: '',
+              path: '/sftp-connections',
+              authType: 'Dimensions',
+              idField: 'sftpConnectionId',
+              labelField: 'sftpConnectionName',
             },
             displayItems: [
               {
@@ -63,12 +63,12 @@ export const MetadataWithCrt = {
             ],
             testConfiguration: true,
             testApi: {
-              authType: '',
+              authType: 'Dimensions',
             },
           },
           description: '',
           name: 'Setup',
-          title: '',
+          title: 'Setup',
         },
         {
           componentName: 'StaticPageEntryComponent',
@@ -77,15 +77,15 @@ export const MetadataWithCrt = {
           title: 'Parameters',
           config: {
             valuePopulatedApi: {
-              url: '',
-              authType: '',
+              url: '/falcon-process-parameters/',
+              authType: 'Dimensions',
             },
             rows: [
               {
                 input: {
                   name: '',
                   saveValueAsObjectConfiguration: {
-                    editableProperty: '',
+                    editableProperty: 'defaultValue',
                     staticObjectProperties: {
                       name: '',
                       userPrompted: '',
@@ -104,7 +104,7 @@ export const MetadataWithCrt = {
         {
           name: 'Cross Reference',
           title: 'Cross Reference',
-          description: '',
+          description: 'Lorem ipsum dolor sit amet...',
           componentName: 'CRTOverviewComponent',
           config: {
             description: '',
@@ -132,7 +132,7 @@ export const MetadataWithCrt = {
           config: {
             description: '',
             runOptions: {
-              sectionLabel: '',
+              sectionLabel: 'File Import Settings File Import Settings File Import Settings File Import Settings File Import Settings File Import Settings"',
               scheduleLabel: '',
               manualLabel: '',
             }

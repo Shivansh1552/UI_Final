@@ -21,6 +21,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BoomiLogInPopUpComponent } from './boomi-log-in-pop-up/boomi-log-in-pop-up.component';
 import { IlpComponent} from './ilp/ilp.component';
 import { CreateIlpComponent } from './create-ilp/create-ilp.component';
+import { IlpTableComponent } from './ilp-table/ilp-table.component';
 @NgModule({
   declarations: [
     AddMetadataComponent,
@@ -33,7 +34,8 @@ import { CreateIlpComponent } from './create-ilp/create-ilp.component';
     MetadataFormComponent,
     StaticContentComponent,
     StepsComponent,
-    StepsConfigComponent
+    StepsConfigComponent,
+    IlpTableComponent
   ],
   imports: [
     MaterialExampleModule,

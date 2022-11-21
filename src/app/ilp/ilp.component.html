@@ -1,8 +1,8 @@
-<!-- {{data | json}} -->
+{{data | json}}
 <div mat-dialog-content>
-  <h2>Intregation List Parameter</h2>
+  <h2>Integration List Parameter</h2>
 
-  <div
+  <!-- <div
     style="display: flex; justify-content: flex-end; width: 100%; padding: 0"
   >
     <button
@@ -12,7 +12,7 @@
     >
       create
     </button>
-  </div>
+  </div> -->
   <br />
 
   <!-- <mat-form-field appearance="fill">
@@ -39,7 +39,7 @@
       [(ngModel)]="data.name"
       name="name"
       #name="ngModel"
-      style="width: 50%; margin-left: 70px"
+      style="width: 50%; margin-left: 80px"
     />
   </div>
   <br />
@@ -70,36 +70,104 @@
     ></textarea>
   </div>
 </div>
-<div mat-dialog-actions>
+<div style="display: flex; justify-content: flex-end; width: 100%; padding: 0">
   <button mat-button (click)="popUpClose()" cdkFocusInitial>Save</button>
+  <button mat-button (click)="onNoClick()" cdkFocusInitial>Cancel</button>
 </div>
-<br       />
+<br />
 
-<!-- <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-   
-      
-  <ng-container matColumnDef="position">
-    <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
-    <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
-  </ng-container>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Description</th>
+      <th scope="col">Value</th>
+      <th scope="col">Default value</th>
+      <th scope="col">
+        <button class="btn btn-secondary" (click)="addIlpRows()">
+          Add Rows
+        </button>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let rowData of ilpRows">
+      <td>
+        <span *ngIf="rowData.show !== 'edit'"> {{ rowData.name }}</span>
+        <input
+          *ngIf="rowData.show === 'edit'"
+          type="text"
+          class="form-control"
+          [ngClass]="{
+            'is-valid': ilpName1.valid && ilpName1.touched,
+            'is-invalid': !ilpName1.valid && ilpName1.touched
+          }"
+          #ilpName1="ngModel"
+          required
+          name="ilpName1"
+          [(ngModel)]="rowData.name"
+        />
+      </td>
+      <td>
+        <span *ngIf="rowData.show !== 'edit'"> {{ rowData.description }}</span>
+        <span *ngIf="rowData.show === 'edit'">
+          <textarea
+            type="text"
+            class="form-control"
+            [ngClass]="{
+              'is-valid': description.valid && description.touched,
+              'is-invalid': !description.valid && description.touched
+            }"
+            #description="ngModel"
+            required
+            name="ilpDesc"
+            id="ilpDesc"
+            [(ngModel)]="rowData.description"
+          ></textarea>
+        </span>
+      </td>
+      <td>
+        <span *ngIf="rowData.show !== 'edit'"> {{ rowData.value }}</span>
+        <span *ngIf="rowData.show === 'edit'">
+          <input
+            type="text"
+            class="form-control"
+            [ngClass]="{
+              'is-valid': ilpValue.valid && ilpValue.touched,
+              'is-invalid': !ilpValue.valid && ilpValue.touched
+            }"
+            #ilpValue="ngModel"
+            required
+            name="ilpValue"
+            [(ngModel)]="rowData.value"
+          />
+        </span>
+      </td>
+      <td>
+        <span *ngIf="rowData.show !== 'edit'"> {{ rowData.defaultValue }}</span>
 
-  <ng-container matColumnDef="name">
-    <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-    <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
-  </ng-container>
-
-
-  <ng-container matColumnDef="weight">
-    <mat-header-cell *matHeaderCellDef> Weight </mat-header-cell>
-    <mat-cell *matCellDef="let element"> {{element.weight}} </mat-cell>
-  </ng-container>
-
-
-  <ng-container matColumnDef="symbol">
-    <mat-header-cell *matHeaderCellDef> Symbol </mat-header-cell>
-    <mat-cell *matCellDef="let element"> {{element.symbol}} </mat-cell>
-  </ng-container>
-  
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-  </mat-table> -->
+        <input
+          *ngIf="rowData.show === 'edit'"
+          class="form-check-input"
+          type="checkbox"
+          id="ilpDefaultValue"
+          [(ngModel)]="rowData.defaultValue"
+          name="ilpDefaultValue"
+        />
+      </td>
+      <td>
+        <button *ngIf="rowData.show !== 'edit'" class="btn btn-light" (click)="editIlp(rowData)">
+          Edit
+        </button>
+        <button
+          *ngIf="rowData.show === 'edit'"
+          [disabled]="!(rowData.name && rowData.description && rowData.value) "
+          class="btn btn-success"
+          (click)="saveIlp(rowData)"
+        >
+          Save
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

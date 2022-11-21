@@ -1,7 +1,7 @@
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { DialogData } from '../metadata-create-form/metadata-form.component';
+import { DialogData } from '../metadata';
 
 @Component({
   selector: 'pm-boomi-log-in-pop-up',
@@ -19,5 +19,8 @@ export class BoomiLogInPopUpComponent implements OnInit {
   {
     this.dialogRef.close();
   }
-  
+  onNoClick()
+  {
+    this.dialogRef.close();
+  }
 }
