@@ -2,11 +2,30 @@
   <p>Enter Boomi details</p>
   <mat-form-field appearance="fill">
     <mat-label>process name</mat-label>
-    <input  matInput [(ngModel)]="data.processName" required [ngModelOptions]="{standalone: true}">
+    <input
+      matInput
+      [(ngModel)]="data.processName"
+      required
+      [ngModelOptions]="{ standalone: true }"
+    />
   </mat-form-field>
   <mat-form-field appearance="fill">
     <mat-label>process type</mat-label>
-    <input matInput [(ngModel)]="data.processType" required [ngModelOptions]="{standalone: true}">
+    <input
+      matInput
+      [(ngModel)]="data.processType"
+      required
+      [ngModelOptions]="{ standalone: true }"
+    />
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>process description</mat-label>
+    <textarea
+      matInput
+      [(ngModel)]="data.processDescription"
+      required
+      [ngModelOptions]="{ standalone: true }"
+    ></textarea>
   </mat-form-field>
 </div>
 

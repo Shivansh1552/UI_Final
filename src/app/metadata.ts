@@ -162,6 +162,7 @@ export interface RunOptions {
 export interface DialogData {
   processName: string;
   processType: string;
+  processDescription: string;
 }
 
 

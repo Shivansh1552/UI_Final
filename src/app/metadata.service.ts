@@ -5,7 +5,7 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, tap, throwError, map } from 'rxjs';
-import { envExtensionMockdata } from './env-extension-mockdata';
+import { boomiMockdata } from './env-extension-mockdata';
 import { IMetadata } from './metadata';
 import { of } from 'rxjs';
 
@@ -57,6 +57,6 @@ export class MetadataService {
   public getEnvionmentExtensionValues(name: string){
     //  const url='we need to give url';
     //  return this.http.get(url);
-     return of(envExtensionMockdata);
+     return of(boomiMockdata);
   }
 }

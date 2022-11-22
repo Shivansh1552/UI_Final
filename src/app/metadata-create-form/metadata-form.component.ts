@@ -39,6 +39,8 @@ import { IlpComponent } from '../ilp/ilp.component';
 export class MetadataFormComponent {
   processName!: string;
   processType!: string;
+  processDescription?: string;
+
   currentUrl!: string;
 
   name!: string;
@@ -85,18 +87,21 @@ export class MetadataFormComponent {
     } else {
       this.metadata = MetadataWithCrt;
       this.metadata.id = uuid.v4();
-      this.ilpData=[];
+      this.ilpData = [];
     }
   }
 
   openDialog(): void {
     const dialogRef = this.dialog.open(BoomiLogInPopUpComponent, {
       width: '250px',
-      data: { processName: this.processName, processType: this.processType },
+      data: {
+        processName: this.processName,
+        processType: this.processType,
+        processDescription: this.processDescription,
+      },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-     
       this.checkBoomi();
     });
   }
@@ -109,9 +114,9 @@ export class MetadataFormComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-     if(result){
-      this.ilpData.push(result);
-     }
+      if (result) {
+        this.ilpData.push(result);
+      }
     });
   }
 
@@ -132,7 +137,7 @@ export class MetadataFormComponent {
   getUUID() {
     // return  uuid();
     const id = uuid.v4();
-   
+
     return id;
   }
 
@@ -198,8 +203,8 @@ export class MetadataFormComponent {
     });
   }
   onSubmit() {
-    if(this.ilpData?.length>0){
-      this.metadata.listParam=this.ilpData;
+    if (this.ilpData?.length > 0) {
+      this.metadata.listParam = this.ilpData;
     }
     const metadataObj: MetadataModel = {
       id: this.metadata.id,
@@ -208,7 +213,6 @@ export class MetadataFormComponent {
     this.save(metadataObj);
   }
 
-  
   checkBoomi() {
     if (this.metadata.iPackName) {
       this.isIPackNameValidated = true;
@@ -216,17 +220,35 @@ export class MetadataFormComponent {
     this.metaService
       .getEnvionmentExtensionValues(this.metadata.iPackName)
       .subscribe((data) => {
-        
         this.setUpPageMetadataValues(data);
       });
   }
   setUpPageMetadataValues(data: any) {
     const tempSetupMetadata = {} as ApiDisplayConfig;
-    // tempSetupMetadata.sourceApi=data.name; //only for understanding.
+    let crtIndex: any = undefined;
+    if (data.crtDetails) {
+      const crtTemp = this.metadata.sections[0].steps.filter(
+        (ele: { componentName: string }, index: number) => {
+          if (ele.componentName == 'CRTOverviewComponent') {
+            crtIndex = index;
+            return true;
+          } else {
+            return false;
+          }
+        }
+      );
+      crtTemp[0].config.files = data.crtDetails.map((ele: string) => {
+        return {
+          crtName: ele,
+          headerRow: '',
+        };
+      });
+      this.metadata.sections[0].steps[crtIndex] = crtTemp[0];
+    }
   }
 
   openEditIlpPopUp(ilpRowData: any) {
-   const ilpDialogRef= this.dialog.open(IlpComponent, {
+    const ilpDialogRef = this.dialog.open(IlpComponent, {
       height: '1000px',
       width: '2000px',
       data: {
@@ -237,13 +259,13 @@ export class MetadataFormComponent {
     });
 
     ilpDialogRef.afterClosed().subscribe((result) => {
-      if(result){
-      for(let i=0;i<this.ilpData.length;i++){
-        if(this.ilpData[i].name==result.name){
-          this.ilpData[i]=result;
+      if (result) {
+        for (let i = 0; i < this.ilpData.length; i++) {
+          if (this.ilpData[i].name == result.name) {
+            this.ilpData[i] = result;
+          }
         }
       }
-    }
     });
   }
 
