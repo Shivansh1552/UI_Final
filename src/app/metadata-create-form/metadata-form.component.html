@@ -85,8 +85,8 @@
         </div>
       </div>
       <br />
-    
-      <section class="ilp-container" *ngIf="isIPackNameValidated ">
+
+      <section class="ilp-container" *ngIf="isIPackNameValidated">
         <hr />
         <div
           style="
@@ -97,7 +97,6 @@
           "
         >
           <button
-            
             (click)="openDialogIlp()"
             type="button"
             class="btn btn-info btn-sm"
@@ -106,13 +105,13 @@
           </button>
           <br />
         </div>
-        <br   />
-       
-        <pm-ilp-table *ngIf="ilpData" [ilpData]="ilpData"></pm-ilp-table>
+        <br />
+
+        <pm-ilp-table *ngIf="ilpData" [ilpData]="ilpData" (editIlpRow)="openEditIlpPopUp($event)"></pm-ilp-table>
         <hr />
       </section>
       <br />
-     
+
       <ng-container *ngIf="isIPackNameValidated">
         <ng-container *ngFor="let section of metadata.sections; let i = index">
           <div *ngFor="let step of section.steps" class="step-container">
@@ -1086,4 +1085,3 @@
     />
   </div> -->
 </ng-template>
-

@@ -13,8 +13,20 @@ export interface Metadata {
   version: string;
   extraTransferFields: ExtraTransferFields[];
   sections: Section[];
+  listParam?:DialogDataIlp[];
 }
 
+export interface DialogDataIlp {
+  name: string;
+  description: string;
+  listOptions:ListOptions[];
+}
+export interface ListOptions{
+  name:string;
+  description:string;
+  value:string;
+  defaultValue:boolean;
+}
 export interface ExtraTransferFields {
   key: string;
   value: string;
@@ -152,14 +164,4 @@ export interface DialogData {
   processType: string;
 }
 
-export interface DialogDataIlp {
-  name: string;
-  description: string;
-  listOptions:listOptions[];
-}
-export interface listOptions{
-  name:string;
-  description:string;
-  value:string;
-  defaultValue:boolean;
-}
+

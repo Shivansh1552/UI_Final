@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+/* eslint-disable @angular-eslint/no-empty-lifecycle-method */
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DialogDataIlp } from '../metadata';
 
 @Component({
@@ -8,12 +9,17 @@ import { DialogDataIlp } from '../metadata';
 })
 export class IlpTableComponent implements OnInit {
   panelOpenState = false;
+  @Output() editIlpRow: EventEmitter<any> = new EventEmitter();
+  
   @Input()
   ilpData!: DialogDataIlp[];
   constructor() { }
-
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
+ 
   ngOnInit(): void {
   }
+  editIlp(ilpRow :any){
+    this.editIlpRow.emit(ilpRow);
+  }
+
 
 }

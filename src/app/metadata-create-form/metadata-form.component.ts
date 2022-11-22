@@ -5,7 +5,14 @@
 import { style } from '@angular/animations';
 import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { ApiDisplayConfig, DialogDataIlp, HeadersConfig, IMetadata, listOptions, StaticConfig } from '../metadata';
+import {
+  ApiDisplayConfig,
+  DialogDataIlp,
+  HeadersConfig,
+  IMetadata,
+  ListOptions,
+  StaticConfig,
+} from '../metadata';
 import { MetadataService } from '../metadata.service';
 import * as uuid from 'uuid';
 import { HeaderConfig } from '../Models/static-content/header-config.model';
@@ -24,8 +31,6 @@ import { metadataParameterTypeTip } from '../metadata.constant';
 import { templateName } from '../metadata.constant';
 import { IlpComponent } from '../ilp/ilp.component';
 
-
-
 @Component({
   selector: 'app-metadata-form',
   templateUrl: './metadata-form.component.html',
@@ -35,15 +40,14 @@ export class MetadataFormComponent {
   processName!: string;
   processType!: string;
   currentUrl!: string;
-  
+
   name!: string;
   description!: string;
-  ilpData: DialogDataIlp[]=[];
-  
+  ilpData: DialogDataIlp[] = [];
 
-  readonly metadataParameterType= metadataParameterType;
-  readonly metadataParameterTypeTip= metadataParameterTypeTip;
-  readonly templateName= templateName;
+  readonly metadataParameterType = metadataParameterType;
+  readonly metadataParameterTypeTip = metadataParameterTypeTip;
+  readonly templateName = templateName;
 
   @ViewChild('viewContainerRef') myForm!: any;
   public pageTitle = 'form';
@@ -60,27 +64,28 @@ export class MetadataFormComponent {
     private router: Router,
     public dialog: MatDialog,
     private navigateEditMetadataService: NavigateEditMetadataService,
-    private route: ActivatedRoute,
-
+    private route: ActivatedRoute
   ) {
     this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd ) {
+      if (event instanceof NavigationEnd) {
         this.currentUrl = event.url;
         this.route.params.subscribe((param) => {
-          this.loadMetaData(param['id'])
-        })
+          this.loadMetaData(param['id']);
+        });
       }
     });
   }
 
-  loadMetaData(id:string) {
+  loadMetaData(id: string) {
     if (this.currentUrl.includes('editMetadata')) {
       this.metaService.getDataById(id).subscribe((data) => {
         this.metadata = JSON.parse(data.metadata);
+        this.ilpData = this.metadata?.listParam ?? [];
       });
     } else {
       this.metadata = MetadataWithCrt;
-      this.metadata.id = uuid.v4();      
+      this.metadata.id = uuid.v4();
+      this.ilpData=[];
     }
   }
 
@@ -91,44 +96,43 @@ export class MetadataFormComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
+     
       this.checkBoomi();
     });
   }
 
   openDialogIlp(): void {
     const dialogRef = this.dialog.open(IlpComponent, {
-      height:'1000px',
+      height: '1000px',
       width: '2000px',
-      data: { name: this.name, description: this.description , listOptions:[] },
+      data: { name: this.name, description: this.description, listOptions: [] },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+     if(result){
       this.ilpData.push(result);
+     }
     });
   }
 
-  ngOnInit() {
-   
-  }
+  ngOnInit() {}
 
   removeInput(index: any, headers: any) {
     headers.splice(index, 1);
   }
 
-  removeRows(index: any, rows: any)
-  {
+  removeRows(index: any, rows: any) {
     rows.splice(index, 1);
   }
 
-  removeCrt(index: any, files: any){
+  removeCrt(index: any, files: any) {
     files.splice(index, 1);
   }
-  
+
   getUUID() {
     // return  uuid();
     const id = uuid.v4();
-    console.log(id);
+   
     return id;
   }
 
@@ -145,7 +149,7 @@ export class MetadataFormComponent {
         name: '',
         placeholder: '',
         type: '',
-        validations: '',                    
+        validations: '',
       },
     });
   }
@@ -169,13 +173,13 @@ export class MetadataFormComponent {
         defaultValue: '',
         hint: '',
         type: '',
-        saveValueAsObjectConfiguration:{
-          staticObjectProperties:{
-            name:'',
+        saveValueAsObjectConfiguration: {
+          staticObjectProperties: {
+            name: '',
             userPrompted: true,
             parameterType: true,
-          }
-        }
+          },
+        },
       },
       label: '',
     });
@@ -188,17 +192,15 @@ export class MetadataFormComponent {
   }
 
   save(obj: any) {
-    this.metaService
-      .addMetadata(obj)
-      .subscribe((result) => {
-        console.log(result)
-        this.router.navigate(['/metadata']);
-      }
-      
-      );
-      
+    this.metaService.addMetadata(obj).subscribe((result) => {
+      console.log(result);
+      this.router.navigate(['/metadata']);
+    });
   }
   onSubmit() {
+    if(this.ilpData?.length>0){
+      this.metadata.listParam=this.ilpData;
+    }
     const metadataObj: MetadataModel = {
       id: this.metadata.id,
       metadata: JSON.stringify(this.metadata),
@@ -206,30 +208,47 @@ export class MetadataFormComponent {
     this.save(metadataObj);
   }
 
-  get() {
-    this.metaService.getData().subscribe((data) => {
-      console.log(data);
-    });
-  }
+  
   checkBoomi() {
     if (this.metadata.iPackName) {
       this.isIPackNameValidated = true;
     }
-    this.metaService.getEnvionmentExtensionValues(this.metadata.iPackName).subscribe(data=>{
-        console.log(data);
+    this.metaService
+      .getEnvionmentExtensionValues(this.metadata.iPackName)
+      .subscribe((data) => {
+        
         this.setUpPageMetadataValues(data);
-    })
-    
+      });
   }
-  setUpPageMetadataValues(data: any)
-  {
-    const tempSetupMetadata={} as ApiDisplayConfig;
+  setUpPageMetadataValues(data: any) {
+    const tempSetupMetadata = {} as ApiDisplayConfig;
     // tempSetupMetadata.sourceApi=data.name; //only for understanding.
+  }
+
+  openEditIlpPopUp(ilpRowData: any) {
+   const ilpDialogRef= this.dialog.open(IlpComponent, {
+      height: '1000px',
+      width: '2000px',
+      data: {
+        name: ilpRowData.name,
+        description: ilpRowData.description,
+        listOptions: ilpRowData.listOptions,
+      },
+    });
+
+    ilpDialogRef.afterClosed().subscribe((result) => {
+      if(result){
+      for(let i=0;i<this.ilpData.length;i++){
+        if(this.ilpData[i].name==result.name){
+          this.ilpData[i]=result;
+        }
+      }
+    }
+    });
   }
 
   // reset()
   // {
   //    this.metadata.sections=[];
   // }
-
 }

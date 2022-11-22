@@ -1,4 +1,4 @@
-{{data | json}}
+<!-- {{data | json}} -->
 <div mat-dialog-content>
   <h2>Integration List Parameter</h2>
 
@@ -71,8 +71,8 @@
   </div>
 </div>
 <div style="display: flex; justify-content: flex-end; width: 100%; padding: 0">
-  <button mat-button (click)="popUpClose()" cdkFocusInitial>Save</button>
-  <button mat-button (click)="onNoClick()" cdkFocusInitial>Cancel</button>
+  <button type="button" (click)="popUpClose()" cdkFocusInitial>Save</button>
+  <button type="button" mat-button (click)="onNoClick()" cdkFocusInitial>Cancel</button>
 </div>
 <br />
 
@@ -84,8 +84,13 @@
       <th scope="col">Value</th>
       <th scope="col">Default value</th>
       <th scope="col">
-        <button class="btn btn-secondary" (click)="addIlpRows()">
-          Add Rows
+        <button  mat-icon-button title="Add Ilp Row" (click)="addIlpRows()">
+          <mat-icon
+              aria-hidden="false"
+              aria-label="Example home icon"
+              fontIcon="add"
+            ></mat-icon>
+
         </button>
       </th>
     </tr>
@@ -156,16 +161,26 @@
         />
       </td>
       <td>
-        <button *ngIf="rowData.show !== 'edit'" class="btn btn-light" (click)="editIlp(rowData)">
-          Edit
+        <button *ngIf="rowData.show !== 'edit'" title="Edit Ilp Row" mat-icon-button (click)="editIlp(rowData)">
+          <mat-icon
+          aria-hidden="false"
+          aria-label="Example home icon"
+          fontIcon="edit"
+        ></mat-icon> 
         </button>
         <button
           *ngIf="rowData.show === 'edit'"
           [disabled]="!(rowData.name && rowData.description && rowData.value) "
-          class="btn btn-success"
           (click)="saveIlp(rowData)"
+          mat-icon-button
+          title="Save Ilp Row"
         >
-          Save
+        <mat-icon
+              aria-hidden="false"
+              aria-label="Example home icon"
+              fontIcon="save"
+            ></mat-icon> 
+
         </button>
       </td>
     </tr>
