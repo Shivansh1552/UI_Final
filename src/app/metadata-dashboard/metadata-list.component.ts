@@ -90,7 +90,7 @@ export class MetadataListComponent implements OnInit, OnDestroy {
     var sJson = JSON.stringify(myJson);
     var element = document.createElement('a');
     element.setAttribute('href', "data:text/json;charset=UTF-8," + encodeURIComponent(sJson));
-    element.setAttribute('download', "primer-server-task.json");
+    element.setAttribute('download', `${myJson.name}.json`);
     element.style.display = 'none';
     document.body.appendChild(element);
     element.click(); // simulate click

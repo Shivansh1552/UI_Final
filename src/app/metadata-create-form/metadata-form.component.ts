@@ -225,26 +225,8 @@ export class MetadataFormComponent {
   }
   setUpPageMetadataValues(data: any) {
     const tempSetupMetadata = {} as ApiDisplayConfig;
-    let crtIndex: any = undefined;
-    if (data.crtDetails) {
-      const crtTemp = this.metadata.sections[0].steps.filter(
-        (ele: { componentName: string }, index: number) => {
-          if (ele.componentName == 'CRTOverviewComponent') {
-            crtIndex = index;
-            return true;
-          } else {
-            return false;
-          }
-        }
-      );
-      crtTemp[0].config.files = data.crtDetails.map((ele: string) => {
-        return {
-          crtName: ele,
-          headerRow: '',
-        };
-      });
-      this.metadata.sections[0].steps[crtIndex] = crtTemp[0];
-    }
+    this.setUpCrtMetadataValues(data);
+    this.setUpExtraTransferFieldMetadataValues(data); 
   }
 
   openEditIlpPopUp(ilpRowData: any) {
@@ -267,6 +249,49 @@ export class MetadataFormComponent {
         }
       }
     });
+  }
+  setUpCrtMetadataValues(data: any){
+    let crtIndex: any = undefined;
+    if (data.crtDetails) {
+      const crtTemp = this.metadata.sections[0].steps.filter(
+        (ele: { componentName: string }, index: number) => {
+          if (ele.componentName == 'CRTOverviewComponent') {
+             crtIndex = index;
+            return true;
+          } else {
+            return false;
+          }
+        }
+      );
+      crtTemp[0].config.files = data.crtDetails.map((ele: string) => {
+        return {
+          crtName: ele,
+          headerRow: '',
+        };
+      });
+      this.metadata.sections[0].steps[crtIndex] = crtTemp[0];
+
+    }
+  }
+  // see tomorrow
+  setUpExtraTransferFieldMetadataValues(data: any){
+    let etfIndex: any = undefined;
+    if (data.processDetails) {
+      // const etfTemp = this.metadata.extraTransferFields.filter(
+      //   (ele: any, index: number) => {
+      //        etfIndex = index;
+      //        return true;
+      //   }
+      // );
+       //console.log(etfTemp);
+      const extraTransferFields = data.processDetails.map((ele: string) => {
+        return {
+          key: '',
+          value: ele,
+        };
+      });
+      // this.metadata.extraTransferFields[etfIndex] = etfTemp[0];
+    }
   }
 
   // reset()

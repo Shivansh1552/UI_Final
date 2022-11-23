@@ -1,13 +1,31 @@
-export const MetadataWithCrt = {
+import { Metadata } from "src/app/metadata";
+import { boomiMockdata } from "src/app/env-extension-mockdata"
+export const MetadataWithCrt: Metadata = {
   id: '',
-  metadataName: '',
+  name: '',
   iPackName: '',
   version: '2',
   extraTransferFields: [
     {
-      key: '',
-      value: '',
+      key: 'dimensions_integrationTemplate',
+      value: boomiMockdata.processDetails.processName,
     },
+    {
+      key: 'dimensions_processDescription',
+      value: boomiMockdata.processDetails.processDescription,
+    },
+    {
+      key: 'dimensions_integrationType',
+      value: boomiMockdata.processDetails.processType,
+    },
+    {
+      key: 'dimensions_runAsSystemuser',
+      value: 'false',
+    },
+    {
+      key: 'dimensions_source',
+      value: 'TIP',
+    }
   ],
   sections: [
     {
@@ -88,7 +106,7 @@ export const MetadataWithCrt = {
                     editableProperty: 'defaultValue',
                     staticObjectProperties: {
                       name: '',
-                      userPrompted: '',
+                      userPrompted: false,
                       parameterType: '',
                     },
                   },
@@ -129,16 +147,18 @@ export const MetadataWithCrt = {
           componentName: 'DimensionsSchedulingComponent',
           name: 'Scheduling',
           title: 'Scheduling',
+          description:'',
           config: {
             description: '',
             runOptions: {
-              sectionLabel: 'File Import Settings File Import Settings File Import Settings File Import Settings File Import Settings File Import Settings"',
+              sectionLabel:
+                'File Import Settings File Import Settings File Import Settings File Import Settings File Import Settings File Import Settings"',
               scheduleLabel: '',
               manualLabel: '',
-            }
-          }
-        }
-      ]
-    }
-  ]
+            },
+          },
+        },
+      ],
+    },
+  ],
 };

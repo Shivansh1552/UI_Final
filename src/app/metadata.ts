@@ -8,7 +8,7 @@ export class IMetadata {
 
 export interface Metadata {
   id: string;
-  metadataName: string;
+  name: string;
   iPackName: string;
   version: string;
   extraTransferFields: ExtraTransferFields[];
@@ -42,7 +42,7 @@ export interface Step {
   description: string;
   componentName: string;
   config:
-    | StaticConfig
+      StaticConfig
     | ApiDisplayConfig
     | StaticPageEntryConfig
     | CRTOverviewComponent
@@ -87,7 +87,7 @@ export interface Validations {
 
 export interface SourceApi {
   path: string;
-  authtype: string;
+  authType: string;
   idField: string;
   labelField: string;
 }
@@ -98,7 +98,7 @@ export interface DisplayItem {
   secure: boolean;
 }
 export interface TestAPI {
-  authtype: string;
+  authType: string;
 }
 
 export interface StaticPageEntryConfig {
@@ -116,7 +116,7 @@ export interface RowsSpe {
 export interface InputSpe {
   name: string;
   saveValueAsObjectConfiguration: SaveValueAsObjectConfiguration;
-  defaultValue: boolean;
+  defaultValue: string;
   hint: string;
   type: string;
 }
@@ -128,7 +128,7 @@ export interface SaveValueAsObjectConfiguration {
 export interface StaticObjectProperties {
   name: string;
   userPrompted: boolean;
-  parameterType: boolean;
+  parameterType: string;
 }
 export interface CRTOverviewComponent {
   description: string;

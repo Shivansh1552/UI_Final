@@ -29,7 +29,7 @@
             'is-invalid': !metadataName.valid && metadataName.touched
           }"
           id="metadataName"
-          [(ngModel)]="metadata.metadataName"
+          [(ngModel)]="metadata.name"
           #metadataName="ngModel"
           required
           placeholder="Enter Name"
@@ -868,6 +868,7 @@
   <br />
 </ng-template>
 <ng-template #crtOverviewComponent let-step="step">
+  <br />
   <!-- 
   <div class="d-flex justify-content-between">
     <label>description</label>
