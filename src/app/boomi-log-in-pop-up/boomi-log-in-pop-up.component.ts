@@ -17,7 +17,7 @@ export class BoomiLogInPopUpComponent implements OnInit {
   }
   popUpClose()
   {
-    this.dialogRef.close();
+    this.dialogRef.close(this.data);
   }
   onNoClick()
   {

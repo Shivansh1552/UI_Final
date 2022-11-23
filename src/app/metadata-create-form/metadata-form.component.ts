@@ -8,6 +8,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import {
   ApiDisplayConfig,
   DialogDataIlp,
+  ExtraTransferFields,
   HeadersConfig,
   IMetadata,
   ListOptions,
@@ -102,7 +103,7 @@ export class MetadataFormComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.checkBoomi();
+      this.checkBoomi(result);
     });
   }
 
@@ -213,20 +214,29 @@ export class MetadataFormComponent {
     this.save(metadataObj);
   }
 
-  checkBoomi() {
-    if (this.metadata.iPackName) {
-      this.isIPackNameValidated = true;
-    }
+  checkBoomi(result: any) {
+    const boomiVerify = {
+      ipackName: this.metadata.iPackName,
+
+      processName: result.processName,
+
+      processType: result.processType,
+
+      processDescription: result.processDescription,
+    };
     this.metaService
-      .getEnvionmentExtensionValues(this.metadata.iPackName)
+      .getEnvionmentExtensionValues(boomiVerify)
       .subscribe((data) => {
+        this.isIPackNameValidated = true;
         this.setUpPageMetadataValues(data);
+      },(err)=>{
+        console.log(err);
       });
   }
   setUpPageMetadataValues(data: any) {
     const tempSetupMetadata = {} as ApiDisplayConfig;
     this.setUpCrtMetadataValues(data);
-    this.setUpExtraTransferFieldMetadataValues(data); 
+    this.setUpExtraTransferFieldMetadataValues(data);
   }
 
   openEditIlpPopUp(ilpRowData: any) {
@@ -250,13 +260,13 @@ export class MetadataFormComponent {
       }
     });
   }
-  setUpCrtMetadataValues(data: any){
+  setUpCrtMetadataValues(data: any) {
     let crtIndex: any = undefined;
     if (data.crtDetails) {
       const crtTemp = this.metadata.sections[0].steps.filter(
         (ele: { componentName: string }, index: number) => {
           if (ele.componentName == 'CRTOverviewComponent') {
-             crtIndex = index;
+            crtIndex = index;
             return true;
           } else {
             return false;
@@ -270,27 +280,42 @@ export class MetadataFormComponent {
         };
       });
       this.metadata.sections[0].steps[crtIndex] = crtTemp[0];
-
     }
   }
-  // see tomorrow
-  setUpExtraTransferFieldMetadataValues(data: any){
+
+  setUpExtraTransferFieldMetadataValues(data: any) {
     let etfIndex: any = undefined;
+    const etfTemp: ExtraTransferFields[] = [
+      {
+        key: 'dimensions_runAsSystemuser',
+        value: 'false',
+      },
+      {
+        key: 'dimensions_source',
+        value: 'TIP',
+      },
+    ];
+
     if (data.processDetails) {
-      // const etfTemp = this.metadata.extraTransferFields.filter(
-      //   (ele: any, index: number) => {
-      //        etfIndex = index;
-      //        return true;
-      //   }
-      // );
-       //console.log(etfTemp);
-      const extraTransferFields = data.processDetails.map((ele: string) => {
-        return {
-          key: '',
-          value: ele,
-        };
-      });
-      // this.metadata.extraTransferFields[etfIndex] = etfTemp[0];
+      for (const key in data.processDetails) {
+        if (key == 'processName') {
+          etfTemp.push({
+            key: 'dimensions_integrationTemplate',
+            value: data.processDetails.processName,
+          });
+        } else if (key == 'processDescription') {
+          etfTemp.push({
+            key: 'dimensions_processDescription',
+            value: data.processDetails.processDescription,
+          });
+        } else if (key == 'processType') {
+          etfTemp.push({
+            key: 'dimensions_integrationType',
+            value: data.processDetails.processType,
+          });
+        }
+      }
+      this.metadata.extraTransferFields = etfTemp;
     }
   }
 

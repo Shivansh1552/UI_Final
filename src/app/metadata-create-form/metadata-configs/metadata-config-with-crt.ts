@@ -1,31 +1,12 @@
-import { Metadata } from "src/app/metadata";
-import { boomiMockdata } from "src/app/env-extension-mockdata"
+import { Metadata } from 'src/app/metadata';
+import { boomiMockdata } from 'src/app/env-extension-mockdata';
 export const MetadataWithCrt: Metadata = {
   id: '',
   name: '',
   iPackName: '',
   version: '2',
   extraTransferFields: [
-    {
-      key: 'dimensions_integrationTemplate',
-      value: boomiMockdata.processDetails.processName,
-    },
-    {
-      key: 'dimensions_processDescription',
-      value: boomiMockdata.processDetails.processDescription,
-    },
-    {
-      key: 'dimensions_integrationType',
-      value: boomiMockdata.processDetails.processType,
-    },
-    {
-      key: 'dimensions_runAsSystemuser',
-      value: 'false',
-    },
-    {
-      key: 'dimensions_source',
-      value: 'TIP',
-    }
+  
   ],
   sections: [
     {
@@ -57,9 +38,17 @@ export const MetadataWithCrt: Metadata = {
                   type: 'text',
                   validations: [
                     {
-                      type: '',
-                      value: '',
+                      type: 'minLength',
+                      value: '4',
                     },
+                    {
+                      type: 'maxLength',
+                      value: '50',
+                    },
+                    {
+                      type: 'pattern',
+                      value: '^[A-Za-z0-9 ]+$',
+                    }
                   ],
                 },
               },
@@ -74,8 +63,13 @@ export const MetadataWithCrt: Metadata = {
             },
             displayItems: [
               {
-                fieldName: '',
-                label: '',
+                fieldName: 'sftpHost',
+                label: 'Host URL associated with selected SFTP',
+                secure: false,
+              },
+              {
+                fieldName: 'sftpHost',
+                label: 'Port associated with selected SFTP',
                 secure: true,
               },
             ],
@@ -147,7 +141,7 @@ export const MetadataWithCrt: Metadata = {
           componentName: 'DimensionsSchedulingComponent',
           name: 'Scheduling',
           title: 'Scheduling',
-          description:'',
+          description: '',
           config: {
             description: '',
             runOptions: {

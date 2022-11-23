@@ -54,9 +54,9 @@ export class MetadataService {
       responseType: 'text',
     });
   }
-  public getEnvionmentExtensionValues(name: string){
-    //  const url='we need to give url';
-    //  return this.http.get(url);
-     return of(boomiMockdata);
+  public getEnvionmentExtensionValues(reqParams: any){
+      const url= 'http://localhost:8080/api/v1/metadataBoomi';
+      return this.http.post(url,reqParams);
+      //return of(boomiMockdata);
   }
 }
