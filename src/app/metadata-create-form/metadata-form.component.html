@@ -1,4 +1,11 @@
 ﻿<!-- {{ metadata | json }} -->
+<!-- <ngb-alert [type]="'danger'" >'this is alert' </ngb-alert> -->
+
+<div *ngIf='isLoading' class="d-flex justify-content-center text-primary loader">
+  <div class="spinner-border" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
 
 <div *ngIf="metadata?.id" class="childform" style="width: 70%">
   <form #myForm="ngForm" (ngSubmit)="onSubmit()">
@@ -108,7 +115,11 @@
         </div>
         <br />
 
-        <pm-ilp-table *ngIf="ilpData" [ilpData]="ilpData" (editIlpRow)="openEditIlpPopUp($event)"></pm-ilp-table>
+        <pm-ilp-table
+          *ngIf="ilpData"
+          [ilpData]="ilpData"
+          (editIlpRow)="openEditIlpPopUp($event)"
+        ></pm-ilp-table>
         <hr />
       </section>
       <br />
@@ -699,14 +710,19 @@
               <label>Template name :</label>
               <select
                 class="form-select half"
+                [ngClass]="{
+                  'is-valid': tempName.valid && tempName.touched,
+                  'is-invalid': !tempName.valid && tempName.touched
+                }"
                 id="templateName"
+                #tempName="ngModel"
                 required
                 [(ngModel)]="rowspe.input.name"
                 name="templateName"
               >
                 <option
                   [value]="'dimensions_parameters_' + tempName"
-                  *ngFor="let tempName of templateName.keys()"
+                  *ngFor="let tempName of templateName"
                 >
                   {{ tempName }}
                 </option>

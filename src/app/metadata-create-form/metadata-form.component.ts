@@ -43,14 +43,14 @@ export class MetadataFormComponent {
   processDescription?: string;
 
   currentUrl!: string;
-
+  isLoading = false;
   name!: string;
   description!: string;
   ilpData: DialogDataIlp[] = [];
 
   readonly metadataParameterType = metadataParameterType;
   readonly metadataParameterTypeTip = metadataParameterTypeTip;
-  readonly templateName = templateName;
+   templateName = templateName;
 
   @ViewChild('viewContainerRef') myForm!: any;
   public pageTitle = 'form';
@@ -94,7 +94,7 @@ export class MetadataFormComponent {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(BoomiLogInPopUpComponent, {
-      width: '250px',
+      width: '350px',
       data: {
         processName: this.processName,
         processType: this.processType,
@@ -103,6 +103,7 @@ export class MetadataFormComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+      this.isLoading = true;
       this.checkBoomi(result);
     });
   }
@@ -227,9 +228,16 @@ export class MetadataFormComponent {
     this.metaService
       .getEnvionmentExtensionValues(boomiVerify)
       .subscribe((data) => {
+        this.isLoading = false;
+        if(data!=null){
         this.isIPackNameValidated = true;
         this.setUpPageMetadataValues(data);
+      }
+      else{
+          this.isIPackNameValidated = false;
+      }
       },(err)=>{
+        this.isLoading = false;
         console.log(err);
       });
   }
@@ -237,6 +245,7 @@ export class MetadataFormComponent {
     const tempSetupMetadata = {} as ApiDisplayConfig;
     this.setUpCrtMetadataValues(data);
     this.setUpExtraTransferFieldMetadataValues(data);
+    this.templateName = data.parameterDetails;
   }
 
   openEditIlpPopUp(ilpRowData: any) {

@@ -23,13 +23,12 @@
     <textarea
       matInput
       [(ngModel)]="data.processDescription"
-      required
       [ngModelOptions]="{ standalone: true }"
     ></textarea>
   </mat-form-field>
 </div>
 
 <div mat-dialog-actions>
-  <button mat-button (click)="popUpClose()" cdkFocusInitial>Submit</button>
+  <button mat-button (click)="popUpClose()" [disabled]="!data.processName || !data.processType" cdkFocusInitial>Submit</button>
   <button mat-button (click)="onNoClick()" cdkFocusInitial>Cancel</button>
 </div>

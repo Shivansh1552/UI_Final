@@ -37,7 +37,7 @@ export namespace metadataParameterTypeTip {
     }
 }
 
-export enum templateName{
+export const templateName = [
   "Assign override Types",
   "Build Job Transfer From Primary Job",
   "Delete File After Processing",
@@ -49,12 +49,12 @@ export enum templateName{
   "SourceDirectory",
   "Translate Punch Override Type",
   "Update Existing Punches"
-}
+]
 
-export namespace templateName {
+// export namespace templateName {
 
-  export function keys(): Array<string>{
-    var keys = Object.keys(templateName);
-    return keys.slice(keys.length / 2, keys.length-1);
-  }
-}
+//   export function keys(): Array<string>{
+//     var keys = Object.keys(templateName);
+//     return keys.slice(keys.length / 2, keys.length-1);
+//   }
+// }

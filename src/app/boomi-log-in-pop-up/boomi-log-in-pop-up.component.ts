@@ -11,7 +11,7 @@ import { DialogData } from '../metadata';
 export class BoomiLogInPopUpComponent implements OnInit {
   
   constructor(  public dialogRef: MatDialogRef<BoomiLogInPopUpComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) {  dialogRef.disableClose = true; }
 
   ngOnInit(): void {
   }
