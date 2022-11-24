@@ -77,8 +77,9 @@ export interface InputRows {
   name: string;
   placeholder: string;
   type: string;
-  validations: Validations[];
+  validations: any[] ;
 }
+
 
 export interface Validations {
   type: string;
@@ -156,8 +157,8 @@ export interface DimensionsSchedulingComponent {
 }
 export interface RunOptions {
   sectionLabel: string;
-  scheduleLabel: string;
-  manualLabel: string;
+  scheduleLabel?: string;
+  manualLabel?: string;
 }
 export interface DialogData {
   processName: string;

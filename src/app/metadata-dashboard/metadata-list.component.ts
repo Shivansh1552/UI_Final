@@ -41,7 +41,7 @@ export class MetadataListComponent implements OnInit, OnDestroy {
   performFilter(filterBy: string): any {
     filterBy = filterBy.toLocaleLowerCase();
     return this.metadata.filter((metadata: IMetadata) =>
-      metadata.metadata.iPackName.toLocaleLowerCase().includes(filterBy)
+      metadata.metadata.name.toLocaleLowerCase().includes(filterBy)
     );
   }
 

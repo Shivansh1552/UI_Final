@@ -1072,7 +1072,8 @@
       class="form-check-input"
       type="checkbox"
       id="scheduleLabel"
-      [(ngModel)]="step.config.runOptions.scheduleLabel"
+      (change)="changeScheduleLabelValue(step.config.runOptions)"
+      [(ngModel)]="scheduleLabelValue"
       name="scheduleLabel"
       style="margin-left: 250px"
     />
@@ -1084,7 +1085,8 @@
       class="form-check-input"
       type="checkbox"
       id="manualLabel"
-      [(ngModel)]="step.config.runOptions.manualLabel"
+      (change)="changeManualLabelValue(step.config.runOptions)"
+      [(ngModel)]= "manualLabelValue"
       name="manualLabel"
       style="margin-left: 260px"
     />

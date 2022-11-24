@@ -37,6 +37,7 @@ export const MetadataWithCrt: Metadata = {
                   placeholder: 'Integration Name',
                   type: 'text',
                   validations: [
+                     "required",
                     {
                       type: 'minLength',
                       value: '4',
@@ -68,7 +69,7 @@ export const MetadataWithCrt: Metadata = {
                 secure: false,
               },
               {
-                fieldName: 'sftpHost',
+                fieldName: 'sftpPort',
                 label: 'Port associated with selected SFTP',
                 secure: true,
               },
@@ -147,8 +148,8 @@ export const MetadataWithCrt: Metadata = {
             runOptions: {
               sectionLabel:
                 'File Import Settings File Import Settings File Import Settings File Import Settings File Import Settings File Import Settings"',
-              scheduleLabel: '',
-              manualLabel: '',
+              // scheduleLabel: '',
+              // manualLabel: '',
             },
           },
         },

@@ -42,6 +42,9 @@ export class MetadataFormComponent {
   processType!: string;
   processDescription?: string;
 
+  manualLabelValue=false;
+  scheduleLabelValue=false;
+
   currentUrl!: string;
   isLoading = false;
   name!: string;
@@ -325,6 +328,22 @@ export class MetadataFormComponent {
         }
       }
       this.metadata.extraTransferFields = etfTemp;
+    }
+  }
+  changeManualLabelValue(runOptions:any){
+      if(this.manualLabelValue){
+        runOptions.manualLabel='Run Manually';
+      }
+      else{
+       delete  runOptions.manualLabel;
+      }
+  }
+  changeScheduleLabelValue(runOptions: any){
+    if(this.scheduleLabelValue){
+      runOptions.scheduleLabel='Schedule';
+    }
+    else{
+     delete  runOptions.scheduleLabel;
     }
   }
 

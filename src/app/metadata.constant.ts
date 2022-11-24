@@ -1,14 +1,14 @@
 export enum metadataParameterType{
- Boolean,
- Date,
- Dropdown,
- HyperFind,
- List,
- Number,
- Text,
- Time,
- "Time period",
- "Time period End date selector" 
+  BOOLEAN,
+  DATE,
+  DROPDOWN,
+  HYPERFIND,
+  LIST,
+  NUMBER,
+  TEXT,
+  TIME,
+  "TIME PERIOD",
+  "TIME PERIOD END DATE SELECTOR" 
 }
 
 export namespace metadataParameterType {
