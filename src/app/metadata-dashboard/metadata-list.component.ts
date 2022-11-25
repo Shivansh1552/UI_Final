@@ -68,8 +68,7 @@ export class MetadataListComponent implements OnInit, OnDestroy {
   }
 
   editMetadata(metadata: any) {
-    console.log(metadata);
-    this.navigateEditMetadataService.setMetadata(metadata);
+    // this.navigateEditMetadataService.setMetadata(metadata);
     this.router.navigate(['editMetadata',metadata.id])
   }
 

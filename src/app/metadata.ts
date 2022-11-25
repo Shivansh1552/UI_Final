@@ -113,6 +113,7 @@ export interface ValuePopulatedApi {
 export interface RowsSpe {
   input: InputSpe;
   label: string;
+  description: string;
 }
 export interface InputSpe {
   name: string;
@@ -120,6 +121,7 @@ export interface InputSpe {
   defaultValue: string;
   hint: string;
   type: string;
+  placeholder:string;
 }
 
 export interface SaveValueAsObjectConfiguration {

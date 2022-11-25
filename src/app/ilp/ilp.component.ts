@@ -1,5 +1,4 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { CreateIlpComponent } from '../create-ilp/create-ilp.component';
 
 import {
   MatDialog,
@@ -71,17 +70,9 @@ export class IlpComponent implements OnInit {
   editIlp(rowData:any){
     rowData.show='edit'
   }
-
-  openDialogCreateIlp(): void {
-    const dialogRef = this.dialog.open(CreateIlpComponent, {
-      height: '500px',
-      width: '500px',
-      data: { name: this.name, description: this.description ,listOptions:this.ilpRows},
-    });
-
-    dialogRef.afterClosed().subscribe((result: any) => {
-      console.log('The dialog was closed');
-    });
+  deleteIlp(ilpRows:any,index: number){
+    ilpRows.splice(index,1);
   }
 
+ 
 }

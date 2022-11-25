@@ -20,14 +20,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BoomiLogInPopUpComponent } from './boomi-log-in-pop-up/boomi-log-in-pop-up.component';
 import { IlpComponent} from './ilp/ilp.component';
-import { CreateIlpComponent } from './create-ilp/create-ilp.component';
 import { IlpTableComponent } from './ilp-table/ilp-table.component';
+import { SharedModule } from './shared/shared.module';
 @NgModule({
   declarations: [
     AddMetadataComponent,
     AppComponent,
     BoomiLogInPopUpComponent,
-    CreateIlpComponent,
     GetDataByIdComponent,
     GetDataComponent,
     IlpComponent,
@@ -43,6 +42,7 @@ import { IlpTableComponent } from './ilp-table/ilp-table.component';
     BrowserModule,
     FormsModule,
     HttpClientModule,
+    SharedModule,
     RouterModule.forRoot([
       { path: 'createMetadata', component: MetadataFormComponent},
       

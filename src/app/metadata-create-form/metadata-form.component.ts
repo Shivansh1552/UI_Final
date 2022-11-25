@@ -18,7 +18,7 @@ import { MetadataService } from '../metadata.service';
 import * as uuid from 'uuid';
 import { HeaderConfig } from '../Models/static-content/header-config.model';
 import { MetadataModel } from '../Models/metadata.model';
-import { MetadataWithCrt } from './metadata-configs/metadata-config-with-crt';
+// import { MetadataWithCrt } from './metadata-configs/metadata-config-with-crt';
 import {
   MatDialog,
   MatDialogRef,
@@ -31,6 +31,8 @@ import { metadataParameterType } from '../metadata.constant';
 import { metadataParameterTypeTip } from '../metadata.constant';
 import { templateName } from '../metadata.constant';
 import { IlpComponent } from '../ilp/ilp.component';
+import { MetadataConfigService } from './metadata-configs/metadata-config-service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-metadata-form',
@@ -42,18 +44,20 @@ export class MetadataFormComponent {
   processType!: string;
   processDescription?: string;
 
-  manualLabelValue=false;
-  scheduleLabelValue=false;
+  manualLabelValue = false;
+  scheduleLabelValue = false;
 
   currentUrl!: string;
   isLoading = false;
   name!: string;
   description!: string;
   ilpData: DialogDataIlp[] = [];
+  isEditMode = false;
+  subscriptions = new Subscription();
 
   readonly metadataParameterType = metadataParameterType;
   readonly metadataParameterTypeTip = metadataParameterTypeTip;
-   templateName = templateName;
+  templateName = templateName;
 
   @ViewChild('viewContainerRef') myForm!: any;
   public pageTitle = 'form';
@@ -69,29 +73,41 @@ export class MetadataFormComponent {
     private metaService: MetadataService,
     private router: Router,
     public dialog: MatDialog,
-    private navigateEditMetadataService: NavigateEditMetadataService,
+    private metadataConfigService: MetadataConfigService,
+
     private route: ActivatedRoute
   ) {
+    this.subscriptions.add(
     this.router.events.subscribe((event) => {
+      
       if (event instanceof NavigationEnd) {
         this.currentUrl = event.url;
+        this.subscriptions.add(
         this.route.params.subscribe((param) => {
           this.loadMetaData(param['id']);
-        });
+        }));
       }
-    });
+    }));
   }
 
   loadMetaData(id: string) {
     if (this.currentUrl.includes('editMetadata')) {
+      this.subscriptions.add(
       this.metaService.getDataById(id).subscribe((data) => {
         this.metadata = JSON.parse(data.metadata);
         this.ilpData = this.metadata?.listParam ?? [];
-      });
+        this.isIPackNameValidated = true;
+        this.isEditMode = true;
+      }));
     } else {
-      this.metadata = MetadataWithCrt;
+      this.subscriptions.add(
+      this.metadataConfigService.getMetadataConfig().subscribe((metadata) => {
+        this.metadata = metadata;
+      }));
       this.metadata.id = uuid.v4();
       this.ilpData = [];
+      this.isIPackNameValidated = false;
+      this.isEditMode = false;
     }
   }
 
@@ -104,11 +120,11 @@ export class MetadataFormComponent {
         processDescription: this.processDescription,
       },
     });
-
+    this.subscriptions.add(
     dialogRef.afterClosed().subscribe((result) => {
       this.isLoading = true;
       this.checkBoomi(result);
-    });
+    }));
   }
 
   openDialogIlp(): void {
@@ -117,12 +133,12 @@ export class MetadataFormComponent {
       width: '2000px',
       data: { name: this.name, description: this.description, listOptions: [] },
     });
-
+    this.subscriptions.add(
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.ilpData.push(result);
       }
-    });
+    }));
   }
 
   ngOnInit() {}
@@ -140,10 +156,11 @@ export class MetadataFormComponent {
   }
 
   getUUID() {
-    // return  uuid();
     const id = uuid.v4();
-
     return id;
+  }
+  closeForm() {
+    this.router.navigate(['/metadata']);
   }
 
   addHeaders(headers: any) {
@@ -202,10 +219,11 @@ export class MetadataFormComponent {
   }
 
   save(obj: any) {
+    this.subscriptions.add(
     this.metaService.addMetadata(obj).subscribe((result) => {
       console.log(result);
       this.router.navigate(['/metadata']);
-    });
+    }));
   }
   onSubmit() {
     if (this.ilpData?.length > 0) {
@@ -228,21 +246,22 @@ export class MetadataFormComponent {
 
       processDescription: result.processDescription,
     };
-    this.metaService
-      .getEnvionmentExtensionValues(boomiVerify)
-      .subscribe((data) => {
+    this.subscriptions.add(
+    this.metaService.getEnvionmentExtensionValues(boomiVerify).subscribe(
+      (data) => {
         this.isLoading = false;
-        if(data!=null){
-        this.isIPackNameValidated = true;
-        this.setUpPageMetadataValues(data);
-      }
-      else{
+        if (data != null) {
+          this.isIPackNameValidated = true;
+          this.setUpPageMetadataValues(data);
+        } else {
           this.isIPackNameValidated = false;
-      }
-      },(err)=>{
+        }
+      },
+      (err) => {
         this.isLoading = false;
         console.log(err);
-      });
+      }
+    ));
   }
   setUpPageMetadataValues(data: any) {
     const tempSetupMetadata = {} as ApiDisplayConfig;
@@ -261,7 +280,7 @@ export class MetadataFormComponent {
         listOptions: ilpRowData.listOptions,
       },
     });
-
+    this.subscriptions.add(
     ilpDialogRef.afterClosed().subscribe((result) => {
       if (result) {
         for (let i = 0; i < this.ilpData.length; i++) {
@@ -270,7 +289,7 @@ export class MetadataFormComponent {
           }
         }
       }
-    });
+    }));
   }
   setUpCrtMetadataValues(data: any) {
     let crtIndex: any = undefined;
@@ -330,23 +349,24 @@ export class MetadataFormComponent {
       this.metadata.extraTransferFields = etfTemp;
     }
   }
-  changeManualLabelValue(runOptions:any){
-      if(this.manualLabelValue){
-        runOptions.manualLabel='Run Manually';
-      }
-      else{
-       delete  runOptions.manualLabel;
-      }
-  }
-  changeScheduleLabelValue(runOptions: any){
-    if(this.scheduleLabelValue){
-      runOptions.scheduleLabel='Schedule';
-    }
-    else{
-     delete  runOptions.scheduleLabel;
+  changeManualLabelValue(runOptions: any) {
+    if (this.manualLabelValue) {
+      runOptions.manualLabel = 'Run Manually';
+    } else {
+      delete runOptions.manualLabel;
     }
   }
-
+  changeScheduleLabelValue(runOptions: any) {
+    if (this.scheduleLabelValue) {
+      runOptions.scheduleLabel = 'Schedule';
+    } else {
+      delete runOptions.scheduleLabel;
+    }
+  }
+  ngOnDestroy() {
+    this.metadata = null;
+    this.subscriptions.unsubscribe();
+  }
   // reset()
   // {
   //    this.metadata.sections=[];

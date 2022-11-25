@@ -14,27 +14,34 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let ilpRow of ilpData">
+        <tr *ngFor="let ilpRow of ilpData;let i=index">
           <td>{{ ilpRow.name }}</td>
           <td>{{ ilpRow.description }}</td>
           <td>
             {{ ilpRow.listOptions[0].name }},
             {{ ilpRow.listOptions[0].description }},
             {{ ilpRow.listOptions[0].value }},
-            {{ ilpRow.listOptions[0].defaultValue }} 
-            <span *ngIf="ilpRow.listOptions.length>1"> and  
-            {{ ilpRow.listOptions.length - 1 }} more
-           </span>
+            {{ ilpRow.listOptions[0].defaultValue }}
+            <span *ngIf="ilpRow.listOptions.length > 1">
+              and {{ ilpRow.listOptions.length - 1 }} more
+            </span>
           </td>
-          
+
           <td>
-            <button type="button" (click)=editIlp(ilpRow) mat-icon-button>
-            <mat-icon
-              aria-hidden="false"
-              aria-label="Example home icon"
-              fontIcon="edit"
-            ></mat-icon>
-        </button>
+            <button type="button" (click)="editIlp(ilpRow)" mat-icon-button>
+              <mat-icon
+                aria-hidden="false"
+                aria-label="Example home icon"
+                fontIcon="edit"
+              ></mat-icon>
+            </button>
+            <button type="button" (click)="deleteIlp(ilpData,i)" mat-icon-button>
+                <mat-icon
+                  aria-hidden="false"
+                  aria-label="Example home icon"
+                  fontIcon="delete"
+                ></mat-icon>
+              </button>
           </td>
         </tr>
       </tbody>

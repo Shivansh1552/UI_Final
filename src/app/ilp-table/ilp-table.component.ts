@@ -20,6 +20,9 @@ export class IlpTableComponent implements OnInit {
   editIlp(ilpRow :any){
     this.editIlpRow.emit(ilpRow);
   }
+  deleteIlp(ilpData:any,index: number){
+    ilpData.splice(index,1);
+  }
 
 
 }

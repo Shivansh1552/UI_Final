@@ -26,8 +26,8 @@
         <h4>Results : {{ listFilter }}</h4>
       </div>
     </div>
-    <div class="table-responsive">
-      <table class="table" *ngIf="metadata.length">
+    <div class="table-responsive" *ngIf="metadata.length">
+      <table class="table">
         <thead>
           <tr>
             <th>Metadata Name</th>
@@ -74,6 +74,15 @@
           </tr>
         </tbody>
       </table>
+    </div>
+
+    <div class="card" *ngIf="metadata.length===0">
+      <div class="card-body">
+        <!-- <h5 class="card-title">Special title treatment</h5> -->
+        <p class="card-text">
+          No Metadata Available , Please Go to Create Metadata.
+        </p>
+      </div>
     </div>
   </div>
 </div>

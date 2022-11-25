@@ -71,8 +71,24 @@
   </div>
 </div>
 <div style="display: flex; justify-content: flex-end; width: 100%; padding: 0">
-  <button type="button" style="margin-right:8px" class='btn btn-info' (click)="popUpClose()" cdkFocusInitial>Save</button>
-  <button type="button" class='btn btn-light' mat-button (click)="onNoClick()" cdkFocusInitial>Cancel</button>
+  <button
+    type="button"
+    style="margin-right: 8px"
+    class="btn btn-info"
+    (click)="popUpClose()"
+    cdkFocusInitial
+  >
+    Save
+  </button>
+  <button
+    type="button"
+    class="btn btn-light"
+    mat-button
+    (click)="onNoClick()"
+    cdkFocusInitial
+  >
+    Cancel
+  </button>
 </div>
 <br />
 
@@ -84,19 +100,18 @@
       <th scope="col">Value</th>
       <th scope="col">Default value</th>
       <th scope="col">
-        <button  mat-icon-button title="Add Ilp Row" (click)="addIlpRows()">
+        <button mat-icon-button title="Add Ilp Row" (click)="addIlpRows()">
           <mat-icon
-              aria-hidden="false"
-              aria-label="Example home icon"
-              fontIcon="add"
-            ></mat-icon>
-
+            aria-hidden="false"
+            aria-label="Example home icon"
+            fontIcon="add"
+          ></mat-icon>
         </button>
       </th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let rowData of ilpRows">
+    <tr *ngFor="let rowData of ilpRows; let i=index">
       <td>
         <span *ngIf="rowData.show !== 'edit'"> {{ rowData.name }}</span>
         <input
@@ -161,27 +176,45 @@
         />
       </td>
       <td>
-        <button *ngIf="rowData.show !== 'edit'" title="Edit Ilp Row" mat-icon-button (click)="editIlp(rowData)">
+        <button
+          *ngIf="rowData.show !== 'edit'"
+          title="Edit Ilp Row"
+          mat-icon-button
+          (click)="editIlp(rowData)"
+        >
           <mat-icon
-          aria-hidden="false"
-          aria-label="Example home icon"
-          fontIcon="edit"
-        ></mat-icon> 
+            aria-hidden="false"
+            aria-label="Example home icon"
+            fontIcon="edit"
+          ></mat-icon>
         </button>
+
+       
+
         <button
           *ngIf="rowData.show === 'edit'"
-          [disabled]="!(rowData.name && rowData.description && rowData.value) "
+          [disabled]="!(rowData.name && rowData.description && rowData.value)"
           (click)="saveIlp(rowData)"
           mat-icon-button
           title="Save Ilp Row"
         >
-        <mat-icon
-              aria-hidden="false"
-              aria-label="Example home icon"
-              fontIcon="save"
-            ></mat-icon> 
-
+          <mat-icon
+            aria-hidden="false"
+            aria-label="Example home icon"
+            fontIcon="save"
+          ></mat-icon>
         </button>
+        <button
+        (click)="deleteIlp(ilpRows, i)"
+        mat-icon-button
+        title="Delete Ilp Row"
+      >
+        <mat-icon
+          aria-hidden="false"
+          aria-label="Example home icon"
+          fontIcon="delete"
+        ></mat-icon>
+      </button>
       </td>
     </tr>
   </tbody>
