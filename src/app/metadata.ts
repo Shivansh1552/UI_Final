@@ -10,7 +10,7 @@ export interface Metadata {
   id: string;
   name: string;
   iPackName: string;
-  version: string;
+  version: number;
   extraTransferFields: ExtraTransferFields[];
   sections: Section[];
   listParam?:DialogDataIlp[];
@@ -122,6 +122,7 @@ export interface InputSpe {
   hint: string;
   type: string;
   placeholder:string;
+  validations: string[];
 }
 
 export interface SaveValueAsObjectConfiguration {

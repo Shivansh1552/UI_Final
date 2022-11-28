@@ -11,10 +11,10 @@ export class NavigateEditMetadataService {
 
   constructor() {}
 
-  public setMetadata(metadata: any) {
-    this.currentMetdata$.next(metadata as Metadata);
-  }
-  public getMetadata() {
-    return this._currentMetadata;
-  }
+  // public setMetadata(metadata: any) {
+  //   this.currentMetdata$.next(metadata as Metadata);
+  // }
+  // public getMetadata() {
+  //   return this._currentMetadata;
+  // }
 }

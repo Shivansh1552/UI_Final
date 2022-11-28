@@ -33,6 +33,7 @@ import { templateName } from '../metadata.constant';
 import { IlpComponent } from '../ilp/ilp.component';
 import { MetadataConfigService } from './metadata-configs/metadata-config-service';
 import { Subscription } from 'rxjs';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-metadata-form',
@@ -78,32 +79,60 @@ export class MetadataFormComponent {
     private route: ActivatedRoute
   ) {
     this.subscriptions.add(
-    this.router.events.subscribe((event) => {
-      
-      if (event instanceof NavigationEnd) {
-        this.currentUrl = event.url;
-        this.subscriptions.add(
-        this.route.params.subscribe((param) => {
-          this.loadMetaData(param['id']);
-        }));
-      }
-    }));
+      this.router.events.subscribe((event) => {
+        if (event instanceof NavigationEnd) {
+          this.currentUrl = event.url;
+          this.subscriptions.add(
+            this.route.params.subscribe((param) => {
+              this.loadMetaData(param['id']);
+            })
+          );
+        }
+      })
+    );
   }
 
   loadMetaData(id: string) {
     if (this.currentUrl.includes('editMetadata')) {
       this.subscriptions.add(
-      this.metaService.getDataById(id).subscribe((data) => {
-        this.metadata = JSON.parse(data.metadata);
-        this.ilpData = this.metadata?.listParam ?? [];
-        this.isIPackNameValidated = true;
-        this.isEditMode = true;
-      }));
+        this.metaService.getDataById(id).subscribe((data) => {
+          const tempData = JSON.parse(data.metadata);
+          tempData.sections[0].steps.forEach((step: any) => {
+            if (step.componentName == 'StaticContentComponent') {
+              step.config.headers.forEach((ele: { headerString: any }) => {
+                ele.headerString = ele.headerString.join(',');
+              });
+            } else if (step.componentName == 'StaticPageEntryComponent') {
+              step.config.rows.forEach(
+                (row: {
+                  input: {
+                    saveValueAsObjectConfiguration: {
+                      staticObjectProperties: {
+                        userPrompted: { toString: () => any };
+                      };
+                    };
+                  };
+                }) => {
+                  row.input.saveValueAsObjectConfiguration.staticObjectProperties.userPrompted =
+                    row.input.saveValueAsObjectConfiguration.staticObjectProperties.userPrompted === 'true';
+                }
+              );
+            }
+          });
+
+          this.metadata = tempData;
+
+          this.ilpData = this.metadata?.listParam ?? [];
+          this.isIPackNameValidated = true;
+          this.isEditMode = true;
+        })
+      );
     } else {
       this.subscriptions.add(
-      this.metadataConfigService.getMetadataConfig().subscribe((metadata) => {
-        this.metadata = metadata;
-      }));
+        this.metadataConfigService.getMetadataConfig().subscribe((metadata) => {
+          this.metadata = metadata;
+        })
+      );
       this.metadata.id = uuid.v4();
       this.ilpData = [];
       this.isIPackNameValidated = false;
@@ -121,10 +150,11 @@ export class MetadataFormComponent {
       },
     });
     this.subscriptions.add(
-    dialogRef.afterClosed().subscribe((result) => {
-      this.isLoading = true;
-      this.checkBoomi(result);
-    }));
+      dialogRef.afterClosed().subscribe((result) => {
+        this.isLoading = true;
+        this.checkBoomi(result);
+      })
+    );
   }
 
   openDialogIlp(): void {
@@ -134,11 +164,12 @@ export class MetadataFormComponent {
       data: { name: this.name, description: this.description, listOptions: [] },
     });
     this.subscriptions.add(
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.ilpData.push(result);
-      }
-    }));
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          this.ilpData.push(result);
+        }
+      })
+    );
   }
 
   ngOnInit() {}
@@ -203,8 +234,8 @@ export class MetadataFormComponent {
         saveValueAsObjectConfiguration: {
           staticObjectProperties: {
             name: '',
-            userPrompted: true,
-            parameterType: true,
+            userPrompted: '',
+            parameterType: '',
           },
         },
       },
@@ -220,18 +251,42 @@ export class MetadataFormComponent {
 
   save(obj: any) {
     this.subscriptions.add(
-    this.metaService.addMetadata(obj).subscribe((result) => {
-      console.log(result);
-      this.router.navigate(['/metadata']);
-    }));
+      this.metaService.addMetadata(obj).subscribe((result) => {
+        this.router.navigate(['/metadata']);
+      })
+    );
   }
   onSubmit() {
     if (this.ilpData?.length > 0) {
       this.metadata.listParam = this.ilpData;
     }
+    const tempMetadata = _.cloneDeep(this.metadata);
+
+    tempMetadata.sections[0].steps.forEach((step: any) => {
+      if (step.componentName == 'StaticContentComponent') {
+        step.config.headers.forEach((ele: { headerString: any }) => {
+          ele.headerString = ele.headerString.split(',');
+        });
+      } else if (step.componentName == 'StaticPageEntryComponent') {
+        step.config.rows.forEach(
+          (row: {
+            input: {
+              saveValueAsObjectConfiguration: {
+                staticObjectProperties: {
+                  userPrompted: { toString: () => any };
+                };
+              };
+            };
+          }) => {
+            row.input.saveValueAsObjectConfiguration.staticObjectProperties.userPrompted =
+              row.input.saveValueAsObjectConfiguration.staticObjectProperties.userPrompted.toString();
+          }
+        );
+      }
+    });
     const metadataObj: MetadataModel = {
       id: this.metadata.id,
-      metadata: JSON.stringify(this.metadata),
+      metadata: JSON.stringify({ ...tempMetadata }),
     };
     this.save(metadataObj);
   }
@@ -247,21 +302,22 @@ export class MetadataFormComponent {
       processDescription: result.processDescription,
     };
     this.subscriptions.add(
-    this.metaService.getEnvionmentExtensionValues(boomiVerify).subscribe(
-      (data) => {
-        this.isLoading = false;
-        if (data != null) {
-          this.isIPackNameValidated = true;
-          this.setUpPageMetadataValues(data);
-        } else {
-          this.isIPackNameValidated = false;
+      this.metaService.getEnvionmentExtensionValues(boomiVerify).subscribe(
+        (data) => {
+          this.isLoading = false;
+          if (data != null) {
+            this.isIPackNameValidated = true;
+            this.setUpPageMetadataValues(data);
+          } else {
+            this.isIPackNameValidated = false;
+          }
+        },
+        (err) => {
+          this.isLoading = false;
+          console.log(err);
         }
-      },
-      (err) => {
-        this.isLoading = false;
-        console.log(err);
-      }
-    ));
+      )
+    );
   }
   setUpPageMetadataValues(data: any) {
     const tempSetupMetadata = {} as ApiDisplayConfig;
@@ -281,15 +337,16 @@ export class MetadataFormComponent {
       },
     });
     this.subscriptions.add(
-    ilpDialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        for (let i = 0; i < this.ilpData.length; i++) {
-          if (this.ilpData[i].name == result.name) {
-            this.ilpData[i] = result;
+      ilpDialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          for (let i = 0; i < this.ilpData.length; i++) {
+            if (this.ilpData[i].name == result.name) {
+              this.ilpData[i] = result;
+            }
           }
         }
-      }
-    }));
+      })
+    );
   }
   setUpCrtMetadataValues(data: any) {
     let crtIndex: any = undefined;
@@ -366,6 +423,7 @@ export class MetadataFormComponent {
   ngOnDestroy() {
     this.metadata = null;
     this.subscriptions.unsubscribe();
+    // this.myForm.resetForm();
   }
   // reset()
   // {
