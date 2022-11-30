@@ -55,7 +55,7 @@ export class MetadataConfigService {
                         },
                         {
                           type: 'pattern',
-                          value: '^[A-Za-z0-9 ]+$',
+                          value: '^[a-zA-Z0-9 ]{1,50}',
                         }
                       ],
                     },
@@ -96,10 +96,10 @@ export class MetadataConfigService {
               description: '',
               title: 'Parameters',
               config: {
-                valuePopulatedApi: {
-                  url: '/falcon-process-parameters/',
-                  authType: 'Dimensions',
-                },
+                // valuePopulatedApi: {
+                //   url: '/falcon-process-parameters/',
+                //   authType: 'Dimensions',
+                // },
                 rows: [
                   {
                     input: {
@@ -116,7 +116,7 @@ export class MetadataConfigService {
                       hint: '',
                       type: '',
                       placeholder:'',
-                      validations: ["required"],
+                      validations: [],
                     },
                     label: '',
                     description: '',
@@ -157,7 +157,7 @@ export class MetadataConfigService {
                 description: '',
                 runOptions: {
                   sectionLabel:
-                    'File Import Settings File Import Settings File Import Settings File Import Settings File Import Settings File Import Settings"',
+                    'File Import Settings File Import Settings File Import Settings File Import Settings File Import Settings File Import Settings',
                   // scheduleLabel: '',
                   // manualLabel: '',
                 },
@@ -167,9 +167,38 @@ export class MetadataConfigService {
         },
       ],
     };
+    private readonly staticPageEntryValidation=[{
+      type: 'min',
+      value:'number'
+    },
+    {
+      type: 'max',
+      value:'number'
+    },
+    {
+      type: 'minLength',
+      value:'number'
+    },
+    {
+      type: 'maxLength',
+      value:'number'
+    },
+    {
+      type: 'pattern',
+      value:'RegExp'
+    },
+    {
+      type:'required',
+      value:'boolean'
+    }
+    ]
+ 
   constructor() {}
   public getMetadataConfig(){
     // return of({...this.metadataWithCrt});
     return of(_.cloneDeep(this.metadataWithCrt));
+  }
+  getStaticPageEntryValidation(){
+    return of(_.cloneDeep(this.staticPageEntryValidation));
   }
 }

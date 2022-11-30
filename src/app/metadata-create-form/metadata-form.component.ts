@@ -26,7 +26,7 @@ import {
 } from '@angular/material/dialog';
 import { BoomiLogInPopUpComponent } from '../boomi-log-in-pop-up/boomi-log-in-pop-up.component';
 import { NavigateEditMetadataService } from '../navigate-edit-metadata.service';
-import { event } from 'jquery';
+import { data, event } from 'jquery';
 import { metadataParameterType } from '../metadata.constant';
 import { metadataParameterTypeTip } from '../metadata.constant';
 import { templateName } from '../metadata.constant';
@@ -70,12 +70,15 @@ export class MetadataFormComponent {
 
   submitted = false;
 
+  speValidations: any;
+  speValidationArr: any[] = [];
+  
+
   constructor(
     private metaService: MetadataService,
     private router: Router,
     public dialog: MatDialog,
     private metadataConfigService: MetadataConfigService,
-
     private route: ActivatedRoute
   ) {
     this.subscriptions.add(
@@ -90,6 +93,11 @@ export class MetadataFormComponent {
         }
       })
     );
+    this.metadataConfigService
+      .getStaticPageEntryValidation()
+      .subscribe((data) => {
+        this.speValidations = data;
+      });
   }
 
   loadMetaData(id: string) {
@@ -98,11 +106,7 @@ export class MetadataFormComponent {
         this.metaService.getDataById(id).subscribe((data) => {
           const tempData = JSON.parse(data.metadata);
           tempData.sections[0].steps.forEach((step: any) => {
-            if (step.componentName == 'StaticContentComponent') {
-              step.config.headers.forEach((ele: { headerString: any }) => {
-                ele.headerString = ele.headerString.join(',');
-              });
-            } else if (step.componentName == 'StaticPageEntryComponent') {
+            if (step.componentName == 'StaticPageEntryComponent') {
               step.config.rows.forEach(
                 (row: {
                   input: {
@@ -111,10 +115,23 @@ export class MetadataFormComponent {
                         userPrompted: { toString: () => any };
                       };
                     };
+                    validations:any[];
                   };
                 }) => {
                   row.input.saveValueAsObjectConfiguration.staticObjectProperties.userPrompted =
-                    row.input.saveValueAsObjectConfiguration.staticObjectProperties.userPrompted === 'true';
+                    row.input.saveValueAsObjectConfiguration
+                      .staticObjectProperties.userPrompted === 'true';
+                        [...row.input.validations].forEach(ele=>{
+                              if(typeof ele !== 'string'){
+                                this.speValidationArr.push(ele);
+                              }
+                              else{
+                                this.speValidationArr.push({
+                                    type : ele,
+                                    value : '',
+                                });
+                              }
+                       });
                 }
               );
             }
@@ -185,7 +202,9 @@ export class MetadataFormComponent {
   removeCrt(index: any, files: any) {
     files.splice(index, 1);
   }
-
+  removeValidationsSpe(index: any, valid: any){
+    valid.splice(index,1);
+  }
   getUUID() {
     const id = uuid.v4();
     return id;
@@ -216,6 +235,12 @@ export class MetadataFormComponent {
       type: '',
       value: '',
     });
+  }
+  addValidationsSpe(speValidationsBtn: any) {
+    speValidationsBtn.push({
+      type:'',
+      value:'',
+    })
   }
   addDisplayItem(displayItems: any) {
     displayItems.push({
@@ -263,26 +288,35 @@ export class MetadataFormComponent {
     const tempMetadata = _.cloneDeep(this.metadata);
 
     tempMetadata.sections[0].steps.forEach((step: any) => {
-      if (step.componentName == 'StaticContentComponent') {
-        step.config.headers.forEach((ele: { headerString: any }) => {
-          ele.headerString = ele.headerString.split(',');
-        });
-      } else if (step.componentName == 'StaticPageEntryComponent') {
+      if (step.componentName == 'StaticPageEntryComponent') {
         step.config.rows.forEach(
           (row: {
             input: {
+              [x: string]: any;
               saveValueAsObjectConfiguration: {
                 staticObjectProperties: {
                   userPrompted: { toString: () => any };
                 };
               };
+              validations:any[];
             };
           }) => {
             row.input.saveValueAsObjectConfiguration.staticObjectProperties.userPrompted =
               row.input.saveValueAsObjectConfiguration.staticObjectProperties.userPrompted.toString();
+             
+
+              this.speValidationArr.forEach(ele=>{
+                if(ele.type=='required'){
+                  row.input.validations.push(ele.type);
+                }
+                else{
+                  row.input.validations.push(ele);
+                }
+              })
           }
         );
       }
+     
     });
     const metadataObj: MetadataModel = {
       id: this.metadata.id,
@@ -350,7 +384,7 @@ export class MetadataFormComponent {
   }
   setUpCrtMetadataValues(data: any) {
     let crtIndex: any = undefined;
-    if (data.crtDetails) {
+    if (data?.crtDetails.length > 0) {
       const crtTemp = this.metadata.sections[0].steps.filter(
         (ele: { componentName: string }, index: number) => {
           if (ele.componentName == 'CRTOverviewComponent') {
@@ -368,6 +402,14 @@ export class MetadataFormComponent {
         };
       });
       this.metadata.sections[0].steps[crtIndex] = crtTemp[0];
+    } else {
+      const idx = this.metadata.sections[0].steps.findIndex(
+        (ele: { componentName: string }) => {
+          return ele.componentName === 'CRTOverviewComponent';
+        }
+      );
+      console.log(idx);
+      this.metadata.sections[0].steps.splice(idx, 1);
     }
   }
 
@@ -430,3 +472,7 @@ export class MetadataFormComponent {
   //    this.metadata.sections=[];
   // }
 }
+function typeOf(ele: any) {
+  throw new Error('Function not implemented.');
+}
+

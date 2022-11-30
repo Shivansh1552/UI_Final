@@ -122,7 +122,12 @@ export interface InputSpe {
   hint: string;
   type: string;
   placeholder:string;
-  validations: string[];
+  validations: Validations[];
+  
+}
+export interface Validations{
+  type: string;
+  value:string;
 }
 
 export interface SaveValueAsObjectConfiguration {

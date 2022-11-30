@@ -2,7 +2,7 @@
 <!-- <ngb-alert [type]="'danger'" >'this is alert' </ngb-alert> -->
 
 <div *ngIf="metadata?.id" class="childform" style="width: 70%">
-   <pm-loader *ngIf="isLoading"></pm-loader>
+  <pm-loader *ngIf="isLoading"></pm-loader>
   <form #myForm="ngForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <div class="d-flex justify-content-between">
@@ -260,13 +260,13 @@
           Save
         </button> -->
         <button
-        type="button"
-        (click)="closeForm()"
-        class="btn btn-success"
-        style="margin-right: 20px"
-      >
-        Cancel
-      </button>
+          type="button"
+          (click)="closeForm()"
+          class="btn btn-success"
+          style="margin-right: 20px"
+        >
+          Cancel
+        </button>
       </div>
     </div>
   </form>
@@ -749,7 +749,7 @@
               />
             </div>
             <br />
-    
+
             <div class="d-flex" style="padding-bottom: 16px">
               <label>UserPrompted :</label>
               <input
@@ -811,16 +811,16 @@
             name="hint"
           />
         </div>
-        <br>
+        <br />
         <div class="d-flex justify-content-between">
-          <label>Placeholder :</label>
+          <label>Input Label :</label>
           <input
             type="text"
             class="form-control half"
             id="placeholder"
             required
             [(ngModel)]="rowspe.input.placeholder"
-            placeholder="placeholder"
+            placeholder="Input Label"
             name="placeholder"
           />
         </div>
@@ -842,18 +842,63 @@
           </select>
         </div>
         <br />
-        <!-- <div class="d-flex justify-content-between">
-              <label>Type :</label>
-              <input
-                type="text"
-                class="form-control half"
-                required
-                id="type"
-                [(ngModel)]="rowspe.input.type"
-                placeholder="type"
-                name="type"
-              />
-            </div> -->
+        <div class="d-flex justify-content-between">
+          <div>validations:</div>
+          <br />
+          <div>
+            <button type="button" (click)="addValidationsSpe(speValidationArr)" mat-icon-button>
+              <mat-icon
+                aria-hidden="false"
+                aria-label="Example home icon"
+                fontIcon="add"
+              ></mat-icon>
+            </button>
+          </div>
+        </div>
+        <br />
+        <div
+          *ngFor="let speValid of speValidationArr ; let k = index"
+          class="d-flex justify-content-between"
+          style="padding-bottom: 8px;"
+        > 
+          <label>Type:</label>
+          <select
+            class="form-select half"
+            id="speValidationType"
+            required
+            [(ngModel)]="speValid.type"
+            placeholder="type"
+            name="speValidationType"
+            style="width: 400px; margin-left:48px"
+          >
+            <option *ngFor="let validationType of speValidations">
+              {{ validationType.type }}
+            </option>
+          </select>
+         
+          <input 
+            type="{{speValid.type==='pattern'?'text':'number'}}"
+            class="form-control"
+            required
+            [disabled]="speValid.type === 'required'"
+            id="speValidationValue"
+            [(ngModel)]="speValid.value"
+            placeholder="value"
+            name="speValidationValue"
+            style="width: 400px ; margin-left:48px"
+          />
+      
+          <button type="button" (click)="removeValidationsSpe(k,speValidationArr)" mat-icon-button>
+            <mat-icon
+              aria-hidden="false"
+              aria-label="Example home icon"
+              fontIcon="remove"
+            ></mat-icon>
+          </button>
+        </div>
+        <br />
+ 
+
         <br />
         <div class="d-flex justify-content-between">
           <label>Label :</label>
@@ -1101,7 +1146,7 @@
       type="checkbox"
       id="manualLabel"
       (change)="changeManualLabelValue(step.config.runOptions)"
-      [(ngModel)]= "manualLabelValue"
+      [(ngModel)]="manualLabelValue"
       name="manualLabel"
       style="margin-left: 260px"
     />
