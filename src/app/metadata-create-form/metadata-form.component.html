@@ -799,19 +799,7 @@
           />
         </div>
         <br />
-        <div class="d-flex justify-content-between">
-          <label>Hint :</label>
-          <input
-            type="text"
-            class="form-control half"
-            id="hint"
-            required
-            [(ngModel)]="rowspe.input.hint"
-            placeholder="hint"
-            name="hint"
-          />
-        </div>
-        <br />
+    
         <div class="d-flex justify-content-between">
           <label>Input Label :</label>
           <input
@@ -830,6 +818,7 @@
           <select
             class="form-select half"
             id="TipParameterType"
+            (change)="deleteSpeHint(rowspe.input)"
             required
             [(ngModel)]="rowspe.input.type"
             name="TipParameterType"
@@ -842,11 +831,24 @@
           </select>
         </div>
         <br />
+        <div *ngIf = "rowspe.input.type !== 'checkbox'" class="d-flex justify-content-between">
+          <label>Hint :</label>
+          <input
+            type="text"
+            class="form-control half"
+            id="hint"
+            required
+            [(ngModel)]="rowspe.input.hint"
+            placeholder="hint"
+            name="hint"
+          />
+        </div>
+        <br />
         <div class="d-flex justify-content-between">
           <div>validations:</div>
           <br />
           <div>
-            <button type="button" (click)="addValidationsSpe(speValidationArr)" mat-icon-button>
+            <button type="button" (click)="addValidationsSpe(rowspe.input.validations)" mat-icon-button>
               <mat-icon
                 aria-hidden="false"
                 aria-label="Example home icon"
@@ -857,7 +859,7 @@
         </div>
         <br />
         <div
-          *ngFor="let speValid of speValidationArr ; let k = index"
+          *ngFor="let speValid of rowspe.input.validations ; let k = index"
           class="d-flex justify-content-between"
           style="padding-bottom: 8px;"
         > 
@@ -888,7 +890,7 @@
             style="width: 400px ; margin-left:48px"
           />
       
-          <button type="button" (click)="removeValidationsSpe(k,speValidationArr)" mat-icon-button>
+          <button type="button" (click)="removeValidationsSpe(k,rowspe.input.validations)" mat-icon-button>
             <mat-icon
               aria-hidden="false"
               aria-label="Example home icon"

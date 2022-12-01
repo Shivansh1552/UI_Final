@@ -121,16 +121,14 @@ export class MetadataFormComponent {
                   row.input.saveValueAsObjectConfiguration.staticObjectProperties.userPrompted =
                     row.input.saveValueAsObjectConfiguration
                       .staticObjectProperties.userPrompted === 'true';
-                        [...row.input.validations].forEach(ele=>{
-                              if(typeof ele !== 'string'){
-                                this.speValidationArr.push(ele);
+                        row.input.validations.forEach((ele ,index)=>{
+                              if(typeof ele === 'string'){
+                                row.input.validations[index] = {
+                                  type:ele,
+                                  value:'',
+                                };
                               }
-                              else{
-                                this.speValidationArr.push({
-                                    type : ele,
-                                    value : '',
-                                });
-                              }
+                              
                        });
                 }
               );
@@ -138,7 +136,6 @@ export class MetadataFormComponent {
           });
 
           this.metadata = tempData;
-
           this.ilpData = this.metadata?.listParam ?? [];
           this.isIPackNameValidated = true;
           this.isEditMode = true;
@@ -205,6 +202,11 @@ export class MetadataFormComponent {
   removeValidationsSpe(index: any, valid: any){
     valid.splice(index,1);
   }
+  deleteSpeHint(speInput:any){
+    if(speInput.type=='checkbox'){
+        delete speInput.hint;
+    }
+  }
   getUUID() {
     const id = uuid.v4();
     return id;
@@ -256,6 +258,7 @@ export class MetadataFormComponent {
         defaultValue: '',
         hint: '',
         type: '',
+        validations:[],
         saveValueAsObjectConfiguration: {
           staticObjectProperties: {
             name: '',
@@ -304,13 +307,9 @@ export class MetadataFormComponent {
             row.input.saveValueAsObjectConfiguration.staticObjectProperties.userPrompted =
               row.input.saveValueAsObjectConfiguration.staticObjectProperties.userPrompted.toString();
              
-
-              this.speValidationArr.forEach(ele=>{
-                if(ele.type=='required'){
-                  row.input.validations.push(ele.type);
-                }
-                else{
-                  row.input.validations.push(ele);
+              row.input.validations.forEach((ele,index)=>{
+                if(ele.type == 'required'){
+                     row.input.validations[index]= ele.type;
                 }
               })
           }
