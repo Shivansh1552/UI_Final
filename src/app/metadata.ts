@@ -59,6 +59,10 @@ export interface HeadersConfig {
   headerString: string;
 }
 
+// export interface ApiDisplayConfigWithoutSFTP {
+//   rows: Rows[];
+// }
+
 export interface ApiDisplayConfig {
   rows: Rows[];
   ddLabel: string;
@@ -113,7 +117,7 @@ export interface ValuePopulatedApi {
 export interface RowsSpe {
   input: InputSpe;
   label: string;
-  description: string;
+ 
 }
 export interface InputSpe {
   name: string;
@@ -121,7 +125,7 @@ export interface InputSpe {
   defaultValue: string;
   hint: string;
   type: string;
-  placeholder:string;
+  inputLabel:string;
   validations: Validations[];
   
 }

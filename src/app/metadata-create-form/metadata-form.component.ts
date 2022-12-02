@@ -440,7 +440,7 @@ export class MetadataFormComponent {
         } else if (key == 'processType') {
           etfTemp.push({
             key: 'dimensions_integrationType',
-            value: data.processDetails.processType,
+            value: data.processDetails.processType.toUpperCase(),
           });
         }
       }

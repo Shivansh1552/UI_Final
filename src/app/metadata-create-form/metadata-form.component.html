@@ -799,7 +799,7 @@
           />
         </div>
         <br />
-    
+
         <div class="d-flex justify-content-between">
           <label>Input Label :</label>
           <input
@@ -831,7 +831,10 @@
           </select>
         </div>
         <br />
-        <div *ngIf = "rowspe.input.type !== 'checkbox'" class="d-flex justify-content-between">
+        <div
+          *ngIf="rowspe.input.type !== 'checkbox'"
+          class="d-flex justify-content-between"
+        >
           <label>Hint :</label>
           <input
             type="text"
@@ -848,7 +851,11 @@
           <div>validations:</div>
           <br />
           <div>
-            <button type="button" (click)="addValidationsSpe(rowspe.input.validations)" mat-icon-button>
+            <button
+              type="button"
+              (click)="addValidationsSpe(rowspe.input.validations)"
+              mat-icon-button
+            >
               <mat-icon
                 aria-hidden="false"
                 aria-label="Example home icon"
@@ -859,10 +866,10 @@
         </div>
         <br />
         <div
-          *ngFor="let speValid of rowspe.input.validations ; let k = index"
+          *ngFor="let speValid of rowspe.input.validations; let k = index"
           class="d-flex justify-content-between"
-          style="padding-bottom: 8px;"
-        > 
+          style="padding-bottom: 8px"
+        >
           <label>Type:</label>
           <select
             class="form-select half"
@@ -871,15 +878,15 @@
             [(ngModel)]="speValid.type"
             placeholder="type"
             name="speValidationType"
-            style="width: 400px; margin-left:48px"
+            style="width: 400px; margin-left: 48px"
           >
             <option *ngFor="let validationType of speValidations">
               {{ validationType.type }}
             </option>
           </select>
-         
-          <input 
-            type="{{speValid.type==='pattern'?'text':'number'}}"
+
+          <input
+            type="{{ speValid.type === 'pattern' ? 'text' : 'number' }}"
             class="form-control"
             required
             [disabled]="speValid.type === 'required'"
@@ -887,10 +894,14 @@
             [(ngModel)]="speValid.value"
             placeholder="value"
             name="speValidationValue"
-            style="width: 400px ; margin-left:48px"
+            style="width: 400px; margin-left: 48px"
           />
-      
-          <button type="button" (click)="removeValidationsSpe(k,rowspe.input.validations)" mat-icon-button>
+
+          <button
+            type="button"
+            (click)="removeValidationsSpe(k, rowspe.input.validations)"
+            mat-icon-button
+          >
             <mat-icon
               aria-hidden="false"
               aria-label="Example home icon"
@@ -899,7 +910,6 @@
           </button>
         </div>
         <br />
- 
 
         <br />
         <div class="d-flex justify-content-between">
@@ -914,7 +924,7 @@
             name="label"
           />
         </div>
-        <br />
+        <!-- <br />
         <div class="d-flex justify-content-between">
           <label>Description :</label>
           <input
@@ -926,7 +936,7 @@
             placeholder="description"
             name="description"
           />
-        </div>
+        </div> -->
       </div>
     </div>
     <br />

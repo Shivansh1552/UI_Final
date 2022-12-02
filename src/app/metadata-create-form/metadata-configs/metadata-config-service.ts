@@ -46,14 +46,6 @@ export class MetadataConfigService {
                       validations: [
                          "required",
                         {
-                          type: 'minLength',
-                          value: '4',
-                        },
-                        {
-                          type: 'maxLength',
-                          value: '50',
-                        },
-                        {
                           type: 'pattern',
                           value: '^[a-zA-Z0-9 ]{1,50}',
                         }
@@ -73,7 +65,7 @@ export class MetadataConfigService {
                   {
                     fieldName: 'sftpHost',
                     label: 'Host URL associated with selected SFTP',
-                    secure: false,
+                    secure: true,
                   },
                   {
                     fieldName: 'sftpPort',
@@ -115,11 +107,11 @@ export class MetadataConfigService {
                       defaultValue: '',
                       hint: '',
                       type: '',
-                      placeholder:'',
+                      inputLabel:'',
                       validations: [],
                     },
                     label: '',
-                    description: '',
+                    
                   },
                 ],
               },
@@ -138,14 +130,14 @@ export class MetadataConfigService {
                     headerRow: '',
                   },
                 ],
-                filesApi: {
-                  path: '/....',
-                  authType: 'Dimensions',
-                },
-                downloadApi: {
-                  path: '/...',
-                  authType: 'Dimensions',
-                },
+                // filesApi: {
+                //   path: '/....',label
+                //   authType: 'Dimensions',
+                // },
+                // downloadApi: {
+                //   path: '/...',
+                //   authType: 'Dimensions',
+                // },
               },
             },
             {
@@ -154,10 +146,10 @@ export class MetadataConfigService {
               title: 'Scheduling',
               description: '',
               config: {
-                description: '',
+                description: 'Now let us finalize your schedule configuration',
                 runOptions: {
                   sectionLabel:
-                    'File Import Settings File Import Settings File Import Settings File Import Settings File Import Settings File Import Settings',
+                    'Schedule Settings',
                   // scheduleLabel: '',
                   // manualLabel: '',
                 },
