@@ -34,6 +34,7 @@ import { IlpComponent } from '../ilp/ilp.component';
 import { MetadataConfigService } from './metadata-configs/metadata-config-service';
 import { Subscription } from 'rxjs';
 import * as _ from 'lodash';
+import { add } from 'lodash';
 
 @Component({
   selector: 'app-metadata-form',
@@ -44,10 +45,8 @@ export class MetadataFormComponent {
   processName!: string;
   processType!: string;
   processDescription?: string;
-
   manualLabelValue = false;
   scheduleLabelValue = false;
-
   currentUrl!: string;
   isLoading = false;
   name!: string;
@@ -55,7 +54,6 @@ export class MetadataFormComponent {
   ilpData: DialogDataIlp[] = [];
   isEditMode = false;
   subscriptions = new Subscription();
-
   readonly metadataParameterType = metadataParameterType;
   readonly metadataParameterTypeTip = metadataParameterTypeTip;
   templateName = templateName;
@@ -65,14 +63,10 @@ export class MetadataFormComponent {
   panelOpenState = false;
   isIPackNameValidated = false;
   metadata: any;
-
   public headers: HeadersConfig[] = [];
-
   submitted = false;
-
   speValidations: any;
   speValidationArr: any[] = [];
-  
 
   constructor(
     private metaService: MetadataService,
@@ -99,12 +93,22 @@ export class MetadataFormComponent {
         this.speValidations = data;
       });
   }
-
   loadMetaData(id: string) {
     if (this.currentUrl.includes('editMetadata')) {
       this.subscriptions.add(
         this.metaService.getDataById(id).subscribe((data) => {
           const tempData = JSON.parse(data.metadata);
+          const processName = tempData.extraTransferFields.filter(
+            (ele: { key: string }) =>
+              ele.key == 'dimensions_integrationTemplate'
+          )[0].value;
+          const processType = tempData.extraTransferFields.filter(
+            (ele: { key: string }) => ele.key == 'dimensions_integrationType'
+          )[0].value;
+          const processDescription = tempData.extraTransferFields.filter(
+            (ele: { key: string }) => ele.key == 'dimensions_processDescription'
+          )[0].value;
+
           tempData.sections[0].steps.forEach((step: any) => {
             if (step.componentName == 'StaticPageEntryComponent') {
               step.config.rows.forEach(
@@ -115,30 +119,34 @@ export class MetadataFormComponent {
                         userPrompted: { toString: () => any };
                       };
                     };
-                    validations:any[];
+                    validations: any[];
                   };
                 }) => {
                   row.input.saveValueAsObjectConfiguration.staticObjectProperties.userPrompted =
                     row.input.saveValueAsObjectConfiguration
                       .staticObjectProperties.userPrompted === 'true';
-                        row.input.validations.forEach((ele ,index)=>{
-                              if(typeof ele === 'string'){
-                                row.input.validations[index] = {
-                                  type:ele,
-                                  value:'',
-                                };
-                              }
-                              
-                       });
+                  row.input.validations.forEach((ele, index) => {
+                    if (typeof ele === 'string') {
+                      row.input.validations[index] = {
+                        type: ele,
+                        value: '',
+                      };
+                    }
+                  });
                 }
               );
             }
           });
 
           this.metadata = tempData;
-          this.ilpData = this.metadata?.listParam ?? [];
+          this.ilpData = this.metadata?.integrationListParameters ?? [];
           this.isIPackNameValidated = true;
           this.isEditMode = true;
+          this.checkBoomi({
+            processName: processName,
+            processType: processType,
+            processDescription: processDescription,
+          });
         })
       );
     } else {
@@ -153,7 +161,6 @@ export class MetadataFormComponent {
       this.isEditMode = false;
     }
   }
-
   openDialog(): void {
     const dialogRef = this.dialog.open(BoomiLogInPopUpComponent, {
       width: '350px',
@@ -191,20 +198,26 @@ export class MetadataFormComponent {
   removeInput(index: any, headers: any) {
     headers.splice(index, 1);
   }
-
   removeRows(index: any, rows: any) {
     rows.splice(index, 1);
   }
-
   removeCrt(index: any, files: any) {
     files.splice(index, 1);
   }
-  removeValidationsSpe(index: any, valid: any){
-    valid.splice(index,1);
+  removeValidationsSpe(index: any, valid: any) {
+    valid.splice(index, 1);
   }
-  deleteSpeHint(speInput:any){
-    if(speInput.type=='checkbox'){
-        delete speInput.hint;
+  removeOptionsSpe(index: any, option: any) {
+    option.splice(index, 1);
+  }
+
+  onChange(speInput: any) {
+    if (speInput.type == 'checkbox') {
+      delete speInput.hint;
+    } else if (speInput.type !== 'select-dd') {
+      delete speInput.endpointDetails;
+    } else if (speInput.type !== 'select') {
+      delete speInput.options;
     }
   }
   getUUID() {
@@ -240,9 +253,9 @@ export class MetadataFormComponent {
   }
   addValidationsSpe(speValidationsBtn: any) {
     speValidationsBtn.push({
-      type:'',
-      value:'',
-    })
+      type: '',
+      value: '',
+    });
   }
   addDisplayItem(displayItems: any) {
     displayItems.push({
@@ -258,14 +271,21 @@ export class MetadataFormComponent {
         defaultValue: '',
         hint: '',
         type: '',
-        validations:[],
+        validations: [],
         saveValueAsObjectConfiguration: {
           staticObjectProperties: {
             name: '',
-            userPrompted: '',
+            userPrompted: false,
             parameterType: '',
           },
         },
+        endpointDetails: {
+          authType: 'Dimensions',
+          nameKey: '',
+          url: '',
+          valueKey: '',
+        },
+        options: [],
       },
       label: '',
     });
@@ -274,6 +294,12 @@ export class MetadataFormComponent {
     files.push({
       crtName: '',
       headerRow: '',
+    });
+  }
+  addOptionsSpe(optionSpe: any) {
+    optionSpe.push({
+      name: '',
+      value: '',
     });
   }
 
@@ -286,7 +312,7 @@ export class MetadataFormComponent {
   }
   onSubmit() {
     if (this.ilpData?.length > 0) {
-      this.metadata.listParam = this.ilpData;
+      this.metadata.integrationListParameters = this.ilpData;
     }
     const tempMetadata = _.cloneDeep(this.metadata);
 
@@ -301,21 +327,20 @@ export class MetadataFormComponent {
                   userPrompted: { toString: () => any };
                 };
               };
-              validations:any[];
+              validations: any[];
             };
           }) => {
             row.input.saveValueAsObjectConfiguration.staticObjectProperties.userPrompted =
               row.input.saveValueAsObjectConfiguration.staticObjectProperties.userPrompted.toString();
-             
-              row.input.validations.forEach((ele,index)=>{
-                if(ele.type == 'required'){
-                     row.input.validations[index]= ele.type;
-                }
-              })
+
+            row.input.validations.forEach((ele, index) => {
+              if (ele.type == 'required') {
+                row.input.validations[index] = ele.type;
+              }
+            });
           }
         );
       }
-     
     });
     const metadataObj: MetadataModel = {
       id: this.metadata.id,
@@ -358,7 +383,6 @@ export class MetadataFormComponent {
     this.setUpExtraTransferFieldMetadataValues(data);
     this.templateName = data.parameterDetails;
   }
-
   openEditIlpPopUp(ilpRowData: any) {
     const ilpDialogRef = this.dialog.open(IlpComponent, {
       height: '1000px',
@@ -411,7 +435,6 @@ export class MetadataFormComponent {
       this.metadata.sections[0].steps.splice(idx, 1);
     }
   }
-
   setUpExtraTransferFieldMetadataValues(data: any) {
     let etfIndex: any = undefined;
     const etfTemp: ExtraTransferFields[] = [
@@ -464,7 +487,6 @@ export class MetadataFormComponent {
   ngOnDestroy() {
     this.metadata = null;
     this.subscriptions.unsubscribe();
-    // this.myForm.resetForm();
   }
   // reset()
   // {
@@ -474,4 +496,3 @@ export class MetadataFormComponent {
 function typeOf(ele: any) {
   throw new Error('Function not implemented.');
 }
-

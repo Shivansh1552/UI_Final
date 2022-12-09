@@ -13,7 +13,7 @@ export interface Metadata {
   version: number;
   extraTransferFields: ExtraTransferFields[];
   sections: Section[];
-  listParam?:DialogDataIlp[];
+  integrationListParameters?:DialogDataIlp[];
 }
 
 export interface DialogDataIlp {
@@ -127,8 +127,21 @@ export interface InputSpe {
   type: string;
   inputLabel:string;
   validations: Validations[];
-  
+  endpointDetails: EndpointDetails;
+  options : Options[];
 }
+export interface Options{
+  name: string;
+  value: string;
+}
+
+export interface EndpointDetails {
+  authType: string;
+  nameKey: string;
+  url: string;
+  valueKey: string;
+}
+
 export interface Validations{
   type: string;
   value:string;

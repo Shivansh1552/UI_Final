@@ -270,8 +270,6 @@
       </div>
     </div>
   </form>
-
-  <!-- <button (click)="get()" class="btn btn-primary">Get</button> -->
 </div>
 
 <ng-template #staticContentComponent let-step="step">
@@ -718,11 +716,11 @@
                   'is-valid': tempName.valid && tempName.touched,
                   'is-invalid': !tempName.valid && tempName.touched
                 }"
-                id="templateName"
+                id="templateName{{k}}"
                 #tempName="ngModel"
                 required
                 [(ngModel)]="rowspe.input.name"
-                name="templateName"
+                name="templateName{{k}}"
               >
                 <option
                   [value]="'dimensions_parameters_' + tempName"
@@ -738,14 +736,14 @@
               <input
                 type="text"
                 class="form-control half"
-                id="pname"
+                id="pname{{k}}"
                 required
                 [(ngModel)]="
                   rowspe.input.saveValueAsObjectConfiguration
                     .staticObjectProperties.name
                 "
                 placeholder="name"
-                name="pname"
+                name="pname{{k}}"
               />
             </div>
             <br />
@@ -755,12 +753,12 @@
               <input
                 class="form-check-input"
                 type="checkbox"
-                id="name"
+                id="name{{k}}"
                 [(ngModel)]="
                   rowspe.input.saveValueAsObjectConfiguration
                     .staticObjectProperties.userPrompted
                 "
-                name="userPrompted"
+                name="userPrompted{{k}}"
                 style="margin-left: 230px"
               />
             </div>
@@ -769,13 +767,13 @@
               <label>Dimension ParameterType :</label>
               <select
                 class="form-select half"
-                id="parameterType"
+                id="parameterType{{k}}"
                 required
                 [(ngModel)]="
                   rowspe.input.saveValueAsObjectConfiguration
                     .staticObjectProperties.parameterType
                 "
-                name="parameterType"
+                name="parameterType{{k}}"
               >
                 <option *ngFor="let parameter of metadataParameterType.keys()">
                   {{ parameter }}
@@ -791,11 +789,11 @@
           <input
             type="text"
             class="form-control half"
-            id="defaultValue"
+            id="defaultValue{{k}}"
             required
             [(ngModel)]="rowspe.input.defaultValue"
             placeholder="defaultValue"
-            name="defaultValue"
+            name="defaultValue{{k}}"
           />
         </div>
         <br />
@@ -805,11 +803,11 @@
           <input
             type="text"
             class="form-control half"
-            id="placeholder"
+            id="inputLabel{{k}}"
             required
-            [(ngModel)]="rowspe.input.placeholder"
+            [(ngModel)]="rowspe.input.inputLabel"
             placeholder="Input Label"
-            name="placeholder"
+            name="inputLabel{{k}}"
           />
         </div>
         <br />
@@ -817,11 +815,11 @@
           <label>TIP ParameterType :</label>
           <select
             class="form-select half"
-            id="TipParameterType"
-            (change)="deleteSpeHint(rowspe.input)"
+            id="type{{k}}"
+            (change)="onChange(rowspe.input)"
             required
             [(ngModel)]="rowspe.input.type"
-            name="TipParameterType"
+            name="type{{k}}"
           >
             <option
               *ngFor="let parameterTip of metadataParameterTypeTip.keys()"
@@ -839,14 +837,135 @@
           <input
             type="text"
             class="form-control half"
-            id="hint"
+            id="hint{{k}}"
             required
             [(ngModel)]="rowspe.input.hint"
             placeholder="hint"
-            name="hint"
+            name="hint{{k}}"
           />
         </div>
         <br />
+
+        <ng-container *ngIf="rowspe.input.type === 'select-dd'">
+          <!-- <div class="d-flex justify-content-between">
+          <label>authType :</label>
+          <input
+            type="text"
+            class="form-control half"
+            id="authType{{k}}"
+            required
+            [(ngModel)]="rowspe.input.endpointDetails.authType"
+            placeholder="authType"
+            name="authType{{k}}"
+          />
+        </div>
+        <br /> -->
+          <div class="d-flex justify-content-between">
+            <label>nameKey :</label>
+            <input
+              type="text"
+              class="form-control half"
+              id="nameKey{{k}}"
+              required
+              [(ngModel)]="rowspe.input.endpointDetails.nameKey"
+              placeholder="nameKey"
+              name="nameKey{{k}}"
+            />
+          </div>
+          <br />
+          <div class="d-flex justify-content-between">
+            <label>url :</label>
+            <input
+              type="text"
+              class="form-control half"
+              id="url{{k}}"
+              required
+              [(ngModel)]="rowspe.input.endpointDetails.url"
+              placeholder="url"
+              name="url{{k}}"
+            />
+          </div>
+          <br />
+          <div class="d-flex justify-content-between">
+            <label>valueKey :</label>
+            <input
+              type="text"
+              class="form-control half"
+              id="valueKey{{k}}"
+              required
+              [(ngModel)]="rowspe.input.endpointDetails.valueKey"
+              placeholder="valueKey"
+              name="valueKey{{k}}"
+            />
+          </div>
+          <br />
+        </ng-container>
+
+        <ng-container *ngIf="rowspe.input.type === 'select'">
+          <div class="d-flex justify-content-between">
+          <div>options:</div>
+          <div>
+            <button
+              type="button"
+              (click)="addOptionsSpe(rowspe.input.options)"
+              mat-icon-button
+            >
+              <mat-icon
+                aria-hidden="false"
+                aria-label="Example home icon"
+                fontIcon="add"
+              ></mat-icon>
+            </button>
+          </div>
+        </div>
+          <br />
+
+          <div *ngFor="let speOptions of rowspe.input.options; let j = index"
+          class="d-flex justify-content-between"
+          style="padding-bottom: 8px">
+          <div class="d-flex justify-content-between">
+            <label>name :</label>
+            <input
+              type="text"
+              class="form-control half"
+              id="name{{j}}"
+              required
+              [(ngModel)]="speOptions.name"
+              placeholder="name"
+              name="name{{j}}"
+              style="width: 250px; margin-left: 48px"
+            />
+          </div>
+          <br />
+          <div class="d-flex justify-content-between">
+            <label>value :</label>
+            <input
+              type="text"
+              class="form-control half"
+              id="value{{j}}"
+              required
+              [(ngModel)]="speOptions.value"
+              placeholder="value"
+              name="value{{j}}"
+              style="width: 250px; margin-left: 48px"
+            />
+          </div>
+          
+          <button
+            type="button"
+            (click)="removeOptionsSpe(j, rowspe.input.options)"
+            mat-icon-button
+          >
+            <mat-icon
+              aria-hidden="false"
+              aria-label="Example home icon"
+              fontIcon="remove"
+            ></mat-icon>
+          </button>
+         </div>
+          <br />
+        </ng-container>
+
         <div class="d-flex justify-content-between">
           <div>validations:</div>
           <br />
@@ -866,18 +985,18 @@
         </div>
         <br />
         <div
-          *ngFor="let speValid of rowspe.input.validations; let k = index"
+          *ngFor="let speValid of rowspe.input.validations; let p= index"
           class="d-flex justify-content-between"
           style="padding-bottom: 8px"
         >
           <label>Type:</label>
           <select
             class="form-select half"
-            id="speValidationType"
+            id="speValidationType{{p}}"
             required
             [(ngModel)]="speValid.type"
             placeholder="type"
-            name="speValidationType"
+            name="speValidationType{{p}}"
             style="width: 400px; margin-left: 48px"
           >
             <option *ngFor="let validationType of speValidations">
@@ -890,16 +1009,16 @@
             class="form-control"
             required
             [disabled]="speValid.type === 'required'"
-            id="speValidationValue"
+            id="speValidationValue{{p}}"
             [(ngModel)]="speValid.value"
             placeholder="value"
-            name="speValidationValue"
+            name="speValidationValue{{p}}"
             style="width: 400px; margin-left: 48px"
           />
 
           <button
             type="button"
-            (click)="removeValidationsSpe(k, rowspe.input.validations)"
+            (click)="removeValidationsSpe(p, rowspe.input.validations)"
             mat-icon-button
           >
             <mat-icon
@@ -918,10 +1037,10 @@
             type="text"
             class="form-control half"
             required
-            id="label"
+            id="label{{k}}"
             [(ngModel)]="rowspe.label"
             placeholder="label"
-            name="label"
+            name="label{{k}}"
           />
         </div>
         <!-- <br />

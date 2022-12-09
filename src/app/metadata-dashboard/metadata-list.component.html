@@ -30,7 +30,33 @@
       <table class="table">
         <thead>
           <tr>
-            <th>Metadata Name</th>
+            <th >Metadata Name
+              
+          <button
+            type="button"
+            (click)="sortMetadataByName(filteredMetadata,'asc')"
+            mat-icon-button
+            [ngStyle]="{'color':'blue'}"
+          >
+            <mat-icon
+              aria-hidden="false"
+              fontIcon="arrow_upward"
+            ></mat-icon>
+           </button>
+           <button
+            type="button"
+            (click)="sortMetadataByName(filteredMetadata,'desc')"
+            mat-icon-button
+            [ngStyle]="{'color':'blue'}"
+          >
+            <mat-icon
+              aria-hidden="false"
+             
+              fontIcon="arrow_downward"
+            ></mat-icon>
+           </button>
+
+            </th>
             <th style="float: right; padding-right: 132px">Actions</th>
           </tr>
         </thead>
