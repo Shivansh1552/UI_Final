@@ -58,6 +58,8 @@ export class MetadataFormComponent {
   readonly metadataParameterTypeTip = metadataParameterTypeTip;
   templateName = templateName;
 
+  errorOnVerify!: string;
+
   @ViewChild('viewContainerRef') myForm!: any;
   public pageTitle = 'form';
   panelOpenState = false;
@@ -97,7 +99,9 @@ export class MetadataFormComponent {
     if (this.currentUrl.includes('editMetadata')) {
       this.subscriptions.add(
         this.metaService.getDataById(id).subscribe((data) => {
+           data.metadata = data.metadata.replaceAll('\\n','\\\\n');
           const tempData = JSON.parse(data.metadata);
+           
           const processName = tempData.extraTransferFields.filter(
             (ele: { key: string }) =>
               ele.key == 'dimensions_integrationTemplate'
@@ -125,7 +129,7 @@ export class MetadataFormComponent {
                   row.input.saveValueAsObjectConfiguration.staticObjectProperties.userPrompted =
                     row.input.saveValueAsObjectConfiguration
                       .staticObjectProperties.userPrompted === 'true';
-                  row.input.validations.forEach((ele, index) => {
+                  row.input?.validations?.forEach((ele, index) => {
                     if (typeof ele === 'string') {
                       row.input.validations[index] = {
                         type: ele,
@@ -204,20 +208,62 @@ export class MetadataFormComponent {
   removeCrt(index: any, files: any) {
     files.splice(index, 1);
   }
-  removeValidationsSpe(index: any, valid: any) {
-    valid.splice(index, 1);
+  removeValidationsSpe(index: any, rowspe: any) {
+    if (rowspe.validations?.length == 1) {
+      delete rowspe.validations;
+    } else {
+      rowspe.validations.splice(index, 1);
+    }
   }
   removeOptionsSpe(index: any, option: any) {
     option.splice(index, 1);
   }
-
+  changeParameterTypeValue(rowSpe: any) {
+    if (
+      rowSpe.input.saveValueAsObjectConfiguration.staticObjectProperties
+        .parameterType == 'HyperFind'
+    ) {
+      rowSpe.input.type = 'select-dd';
+      this.onChange(rowSpe.input);
+    } else {
+      rowSpe.input.type = '';
+    }
+  }
   onChange(speInput: any) {
     if (speInput.type == 'checkbox') {
       delete speInput.hint;
-    } else if (speInput.type !== 'select-dd') {
-      delete speInput.endpointDetails;
-    } else if (speInput.type !== 'select') {
+    } else {
+      speInput['hint'] = '';
+    }
+    if (speInput.type !== 'select') {
       delete speInput.options;
+    } else {
+      speInput['options'] = [];
+    }
+    if (
+      speInput.type === 'select-dd' &&
+      speInput.saveValueAsObjectConfiguration.staticObjectProperties
+        .parameterType === 'HyperFind'
+    ) {
+      speInput['endpointDetails'] = {
+        authType: 'Dimensions',
+        nameKey: 'hyperfindName',
+        url: '/hyperfind',
+        valueKey: 'hyperfindId',
+      };
+    } else if (
+      speInput.type === 'select-dd' &&
+      speInput.saveValueAsObjectConfiguration.staticObjectProperties
+        .parameterType !== 'HyperFind'
+    ) {
+      speInput['endpointDetails'] = {
+        authType: 'Dimensions',
+        nameKey: 'name',
+        url: '',
+        valueKey: 'value',
+      };
+    } else {
+      delete speInput.endpointDetails;
     }
   }
   getUUID() {
@@ -231,7 +277,7 @@ export class MetadataFormComponent {
   addHeaders(headers: any) {
     headers.push({
       templateName: '',
-      headerString: '',
+      sourceFileHeaders: '',
     });
   }
   addRows(rows: any) {
@@ -251,8 +297,11 @@ export class MetadataFormComponent {
       value: '',
     });
   }
-  addValidationsSpe(speValidationsBtn: any) {
-    speValidationsBtn.push({
+  addValidationsSpe(rowspeInput: any) {
+    if (!rowspeInput?.validations?.length) {
+      rowspeInput['validations'] = [];
+    }
+    rowspeInput['validations'].push({
       type: '',
       value: '',
     });
@@ -271,20 +320,16 @@ export class MetadataFormComponent {
         defaultValue: '',
         hint: '',
         type: '',
-        validations: [],
+
         saveValueAsObjectConfiguration: {
+          editableProperty: 'defaultValue',
           staticObjectProperties: {
             name: '',
             userPrompted: false,
             parameterType: '',
           },
         },
-        endpointDetails: {
-          authType: 'Dimensions',
-          nameKey: '',
-          url: '',
-          valueKey: '',
-        },
+
         options: [],
       },
       label: '',
@@ -306,8 +351,13 @@ export class MetadataFormComponent {
   save(obj: any) {
     this.subscriptions.add(
       this.metaService.addMetadata(obj).subscribe((result) => {
+        this.errorOnVerify= '';
         this.router.navigate(['/metadata']);
-      })
+      },
+      (err)=>{
+         this.errorOnVerify='Already exist with same metadata name';   
+      }
+      )
     );
   }
   onSubmit() {
@@ -318,7 +368,7 @@ export class MetadataFormComponent {
 
     tempMetadata.sections[0].steps.forEach((step: any) => {
       if (step.componentName == 'StaticPageEntryComponent') {
-        step.config.rows.forEach(
+        step?.config?.rows?.forEach(
           (row: {
             input: {
               [x: string]: any;
@@ -333,7 +383,7 @@ export class MetadataFormComponent {
             row.input.saveValueAsObjectConfiguration.staticObjectProperties.userPrompted =
               row.input.saveValueAsObjectConfiguration.staticObjectProperties.userPrompted.toString();
 
-            row.input.validations.forEach((ele, index) => {
+            row.input?.validations?.forEach((ele, index) => {
               if (ele.type == 'required') {
                 row.input.validations[index] = ele.type;
               }
@@ -346,6 +396,9 @@ export class MetadataFormComponent {
       id: this.metadata.id,
       metadata: JSON.stringify({ ...tempMetadata }),
     };
+
+    metadataObj.metadata = metadataObj.metadata.replace(/\\\\/g, '\\');
+
     this.save(metadataObj);
   }
 
@@ -363,6 +416,7 @@ export class MetadataFormComponent {
       this.metaService.getEnvionmentExtensionValues(boomiVerify).subscribe(
         (data) => {
           this.isLoading = false;
+          this.errorOnVerify= '';
           if (data != null) {
             this.isIPackNameValidated = true;
             this.setUpPageMetadataValues(data);
@@ -372,10 +426,14 @@ export class MetadataFormComponent {
         },
         (err) => {
           this.isLoading = false;
-          console.log(err);
+          err.text = 'Please enter correct IPack name , Process name and Process type';
+          this.showErrorOnVerify(err.text);
         }
       )
     );
+  }
+  showErrorOnVerify(data: any) {
+    this.errorOnVerify = data;
   }
   setUpPageMetadataValues(data: any) {
     const tempSetupMetadata = {} as ApiDisplayConfig;
@@ -470,20 +528,20 @@ export class MetadataFormComponent {
       this.metadata.extraTransferFields = etfTemp;
     }
   }
-  changeManualLabelValue(runOptions: any) {
-    if (this.manualLabelValue) {
-      runOptions.manualLabel = 'Run Manually';
-    } else {
-      delete runOptions.manualLabel;
-    }
-  }
-  changeScheduleLabelValue(runOptions: any) {
-    if (this.scheduleLabelValue) {
-      runOptions.scheduleLabel = 'Schedule';
-    } else {
-      delete runOptions.scheduleLabel;
-    }
-  }
+  // changeManualLabelValue(runOptions: any) {
+  //   if (this.manualLabelValue) {
+  //     runOptions.manualLabel = 'Run Manually';
+  //   } else {
+  //     delete runOptions.manualLabel;
+  //   }
+  // }
+  // changeScheduleLabelValue(runOptions: any) {
+  //   if (this.scheduleLabelValue) {
+  //     runOptions.scheduleLabel = 'Schedule';
+  //   } else {
+  //     delete runOptions.scheduleLabel;
+  //   }
+  // }
   ngOnDestroy() {
     this.metadata = null;
     this.subscriptions.unsubscribe();

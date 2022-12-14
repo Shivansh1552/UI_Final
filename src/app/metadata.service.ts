@@ -21,7 +21,7 @@ export class MetadataService {
   getAllMetadata(): Observable<any[]> {
     return this.http
       .get<any[]>(this.metadataUrl)
-      .pipe(tap((data) => console.log('All: ', JSON.stringify(data))));
+      .pipe(tap((data) =>  JSON.stringify(data)));
   }
 
   getMetadatabyId(id: string): Observable<IMetadata | undefined> {

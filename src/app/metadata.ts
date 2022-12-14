@@ -56,7 +56,7 @@ export interface StaticConfig {
 
 export interface HeadersConfig {
   templateName: string;
-  headerString: string;
+  sourceFileHeaders: string;
 }
 
 // export interface ApiDisplayConfigWithoutSFTP {

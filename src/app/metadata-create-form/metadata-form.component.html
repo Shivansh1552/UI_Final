@@ -89,7 +89,9 @@
         </div>
       </div>
       <br />
-
+      <div *ngIf="errorOnVerify" class="alert alert-danger" role="alert">
+        {{ errorOnVerify }}
+      </div>
       <section class="ilp-container" *ngIf="isIPackNameValidated">
         <hr />
         <div
@@ -123,7 +125,12 @@
       <ng-container *ngIf="isIPackNameValidated">
         <ng-container *ngFor="let section of metadata.sections; let i = index">
           <div *ngFor="let step of section.steps" class="step-container">
-            <mat-accordion *ngIf="step.componentName !== 'APIDisplayComponent'">
+            <mat-accordion
+              *ngIf="
+                step.componentName !== 'APIDisplayComponent' &&
+                step.componentName !== 'DimensionsSchedulingComponent'
+              "
+            >
               <mat-expansion-panel hideToggle>
                 <mat-expansion-panel-header>
                   <mat-panel-title>{{ step.name }} </mat-panel-title>
@@ -214,7 +221,7 @@
                             "
                           ></ng-container>
                         </ng-container>
-                        <ng-container
+                        <!-- <ng-container
                           *ngSwitchCase="'DimensionsSchedulingComponent'"
                         >
                           <ng-container
@@ -223,7 +230,7 @@
                               context: { step: step }
                             "
                           ></ng-container>
-                        </ng-container>
+                        </ng-container> -->
 
                         <div *ngSwitchDefault>No component Available</div>
                       </ng-container>
@@ -274,7 +281,7 @@
 
 <ng-template #staticContentComponent let-step="step">
   <div class="d-flex justify-content-between">
-    <div><label for="content">content</label></div>
+    <div><label for="content">Content</label></div>
     <textarea
       type="text"
       class="form-control half"
@@ -283,7 +290,7 @@
       cols="40"
       required
       [(ngModel)]="step?.config.content"
-      placeholder="Enter content"
+      placeholder="Enter Content"
       name="content"
     ></textarea>
   </div>
@@ -291,7 +298,9 @@
   <div class="card">
     <div class="card-body">
       <div class="d-flex justify-content-between">
-        <h2 class="card-title">Headers :</h2>
+        <h2 class="card-title" title="Click on Add button for adding Headers.">
+          Headers
+        </h2>
         <button
           type="button"
           class="btn btn-light"
@@ -317,15 +326,15 @@
         <br />
 
         <div class="d-flex justify-content-between">
-          <label for="headerString">Header String </label>
+          <label for="SourceFileHeaders">Source File Headers </label>
           <input
             type="text"
             class="form-control half"
-            id="headerString"
+            id="sourceFileHeaders"
             required
-            [(ngModel)]="header.headerString"
-            placeholder="Enter Header String"
-            name="headerString"
+            [(ngModel)]="header.sourceFileHeaders"
+            placeholder="Enter Source File Headers"
+            name="sourceFileHeaders"
           />
         </div>
         <br />
@@ -671,409 +680,433 @@
   </div>
   <br />
 
-  <!-- <div class="form-group"> -->
-  <div *ngFor="let rowspe of step.config.rows; let k = index">
-    <h3>Input :</h3>
-    <div class="card">
-      <div class="card-body">
-        <!-- <div class="d-flex justify-content-between">
-            <label>Name :</label>
-            <input
-              type="text"
-              class="form-control half"
-              id="name"
-              required
-              [(ngModel)]="rowspe.input.name"
-              placeholder="name"
-              name="name"
-            />
-          </div>
-          <br /> -->
-        <fieldset>
-          <!-- <div>SaveValueAsObjectConfiguration :</div>
-            <br />
-            <div class="d-flex justify-content-between">
-              <label>EditableProperty :</label>
+    <div *ngFor="let rowspe of step.config.rows; let k = index">
+      <div class="card">
+        <div class="card-body">
+          <!-- <div class="d-flex justify-content-between">
+              <label>Name :</label>
               <input
                 type="text"
                 class="form-control half"
-                id="editableProperty"
+                id="name"
                 required
-                [(ngModel)]="
-                  rowspe.input.saveValueAsObjectConfiguration.editableProperty
-                "
-                name="editableProperty"
+                [(ngModel)]="rowspe.input.name"
+                placeholder="name"
+                name="name"
               />
             </div>
             <br /> -->
           <fieldset>
-            <!-- <div>StaticObjectProperties :</div> -->
-            <div class="d-flex justify-content-between">
-              <label>Template name :</label>
-              <select
-                class="form-select half"
-                [ngClass]="{
-                  'is-valid': tempName.valid && tempName.touched,
-                  'is-invalid': !tempName.valid && tempName.touched
-                }"
-                id="templateName{{k}}"
-                #tempName="ngModel"
-                required
-                [(ngModel)]="rowspe.input.name"
-                name="templateName{{k}}"
-              >
-                <option
-                  [value]="'dimensions_parameters_' + tempName"
-                  *ngFor="let tempName of templateName"
+            <!-- <div>SaveValueAsObjectConfiguration :</div>
+              <br />
+              <div class="d-flex justify-content-between">
+                <label>EditableProperty :</label>
+                <input
+                  type="text"
+                  class="form-control half"
+                  id="editableProperty"
+                  required
+                  [(ngModel)]="
+                    rowspe.input.saveValueAsObjectConfiguration.editableProperty
+                  "
+                  name="editableProperty"
+                />
+              </div>
+              <br /> -->
+            <fieldset>
+              <!-- <div>StaticObjectProperties :</div> -->
+              <div class="d-flex justify-content-between">
+                <label>Template name </label>
+                <select
+                  class="form-select half"
+                  [ngClass]="{
+                    'is-valid': tempName.valid && tempName.touched,
+                    'is-invalid': !tempName.valid && tempName.touched
+                  }"
+                  id="templateName{{ k }}"
+                  #tempName="ngModel"
+                  required
+                  [(ngModel)]="rowspe.input.name"
+                  name="templateName{{ k }}"
                 >
-                  {{ tempName }}
-                </option>
-              </select>
-            </div>
-            <br />
+                  <option
+                    [value]="'dimensions_parameters_' + tempName"
+                    *ngFor="let tempName of templateName"
+                  >
+                    {{ tempName }}
+                  </option>
+                </select>
+              </div>
+              <br />
+              <div class="d-flex justify-content-between">
+                <label>Parameter Name </label>
+                <input
+                  type="text"
+                  class="form-control half"
+                  id="pname{{ k }}"
+                  required
+                  [(ngModel)]="
+                    rowspe.input.saveValueAsObjectConfiguration
+                      .staticObjectProperties.name
+                  "
+                  placeholder="name"
+                  name="pname{{ k }}"
+                />
+              </div>
+              <br />
+  
+              <div class="d-flex" style="padding-bottom: 16px">
+                <label>UserPrompted </label>
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="name{{ k }}"
+                  [(ngModel)]="
+                    rowspe.input.saveValueAsObjectConfiguration
+                      .staticObjectProperties.userPrompted
+                  "
+                  name="userPrompted{{ k }}"
+                  style="margin-left: 230px"
+                />
+              </div>
+  
+              <div class="d-flex justify-content-between">
+                <label>Dimension ParameterType </label>
+                <select
+                  class="form-select half"
+                  id="parameterType{{ k }}"
+                  required
+                  [(ngModel)]="
+                    rowspe.input.saveValueAsObjectConfiguration
+                      .staticObjectProperties.parameterType
+                  "
+                  name="parameterType{{ k }}"
+                  (ngModelChange)="changeParameterTypeValue(rowspe)"
+                >
+                  <option *ngFor="let parameter of metadataParameterType.keys()">
+                    {{ parameter }}
+                  </option>
+                </select>
+              </div>
+            </fieldset>
+          </fieldset>
+  
+          <br />
+          <div class="d-flex justify-content-between">
+            <label>DefaultValue </label>
+            <input
+              type="text"
+              class="form-control half"
+              id="defaultValue{{ k }}"
+              required
+              [(ngModel)]="rowspe.input.defaultValue"
+              placeholder="defaultValue"
+              name="defaultValue{{ k }}"
+            />
+          </div>
+          <br />
+  
+          <div class="d-flex justify-content-between">
+            <label>Input Label </label>
+            <input
+              type="text"
+              class="form-control half"
+              id="inputLabel{{ k }}"
+              required
+              [(ngModel)]="rowspe.input.inputLabel"
+              placeholder="Input Label"
+              name="inputLabel{{ k }}"
+            />
+          </div>
+          <br />
+          <div class="d-flex justify-content-between">
+            <label>TIP ParameterType </label>
+            <select
+              class="form-select half"
+              id="type{{ k }}"
+              (change)="onChange(rowspe.input)"
+              required
+              [(ngModel)]="rowspe.input.type"
+              name="type{{ k }}"
+            >
+              <option
+                *ngFor="let parameterTip of metadataParameterTypeTip.keys()"
+              >
+                {{ parameterTip }}
+              </option>
+            </select>
+          </div>
+          <br />
+          <div
+            *ngIf="rowspe.input.type !== 'checkbox'"
+            class="d-flex justify-content-between"
+          >
+            <label>Hint </label>
+            <input
+              type="text"
+              class="form-control half"
+              id="hint{{ k }}"
+              required
+              [(ngModel)]="rowspe.input.hint"
+              placeholder="hint"
+              name="hint{{ k }}"
+            />
+          </div>
+          <br />
+  
+          <ng-container *ngIf="rowspe.input.type === 'select-dd'">
+            <!-- <div class="d-flex justify-content-between">
+            <label>authType :</label>
+            <input
+              type="text"
+              class="form-control half"
+              id="authType{{k}}"
+              required
+              [(ngModel)]="rowspe.input.endpointDetails.authType"
+              placeholder="authType"
+              name="authType{{k}}"
+            />
+          </div>
+          <br /> -->
             <div class="d-flex justify-content-between">
-              <label>Parameter Name :</label>
+              <label>nameKey </label>
               <input
                 type="text"
                 class="form-control half"
-                id="pname{{k}}"
-                required
-                [(ngModel)]="
-                  rowspe.input.saveValueAsObjectConfiguration
-                    .staticObjectProperties.name
+                id="nameKey{{ k }}"
+                [disabled]="
+                  rowspe.input.endpointDetails.nameKey === 'hyperfindName' ||
+                  rowspe.input.endpointDetails.nameKey === 'name'
                 "
-                placeholder="name"
-                name="pname{{k}}"
+                required
+                [(ngModel)]="rowspe.input.endpointDetails.nameKey"
+                placeholder="nameKey"
+                name="nameKey{{ k }}"
               />
             </div>
             <br />
-
-            <div class="d-flex" style="padding-bottom: 16px">
-              <label>UserPrompted :</label>
+            <div class="d-flex justify-content-between">
+              <label>url </label>
               <input
-                class="form-check-input"
-                type="checkbox"
-                id="name{{k}}"
-                [(ngModel)]="
-                  rowspe.input.saveValueAsObjectConfiguration
-                    .staticObjectProperties.userPrompted
-                "
-                name="userPrompted{{k}}"
-                style="margin-left: 230px"
+                type="text"
+                class="form-control half"
+                id="url{{ k }}"
+                [disabled]="rowspe.input.endpointDetails.url === '/hyperfind'"
+                required
+                [(ngModel)]="rowspe.input.endpointDetails.url"
+                placeholder="url"
+                name="url{{ k }}"
               />
             </div>
-
+            <br />
             <div class="d-flex justify-content-between">
-              <label>Dimension ParameterType :</label>
-              <select
-                class="form-select half"
-                id="parameterType{{k}}"
-                required
-                [(ngModel)]="
-                  rowspe.input.saveValueAsObjectConfiguration
-                    .staticObjectProperties.parameterType
+              <label>valueKey </label>
+              <input
+                type="text"
+                class="form-control half"
+                id="valueKey{{ k }}"
+                [disabled]="
+                  rowspe.input.endpointDetails.valueKey === 'hyperfindId' ||
+                  rowspe.input.endpointDetails.valueKey === 'value'
                 "
-                name="parameterType{{k}}"
-              >
-                <option *ngFor="let parameter of metadataParameterType.keys()">
-                  {{ parameter }}
-                </option>
-              </select>
+                required
+                [(ngModel)]="rowspe.input.endpointDetails.valueKey"
+                placeholder="valueKey"
+                name="valueKey{{ k }}"
+              />
             </div>
-          </fieldset>
-        </fieldset>
-
-        <br />
-        <div class="d-flex justify-content-between">
-          <label>DefaultValue :</label>
-          <input
-            type="text"
-            class="form-control half"
-            id="defaultValue{{k}}"
-            required
-            [(ngModel)]="rowspe.input.defaultValue"
-            placeholder="defaultValue"
-            name="defaultValue{{k}}"
-          />
-        </div>
-        <br />
-
-        <div class="d-flex justify-content-between">
-          <label>Input Label :</label>
-          <input
-            type="text"
-            class="form-control half"
-            id="inputLabel{{k}}"
-            required
-            [(ngModel)]="rowspe.input.inputLabel"
-            placeholder="Input Label"
-            name="inputLabel{{k}}"
-          />
-        </div>
-        <br />
-        <div class="d-flex justify-content-between">
-          <label>TIP ParameterType :</label>
-          <select
-            class="form-select half"
-            id="type{{k}}"
-            (change)="onChange(rowspe.input)"
-            required
-            [(ngModel)]="rowspe.input.type"
-            name="type{{k}}"
+            <br />
+          </ng-container>
+  
+          <ng-container *ngIf="rowspe.input.type === 'select'">
+            <div class="d-flex justify-content-between">
+              <div>options</div>
+              <div>
+                <button
+                  type="button"
+                  (click)="addOptionsSpe(rowspe.input.options)"
+                  mat-icon-button
+                >
+                  <mat-icon
+                    aria-hidden="false"
+                    aria-label="Example home icon"
+                    fontIcon="add"
+                  ></mat-icon>
+                </button>
+              </div>
+            </div>
+            <br />
+  
+            <div
+              *ngFor="let speOptions of rowspe.input.options; let j = index"
+              class="d-flex justify-content-between"
+              style="padding-bottom: 8px"
+            >
+              <div class="d-flex justify-content-between">
+                <label>name </label>
+                <input
+                  type="text"
+                  class="form-control half"
+                  id="name{{ j }}"
+                  required
+                  [(ngModel)]="speOptions.name"
+                  placeholder="name"
+                  name="name{{ j }}"
+                  style="width: 250px; margin-left: 48px"
+                />
+              </div>
+              <br />
+              <div class="d-flex justify-content-between">
+                <label>value </label>
+                <input
+                  type="text"
+                  class="form-control half"
+                  id="value{{ j }}"
+                  required
+                  [(ngModel)]="speOptions.value"
+                  placeholder="value"
+                  name="value{{ j }}"
+                  style="width: 250px; margin-left: 48px"
+                />
+              </div>
+  
+              <button
+                type="button"
+                (click)="removeOptionsSpe(j, rowspe.input.options)"
+                mat-icon-button
+              >
+                <mat-icon
+                  aria-hidden="false"
+                  aria-label="Example home icon"
+                  fontIcon="remove"
+                ></mat-icon>
+              </button>
+            </div>
+            <br />
+          </ng-container>
+  
+          <div class="d-flex justify-content-between">
+            <div>validations</div>
+            <br />
+            <div>
+              <button
+                type="button"
+                (click)="addValidationsSpe(rowspe.input)"
+                mat-icon-button
+              >
+                <mat-icon
+                  aria-hidden="false"
+                  aria-label="Example home icon"
+                  fontIcon="add"
+                ></mat-icon>
+              </button>
+            </div>
+          </div>
+          <br />
+          <div
+            *ngFor="let speValid of rowspe.input.validations; let p = index"
+            class="d-flex justify-content-between"
+            style="padding-bottom: 8px"
           >
-            <option
-              *ngFor="let parameterTip of metadataParameterTypeTip.keys()"
+            <label>Type</label>
+            <select
+              class="form-select half"
+              id="speValidationType{{ p }}"
+              required
+              [(ngModel)]="speValid.type"
+              placeholder="type"
+              name="speValidationType{{ p }}"
+              style="width: 400px; margin-left: 48px"
             >
-              {{ parameterTip }}
-            </option>
-          </select>
-        </div>
-        <br />
-        <div
-          *ngIf="rowspe.input.type !== 'checkbox'"
-          class="d-flex justify-content-between"
-        >
-          <label>Hint :</label>
-          <input
-            type="text"
-            class="form-control half"
-            id="hint{{k}}"
-            required
-            [(ngModel)]="rowspe.input.hint"
-            placeholder="hint"
-            name="hint{{k}}"
-          />
-        </div>
-        <br />
-
-        <ng-container *ngIf="rowspe.input.type === 'select-dd'">
-          <!-- <div class="d-flex justify-content-between">
-          <label>authType :</label>
-          <input
-            type="text"
-            class="form-control half"
-            id="authType{{k}}"
-            required
-            [(ngModel)]="rowspe.input.endpointDetails.authType"
-            placeholder="authType"
-            name="authType{{k}}"
-          />
-        </div>
-        <br /> -->
-          <div class="d-flex justify-content-between">
-            <label>nameKey :</label>
+              <option *ngFor="let validationType of speValidations">
+                {{ validationType.type }}
+              </option>
+            </select>
+  
             <input
-              type="text"
-              class="form-control half"
-              id="nameKey{{k}}"
+              type="{{ speValid.type === 'pattern' ? 'text' : 'number' }}"
+              class="form-control"
               required
-              [(ngModel)]="rowspe.input.endpointDetails.nameKey"
-              placeholder="nameKey"
-              name="nameKey{{k}}"
-            />
-          </div>
-          <br />
-          <div class="d-flex justify-content-between">
-            <label>url :</label>
-            <input
-              type="text"
-              class="form-control half"
-              id="url{{k}}"
-              required
-              [(ngModel)]="rowspe.input.endpointDetails.url"
-              placeholder="url"
-              name="url{{k}}"
-            />
-          </div>
-          <br />
-          <div class="d-flex justify-content-between">
-            <label>valueKey :</label>
-            <input
-              type="text"
-              class="form-control half"
-              id="valueKey{{k}}"
-              required
-              [(ngModel)]="rowspe.input.endpointDetails.valueKey"
-              placeholder="valueKey"
-              name="valueKey{{k}}"
-            />
-          </div>
-          <br />
-        </ng-container>
-
-        <ng-container *ngIf="rowspe.input.type === 'select'">
-          <div class="d-flex justify-content-between">
-          <div>options:</div>
-          <div>
-            <button
-              type="button"
-              (click)="addOptionsSpe(rowspe.input.options)"
-              mat-icon-button
-            >
-              <mat-icon
-                aria-hidden="false"
-                aria-label="Example home icon"
-                fontIcon="add"
-              ></mat-icon>
-            </button>
-          </div>
-        </div>
-          <br />
-
-          <div *ngFor="let speOptions of rowspe.input.options; let j = index"
-          class="d-flex justify-content-between"
-          style="padding-bottom: 8px">
-          <div class="d-flex justify-content-between">
-            <label>name :</label>
-            <input
-              type="text"
-              class="form-control half"
-              id="name{{j}}"
-              required
-              [(ngModel)]="speOptions.name"
-              placeholder="name"
-              name="name{{j}}"
-              style="width: 250px; margin-left: 48px"
-            />
-          </div>
-          <br />
-          <div class="d-flex justify-content-between">
-            <label>value :</label>
-            <input
-              type="text"
-              class="form-control half"
-              id="value{{j}}"
-              required
-              [(ngModel)]="speOptions.value"
+              [disabled]="speValid.type === 'required'"
+              id="speValidationValue{{ p }}"
+              [(ngModel)]="speValid.value"
               placeholder="value"
-              name="value{{j}}"
-              style="width: 250px; margin-left: 48px"
+              name="speValidationValue{{ p }}"
+              style="width: 400px; margin-left: 48px"
             />
-          </div>
-          
-          <button
-            type="button"
-            (click)="removeOptionsSpe(j, rowspe.input.options)"
-            mat-icon-button
-          >
-            <mat-icon
-              aria-hidden="false"
-              aria-label="Example home icon"
-              fontIcon="remove"
-            ></mat-icon>
-          </button>
-         </div>
-          <br />
-        </ng-container>
-
-        <div class="d-flex justify-content-between">
-          <div>validations:</div>
-          <br />
-          <div>
+  
             <button
               type="button"
-              (click)="addValidationsSpe(rowspe.input.validations)"
+              (click)="removeValidationsSpe(p, rowspe.input)"
               mat-icon-button
             >
               <mat-icon
                 aria-hidden="false"
                 aria-label="Example home icon"
-                fontIcon="add"
+                fontIcon="remove"
               ></mat-icon>
             </button>
           </div>
+          <br />
+  
+          <br />
+          <div class="d-flex justify-content-between">
+            <label>Label </label>
+            <input
+              type="text"
+              class="form-control half"
+              required
+              id="label{{ k }}"
+              [(ngModel)]="rowspe.label"
+              placeholder="label"
+              name="label{{ k }}"
+            />
+          </div>
+          <!-- <br />
+          <div class="d-flex justify-content-between">
+            <label>Description :</label>
+            <input
+              type="text"
+              class="form-control half"
+              required
+              id="description"
+              [(ngModel)]="rowspe.description"
+              placeholder="description"
+              name="description"
+            />
+          </div> -->
         </div>
-        <br />
-        <div
-          *ngFor="let speValid of rowspe.input.validations; let p= index"
-          class="d-flex justify-content-between"
-          style="padding-bottom: 8px"
-        >
-          <label>Type:</label>
-          <select
-            class="form-select half"
-            id="speValidationType{{p}}"
-            required
-            [(ngModel)]="speValid.type"
-            placeholder="type"
-            name="speValidationType{{p}}"
-            style="width: 400px; margin-left: 48px"
-          >
-            <option *ngFor="let validationType of speValidations">
-              {{ validationType.type }}
-            </option>
-          </select>
-
-          <input
-            type="{{ speValid.type === 'pattern' ? 'text' : 'number' }}"
-            class="form-control"
-            required
-            [disabled]="speValid.type === 'required'"
-            id="speValidationValue{{p}}"
-            [(ngModel)]="speValid.value"
-            placeholder="value"
-            name="speValidationValue{{p}}"
-            style="width: 400px; margin-left: 48px"
-          />
-
-          <button
-            type="button"
-            (click)="removeValidationsSpe(p, rowspe.input.validations)"
-            mat-icon-button
-          >
-            <mat-icon
-              aria-hidden="false"
-              aria-label="Example home icon"
-              fontIcon="remove"
-            ></mat-icon>
-          </button>
-        </div>
-        <br />
-
-        <br />
-        <div class="d-flex justify-content-between">
-          <label>Label :</label>
-          <input
-            type="text"
-            class="form-control half"
-            required
-            id="label{{k}}"
-            [(ngModel)]="rowspe.label"
-            placeholder="label"
-            name="label{{k}}"
-          />
-        </div>
-        <!-- <br />
-        <div class="d-flex justify-content-between">
-          <label>Description :</label>
-          <input
-            type="text"
-            class="form-control half"
-            required
-            id="description"
-            [(ngModel)]="rowspe.description"
-            placeholder="description"
-            name="description"
-          />
-        </div> -->
       </div>
+      <br />
+      <div
+        style="display: flex; justify-content: flex-end; width: 100%; padding: 0"
+      >
+        <button
+          type="button"
+          class="btn btn-light"
+          (click)="removeRows(k, step.config.rows)"
+        >
+          Remove
+        </button>
+      </div>
+      <!-- </div> -->
     </div>
     <br />
-    <div
-      style="display: flex; justify-content: flex-end; width: 100%; padding: 0"
-    >
-      <button
-        type="button"
-        class="btn btn-light"
-        (click)="removeRows(k, step.config.rows)"
-      >
-        Remove
-      </button>
-    </div>
-    <!-- </div> -->
-  </div>
 
-  <br />
+<!-- <mat-accordion>
+<mat-expansion-panel hideToggle>
+  <mat-expansion-panel-header>
+    <mat-panel-title></mat-panel-title>
+    <mat-panel-description>
+      Please open this panel.
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  
+
+</mat-expansion-panel>
+</mat-accordion> -->
+  
+
 </ng-template>
 <ng-template #crtOverviewComponent let-step="step">
   <br />
@@ -1105,7 +1138,6 @@
   </div>
   <br /> -->
   <div class="d-flex justify-content-between">
-    <div>files :</div>
     <!-- <div>
       <button
         type="button"
@@ -1116,11 +1148,9 @@
       </button>
     </div> -->
   </div>
-  <br />
-
   <div *ngFor="let file of step.config.files; let j = index">
     <div class="d-flex justify-content-between">
-      <label>CRT Name :</label>
+      <label>CRT Name </label>
       <input
         type="text"
         class="form-control half"
@@ -1134,7 +1164,7 @@
     </div>
     <br />
     <div class="d-flex justify-content-between">
-      <label>Header :</label>
+      <label>Header </label>
       <input
         type="text"
         class="form-control half"
@@ -1211,7 +1241,7 @@
     />
   </div> -->
 </ng-template>
-<ng-template #dimensionsSchedulingComponent let-step="step">
+<!-- <ng-template #dimensionsSchedulingComponent let-step="step">
   <br />
 
   <div class="d-flex justify-content-between">
@@ -1228,7 +1258,7 @@
 
   <br />
 
-  <!-- <div class="d-flex justify-content-between">
+  <div class="d-flex justify-content-between">
     <div>runOptions :</div>
   </div>
   <br />
@@ -1238,25 +1268,15 @@
       type="text"
       class="form-control half"
       id="sectionLabel"
+      (change)="changeManualLabelValue(step.config.runOptions)"
       required
       [(ngModel)]="step.config.runOptions.sectionLabel"
       placeholder="name"
       name="sectionLabel"
     />
   </div>
-  <br /> -->
-  <!-- <div class="d-flex justify-content-between">
-    <label>scheduleLabel :</label>
-    <input
-      type="text"
-      class="form-control half"
-      id="scheduleLabel"
-      required
-      [(ngModel)]="step.config.runOptions.scheduleLabel"
-      placeholder="name"
-      name="scheduleLabel"
-    />
-  </div> -->
+  <br />
+
   <div class="d-flex" style="padding-bottom: 16px">
     <label>scheduleLabel :</label>
     <input
@@ -1276,22 +1296,11 @@
       class="form-check-input"
       type="checkbox"
       id="manualLabel"
-      (change)="changeManualLabelValue(step.config.runOptions)"
+      
       [(ngModel)]="manualLabelValue"
       name="manualLabel"
       style="margin-left: 260px"
     />
   </div>
-  <!-- <div class="d-flex justify-content-between">
-    <label>manualLabel :</label>
-    <input
-      type="text"
-      class="form-control half"
-      id="manualLabel"
-      required
-      [(ngModel)]="step.config.runOptions.manualLabel"
-      placeholder="name"
-      name="manualLabel"
-    />
-  </div> -->
-</ng-template>
+
+</ng-template> -->

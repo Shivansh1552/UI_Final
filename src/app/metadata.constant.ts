@@ -2,7 +2,7 @@ export enum metadataParameterType{
   Boolean,
   Date,
   Dropdown,
-  Hyperfind,
+  HyperFind,
   List,
   Number,
   Text,

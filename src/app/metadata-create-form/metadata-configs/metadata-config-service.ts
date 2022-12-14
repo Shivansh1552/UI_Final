@@ -22,12 +22,7 @@ export class MetadataConfigService {
             description: '',
             config: {
               content: '',
-              headers: [
-                {
-                  templateName: '',
-                  headerString: '',
-                },
-              ],
+              headers: [],
             },
           },
           {
@@ -62,12 +57,12 @@ export class MetadataConfigService {
                 {
                   fieldName: 'sftpHost',
                   label: 'Host URL associated with selected SFTP',
-                  secure: true,
+                  secure: false,
                 },
                 {
                   fieldName: 'sftpPort',
                   label: 'Port associated with selected SFTP',
-                  secure: true,
+                  secure: false,
                 },
               ],
               testConfiguration: true,
@@ -105,14 +100,14 @@ export class MetadataConfigService {
                     hint: '',
                     type: '',
                     inputLabel: '',
-                    validations: [],
-                    endpointDetails: {
-                      authType: 'Dimensions',
-                      nameKey: '',
-                      url: '',
-                      valueKey: '',
-                    },
-                    options: [],
+                    // validations: [],
+                    // endpointDetails: {
+                    //   authType: 'Dimensions',
+                    //   nameKey: '',
+                    //   url: '',
+                    //   valueKey: '',
+                    // },
+                    // options: [],
                   },
                   label: '',
                 },
@@ -152,8 +147,8 @@ export class MetadataConfigService {
               description: 'Now let us finalize your schedule configuration',
               runOptions: {
                 sectionLabel: 'Schedule Settings',
-                // scheduleLabel: '',
-                // manualLabel: '',
+                  scheduleLabel: 'Schedule',
+                  manualLabel: 'Run Manually',
               },
             },
           },
@@ -161,6 +156,7 @@ export class MetadataConfigService {
       },
     ],
   };
+
   private readonly staticPageEntryValidation = [
     {
       type: 'min',
