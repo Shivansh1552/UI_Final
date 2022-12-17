@@ -16,7 +16,6 @@ import {
 } from '../metadata';
 import { MetadataService } from '../metadata.service';
 import * as uuid from 'uuid';
-import { HeaderConfig } from '../Models/static-content/header-config.model';
 import { MetadataModel } from '../Models/metadata.model';
 // import { MetadataWithCrt } from './metadata-configs/metadata-config-with-crt';
 import {
@@ -199,73 +198,16 @@ export class MetadataFormComponent {
 
   ngOnInit() {}
 
-  removeInput(index: any, headers: any) {
-    headers.splice(index, 1);
-  }
-  removeRows(index: any, rows: any) {
-    rows.splice(index, 1);
-  }
+//moving to overview.ts
+// removeInput(index: any, headers: any) {
+//   headers.splice(index, 1);
+// }
+ 
   removeCrt(index: any, files: any) {
     files.splice(index, 1);
   }
-  removeValidationsSpe(index: any, rowspe: any) {
-    if (rowspe.validations?.length == 1) {
-      delete rowspe.validations;
-    } else {
-      rowspe.validations.splice(index, 1);
-    }
-  }
-  removeOptionsSpe(index: any, option: any) {
-    option.splice(index, 1);
-  }
-  changeParameterTypeValue(rowSpe: any) {
-    if (
-      rowSpe.input.saveValueAsObjectConfiguration.staticObjectProperties
-        .parameterType == 'HyperFind'
-    ) {
-      rowSpe.input.type = 'select-dd';
-      this.onChange(rowSpe.input);
-    } else {
-      rowSpe.input.type = '';
-    }
-  }
-  onChange(speInput: any) {
-    if (speInput.type == 'checkbox') {
-      delete speInput.hint;
-    } else {
-      speInput['hint'] = '';
-    }
-    if (speInput.type !== 'select') {
-      delete speInput.options;
-    } else {
-      speInput['options'] = [];
-    }
-    if (
-      speInput.type === 'select-dd' &&
-      speInput.saveValueAsObjectConfiguration.staticObjectProperties
-        .parameterType === 'HyperFind'
-    ) {
-      speInput['endpointDetails'] = {
-        authType: 'Dimensions',
-        nameKey: 'hyperfindName',
-        url: '/hyperfind',
-        valueKey: 'hyperfindId',
-      };
-    } else if (
-      speInput.type === 'select-dd' &&
-      speInput.saveValueAsObjectConfiguration.staticObjectProperties
-        .parameterType !== 'HyperFind'
-    ) {
-      speInput['endpointDetails'] = {
-        authType: 'Dimensions',
-        nameKey: 'name',
-        url: '',
-        valueKey: 'value',
-      };
-    } else {
-      delete speInput.endpointDetails;
-    }
-  }
+
+  
   getUUID() {
     const id = uuid.v4();
     return id;
@@ -273,13 +215,13 @@ export class MetadataFormComponent {
   closeForm() {
     this.router.navigate(['/metadata']);
   }
-
-  addHeaders(headers: any) {
-    headers.push({
-      templateName: '',
-      sourceFileHeaders: '',
-    });
-  }
+//moving to overview
+  // addHeaders(headers: any) {
+  //   headers.push({
+  //     templateName: '',
+  //     sourceFileHeaders: '',
+  //   });
+  // }
   addRows(rows: any) {
     rows.push({
       input: {
@@ -291,21 +233,7 @@ export class MetadataFormComponent {
       },
     });
   }
-  addValidations(validations: any) {
-    validations.push({
-      type: '',
-      value: '',
-    });
-  }
-  addValidationsSpe(rowspeInput: any) {
-    if (!rowspeInput?.validations?.length) {
-      rowspeInput['validations'] = [];
-    }
-    rowspeInput['validations'].push({
-      type: '',
-      value: '',
-    });
-  }
+
   addDisplayItem(displayItems: any) {
     displayItems.push({
       fieldName: '',
@@ -313,40 +241,14 @@ export class MetadataFormComponent {
       secure: '',
     });
   }
-  addRowsSpe(rows: any) {
-    rows.push({
-      input: {
-        name: '',
-        defaultValue: '',
-        hint: '',
-        type: '',
-
-        saveValueAsObjectConfiguration: {
-          editableProperty: 'defaultValue',
-          staticObjectProperties: {
-            name: '',
-            userPrompted: false,
-            parameterType: '',
-          },
-        },
-
-        options: [],
-      },
-      label: '',
-    });
-  }
+ 
   addFiles(files: any) {
     files.push({
       crtName: '',
       headerRow: '',
     });
   }
-  addOptionsSpe(optionSpe: any) {
-    optionSpe.push({
-      name: '',
-      value: '',
-    });
-  }
+ 
 
   save(obj: any) {
     this.subscriptions.add(

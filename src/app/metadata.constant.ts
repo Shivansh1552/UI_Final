@@ -51,10 +51,3 @@ export const templateName = [
   "Update Existing Punches"
 ]
 
-// export namespace templateName {
-
-//   export function keys(): Array<string>{
-//     var keys = Object.keys(templateName);
-//     return keys.slice(keys.length / 2, keys.length-1);
-//   }
-// }

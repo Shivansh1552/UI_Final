@@ -22,7 +22,7 @@ export class MetadataConfigService {
             description: '',
             config: {
               content: '',
-              headers: [],
+              // headers: [],
             },
           },
           {
@@ -142,7 +142,6 @@ export class MetadataConfigService {
             componentName: 'DimensionsSchedulingComponent',
             name: 'Scheduling',
             title: 'Scheduling',
-            description: '',
             config: {
               description: 'Now let us finalize your schedule configuration',
               runOptions: {

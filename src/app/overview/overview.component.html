@@ -1,0 +1,81 @@
+<section>
+  <div class="d-flex justify-content-between">
+    <div><label for="content">Content</label></div>
+    <textarea
+      type="text"
+      class="form-control half"
+      id="content"
+      rows="5"
+      cols="40"
+      required
+      [(ngModel)]="step.config.content"
+      placeholder="Enter Content"
+      name="content"
+    ></textarea>
+  </div>
+  <hr />
+  <div class="card">
+    <div class="card-body">
+      <div class="d-flex justify-content-between">
+        <h2 class="card-title" title="Click on Add button for adding Headers.">
+          Headers
+        </h2>
+        <button
+          type="button"
+          class="btn btn-light"
+          (click)="addHeaders(step.config)"
+        >
+          Add
+        </button>
+      </div>
+      <br />
+      <div *ngFor="let header of step.config.headers; let j = index">
+        <div class="d-flex justify-content-between">
+          <label for="templateName">Template Name</label>
+          <input
+            type="text"
+            class="form-control half"
+            id="templateName"
+            required
+            [(ngModel)]="header.templateName"
+            placeholder="Enter Template Name"
+            name="templateName"
+          />
+        </div>
+        <br />
+
+        <div class="d-flex justify-content-between">
+          <label for="SourceFileHeaders">Source File Headers </label>
+          <input
+            type="text"
+            class="form-control half"
+            id="sourceFileHeaders"
+            required
+            [(ngModel)]="header.sourceFileHeaders"
+            placeholder="Enter Source File Headers"
+            name="sourceFileHeaders"
+          />
+        </div>
+        <br />
+        <!-- <div class="d-flex justify-content-between"> -->
+        <div
+          style="
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+            padding: 0;
+          "
+        >
+          <button
+            type="button"
+            class="btn btn-light"
+            (click)="removeInput(j, step.config.headers)"
+          >
+            Remove
+          </button>
+        </div>
+        <br />
+      </div>
+    </div>
+  </div>
+</section>
