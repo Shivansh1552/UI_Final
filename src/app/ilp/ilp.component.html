@@ -193,7 +193,7 @@
 
         <button
           *ngIf="rowData.show === 'edit'"
-          [disabled]="!(rowData.name && rowData.description && rowData.value)"
+          [disabled]="!(rowData.name && rowData.value)"
           (click)="saveIlp(rowData)"
           mat-icon-button
           title="Save Ilp Row"

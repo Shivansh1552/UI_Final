@@ -22,7 +22,7 @@ export class MetadataConfigService {
             description: '',
             config: {
               content: '',
-              // headers: [],
+               //headers: [],
             },
           },
           {

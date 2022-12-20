@@ -14,7 +14,7 @@ export class OverviewComponent implements OnInit {
     description: '',
     config: {
       content: '',
-      // headers: [],
+    //   headers: [],
     },
   };
   constructor() { }

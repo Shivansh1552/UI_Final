@@ -11,7 +11,15 @@ export class SetupComponent implements OnInit {
   constructor() {}
 
   // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if(this.step.config.ddLabel){
+      this.sftpConnection=true;
+    }
+    else{
+      this.sftpConnection=false;
+    }
+    this.setupForSFTP(this.sftpConnection);
+  }
   setupForSFTP(sftp: any) {
     if (!sftp) {
       delete this.step.config.ddLabel;
