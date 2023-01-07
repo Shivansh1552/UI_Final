@@ -1,0 +1,10 @@
+
+.btn-space{
+  margin-left:20px;
+}
+.btn.active{
+  background-color: rgb(78, 118, 194);
+}
+.container-color{
+  background-color: white;
+}
