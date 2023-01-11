@@ -8,6 +8,7 @@ import { Step } from '../metadata';
 })
 export class OverviewComponent implements OnInit {
   templateDownload: any
+  
   @Input() step: any = {
     name: 'Overview',
     componentName: 'StaticContentComponent',
@@ -35,5 +36,11 @@ export class OverviewComponent implements OnInit {
       sourceFileHeaders: '',
     });
   }
+//   appendContent(templateDownload: any){
+//   if(templateDownload){
+//     this.step.config.content = this.step.config.content.concat('\n\n Download the [template file(s)](downloadCsv)');
+//     console.log(this.step.config.content);
+//   }
+// }
  
 }

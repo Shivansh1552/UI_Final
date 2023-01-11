@@ -298,8 +298,9 @@ export class MetadataFormComponent {
       id: this.metadata.id,
       metadata: JSON.stringify({ ...tempMetadata }),
     };
-
+    
     metadataObj.metadata = metadataObj.metadata.replace(/\\\\/g, '\\');
+  
 
     this.save(metadataObj);
   }
